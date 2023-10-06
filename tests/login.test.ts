@@ -5,8 +5,8 @@ import devicePage from "../pages/devicesPage";
 import toolbarPage from "../pages/toolbarPage";
 import switchgroupPage from "../pages/SwitchGroupPage";
 // import addswitchgroupPage from "../pages/addswitchgroupPage";
-import {  addswitchgroupPage, BasicPage, ManagementPage,NetworkPage } from "../pages/addswitchgroupPage";
-import { ParticularDevicePage,ConfigurationPage,SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
+import {  addswitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
+import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
 import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage} from "../pages/particularSwitchGroupPage";
 
 import * as data from "../constants/constants.json"
@@ -388,6 +388,11 @@ test.only ("Particular Switch Group and Switch Port", async({page,baseURL})=>{
     await port_obj.clickPhysical()
     await basic_port_obj.changeAdministrativeStatePort("Disable")
     await basic_port_obj.changeSpeedPort("10Mbps")
+    await basic_port_obj.saveConfig()
+    
+    const message = page.locator('[id="cns-toaster-msg"]').textContent()
+    console.log(await message)
+    expect(await message).toContain('Port Configuration updated successfully')
     // await port_obj.clickNetwork()
     // await page.waitForTimeout(1000)
     // await port_obj.clickPhysical()

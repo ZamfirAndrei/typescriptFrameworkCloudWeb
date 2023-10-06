@@ -255,4 +255,19 @@ export class PhysicalPortPage {
         await this.page.click(`[title="${speed}"]`)
         console.log(`The port speed has been changed to ${speed}`)
     }
+
+    async saveConfig() {
+
+        const save = this.page.locator('[class="btn btn-primary w-xs ng-binding"]')
+        
+        if(await save.isDisabled()){
+
+            console.log("The button is disabled")
+        }
+        else{
+            
+            await save.click()
+            console.log("The configuration has been saved")
+        }
+    }
 }
