@@ -180,7 +180,7 @@ export class SwitchPortsPage {
 
             switch_text = this.page.locator('[title="View Switch Dashboard"]').nth(i)
             console.log(await switch_text.textContent());
-            console.log(i)
+            // console.log(i)
             i = i + 1
             
         }
@@ -223,9 +223,25 @@ export class PortPage {
 
         await this.network_menu.click()
     }
+
     async clickSecurity() {
 
         await this.security_menu.click()
+    }
+
+    async saveConfig() {
+
+        const save = this.page.locator('[class="btn btn-primary w-xs ng-binding"]')
+        
+        if(await save.isDisabled()){
+
+            console.log("The button is disabled")
+        }
+        else{
+            
+            await save.click()
+            console.log("The configuration has been saved")
+        }
     }
 }
 
@@ -256,18 +272,105 @@ export class PhysicalPortPage {
         console.log(`The port speed has been changed to ${speed}`)
     }
 
-    async saveConfig() {
+}
 
-        const save = this.page.locator('[class="btn btn-primary w-xs ng-binding"]')
-        
-        if(await save.isDisabled()){
 
-            console.log("The button is disabled")
+export class NetworkPortPage {
+
+    private readonly port_type_menu : Locator = this.page.locator('[id="accessMode"]')
+    private readonly vlan_id : Locator = this.page.locator('[name="vlanId"]')
+    private readonly available_vlans : Locator = this.page.locator('[class="inline m-t-xs m-l-xs"]')
+    private readonly native_vlan : Locator = this.page.locator('[name="nativeVlan"]')
+    private readonly tagged_check : Locator = this.page.locator('[class="i-checks i-checks-sm"]')
+
+    constructor(public page:Page) {
+
+    }
+
+    async changeTypePort(type:string) {
+
+        // Changing the Port Type of a particular port
+
+        await this.port_type_menu.click()
+
+        if (type == "Access") {
+
+            await this.page.locator(`[title="${type}"]`).nth(0).click()
         }
-        else{
-            
-            await save.click()
-            console.log("The configuration has been saved")
+
+        else if (type == "Hybrid") {
+
+            await this.page.locator(`[title="${type}"]`).nth(2).click()
+        }
+
+        else if (type == "Trunk") {
+
+            await this.page.locator(`[title="${type}"]`).nth(0).click()
+        }
+
+        else {
+
+            console.log("The type for the port is not VALID")
+        }
+    }
+
+    async checkAvailableVlans() {
+
+        const available_vlans_text = await this.available_vlans.textContent()
+        console.log(await available_vlans_text)
+
+        const vlan_list = available_vlans_text.split(" - ")[1].trim()
+        console.log(vlan_list.split(","))
+
+        return vlan_list.split(",")
+    }
+    
+    async insertVlan(vlan:string) {
+
+        // Inserting VLAN
+
+        if (await this.vlan_id.isDisabled()) {
+
+            console.log("The button VLAN ID is disabled")
+        }
+        
+        else {
+
+            await this.vlan_id.fill(vlan)
+            console.log(`The VLAN ${vlan} has been configured`)
+        }
+    }
+
+    async insertNativeVlans(vlan_native:string) {
+
+        if (await this.native_vlan.isDisabled()){
+
+            console.log("The button Native VLAN is disabled")
+        }
+
+        else {
+
+            await this.native_vlan.fill(vlan_native)
+            console.log(`The Native VLAN ${vlan_native} has been configured`)
+        }
+    }
+
+    async checkTagged(answer:string) {
+        
+        // Trb sa rezolv cu butonul asta ca nu merge
+
+        if (answer == "Yes") {
+
+            if (await this.tagged_check.isVisible()) {
+
+                await this.tagged_check.check()
+                console.log("The Tagged has been checked")
+            }
+
+            else {
+
+                console.log("The buttong tagged_check is not visible")
+            }
         }
     }
 }

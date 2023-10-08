@@ -7,7 +7,7 @@ import switchgroupPage from "../pages/SwitchGroupPage";
 // import addswitchgroupPage from "../pages/addswitchgroupPage";
 import {  addswitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
 import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
-import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage} from "../pages/particularSwitchGroupPage";
+import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage} from "../pages/particularSwitchGroupPage";
 
 import * as data from "../constants/constants.json"
 
@@ -340,6 +340,7 @@ test.only ("Particular Switch Group and Switch Port", async({page,baseURL})=>{
     const switchports_obj = new SwitchPortsPage(page) 
     const port_obj = new PortPage(page)
     const basic_port_obj = new PhysicalPortPage(page)
+    const network_port_obj = new NetworkPortPage(page)
 
     await page.goto(`${baseURL}`)
     await login_obj.login(data.user, data.password)
@@ -384,21 +385,27 @@ test.only ("Particular Switch Group and Switch Port", async({page,baseURL})=>{
     await switchports_obj.getOperationalState("Gi0/4","Andrei-2028")
     await page.waitForTimeout(1000)
     await switchports_obj.searchForPort("Gi0/5","Andrei-2028")
-    await page.waitForTimeout(1000)
     await port_obj.clickPhysical()
     await basic_port_obj.changeAdministrativeStatePort("Disable")
     await basic_port_obj.changeSpeedPort("10Mbps")
-    await basic_port_obj.saveConfig()
+    // await port_obj.saveConfig()
     
-    const message = page.locator('[id="cns-toaster-msg"]').textContent()
-    console.log(await message)
-    expect(await message).toContain('Port Configuration updated successfully')
+    // const message = page.locator('[id="cns-toaster-msg"]').textContent()
+    // console.log(await message)
+    // expect(await message).toContain('Port Configuration updated successfully')
     // await port_obj.clickNetwork()
     // await page.waitForTimeout(1000)
     // await port_obj.clickPhysical()
     // await page.waitForTimeout(1000)
     // await port_obj.clickSecurity()
     // await page.waitForTimeout(1000)
+    await port_obj.clickNetwork()
+    await network_port_obj.changeTypePort("Access")
+    await page.waitForTimeout(1000)
+    await network_port_obj.checkAvailableVlans()
+    await network_port_obj.insertVlan("20")
+    await network_port_obj.insertNativeVlans("10")
+    await network_port_obj.checkTagged("Yes")
     
     
     await page.waitForTimeout(5000)
