@@ -88,7 +88,7 @@ export class SwitchPortsPage {
 
             switch_text = this.page.locator('[title="View Switch Dashboard"]').nth(i)
             console.log(await switch_text.textContent());
-            console.log(i)
+            // console.log(i)
             i = i + 1
             
         }
