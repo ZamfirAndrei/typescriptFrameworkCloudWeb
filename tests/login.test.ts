@@ -7,7 +7,7 @@ import switchgroupPage from "../pages/SwitchGroupPage";
 // import addswitchgroupPage from "../pages/addswitchgroupPage";
 import {  addswitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
 import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
-import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage} from "../pages/particularSwitchGroupPage";
+import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage} from "../pages/particularSwitchGroupPage";
 
 import * as data from "../constants/constants.json"
 
@@ -358,6 +358,9 @@ test.only ("Particular Switch Group and Switch Port", async({page,baseURL})=>{
     // await page.waitForTimeout(1000)
     // await part_switchgroup_obj.clickNotification()
     // await page.waitForTimeout(1000)
+
+    // Going to Switch Ports Menu
+
     await part_switchgroup_obj.clickSwitchPorts()
     await page.waitForTimeout(1000)
     // await part_switchgroup_obj.clickStatistics()
@@ -381,13 +384,18 @@ test.only ("Particular Switch Group and Switch Port", async({page,baseURL})=>{
     // await page.waitForTimeout(1000)
     // await switchports_obj.clickGeneral()
     
-    await switchports_obj.getAdministrativeState("Gi0/4","Andrei-2010")
-    await switchports_obj.getOperationalState("Gi0/4","Andrei-2028")
-    await page.waitForTimeout(1000)
+    // await switchports_obj.getAdministrativeState("Gi0/4","Andrei-2028")
+    // await switchports_obj.getOperationalState("Gi0/4","Andrei-2028")
+    // await page.waitForTimeout(1000)
+    // await switchports_obj.getType("Gi0/4","Andrei-2028")
+    // await switchports_obj.getVLANs("Gi0/4","Andrei-2028")
+    // await switchports_obj.getVLANs("Gi0/4","Andrei-2010")
+    // await switchports_obj.getNativeVlan("Gi0/4","Andrei-2028")
+    // await switchports_obj.getNativeVlan("Gi0/4","Andrei-2010")
     await switchports_obj.searchForPort("Gi0/5","Andrei-2028")
-    await port_obj.clickPhysical()
-    await basic_port_obj.changeAdministrativeStatePort("Disable")
-    await basic_port_obj.changeSpeedPort("10Mbps")
+    // await port_obj.clickPhysical()
+    // await basic_port_obj.changeAdministrativeStatePort("Disable")
+    // await basic_port_obj.changeSpeedPort("10Mbps")
     // await port_obj.saveConfig()
     
     // const message = page.locator('[id="cns-toaster-msg"]').textContent()
@@ -400,13 +408,81 @@ test.only ("Particular Switch Group and Switch Port", async({page,baseURL})=>{
     // await port_obj.clickSecurity()
     // await page.waitForTimeout(1000)
     await port_obj.clickNetwork()
-    await network_port_obj.changeTypePort("Access")
+    // await network_port_obj.changeTypePort("Access")
     await page.waitForTimeout(1000)
-    await network_port_obj.checkAvailableVlans()
-    await network_port_obj.insertVlan("20")
-    await network_port_obj.insertNativeVlans("10")
-    await network_port_obj.checkTagged("Yes")
-    
+    // await network_port_obj.checkAvailableVlans()
+    // await network_port_obj.selectStatusSTP("Disable")
+    // await page.waitForTimeout(1000)
+    // await network_port_obj.selectStatusSTP("Enable")
+    // await page.waitForTimeout(1000)
+    // await network_port_obj.selectStatusBPDUGuard("Enable")
+    // await page.waitForTimeout(1000)
+    // await network_port_obj.selectStatusBPDUGuard("Disable")
+    // await page.waitForTimeout(1000)
+    // await network_port_obj.selectStatusPortFast("Enable")
+    // await page.waitForTimeout(1000)
+    // await network_port_obj.selectStatusPortFast("Disable")
+    // await network_port_obj.selectStatusSTP("Gigi")
+    // await network_port_obj.selectStatusBPDUGuard("Gigi")
+    // await network_port_obj.selectStatusPortFast("Gigi")
+    await network_port_obj.insertVlan("1,15,20")
+    await port_obj.saveConfig()
+    // await network_port_obj.insertNativeVlans("10")
+    // await network_port_obj.checkTagged("Yes")
+    await page.waitForTimeout(2000)
+    await network_port_obj.configurePriorityVLAN("15", "32")
+    await network_port_obj.configureStatusSTPVLAN("15", "Disable")
     
     await page.waitForTimeout(5000)
+})
+
+test ("Particular Switch Group and Statistics", async({page,baseURL})=>{
+
+    const login_obj = new loginPage(page)
+    const toolbar_obj = new toolbarPage(page)
+    const switchgroup_obj = new switchgroupPage(page)
+    const addswitchgroup_obj = new addswitchgroupPage(page)
+    const basic_obj = new BasicPage(page)
+    const mngm_obj = new ManagementPage(page)
+    const network_obj = new NetworkPage(page)
+    const part_device = new ParticularDevicePage(page)
+    const device_obj = new devicePage(page)
+    const conf_obj = new ConfigurationPage(page)
+    const soft_update = new SoftwareUpdatePage(page)
+    const tools_obj = new ToolsPage(page)
+    const part_switchgroup_obj = new ParticularSwitchGroupPage(page)
+    const switchports_obj = new SwitchPortsPage(page) 
+    const port_obj = new PortPage(page)
+    const basic_port_obj = new PhysicalPortPage(page)
+    const network_port_obj = new NetworkPortPage(page)
+    const statistics_obj = new StatisticsPage(page)
+
+    await page.goto(`${baseURL}`)
+    await login_obj.login(data.user, data.password)
+    await login_obj.selectAccount(data.account2)
+
+    // Going to Switch Groups
+
+    await toolbar_obj.clickSwitchGroupsPage()
+    await page.waitForTimeout(2000)
+    await switchgroup_obj.clickSwitchGroup("5.1")
+
+    // Going to Switch Ports Menu
+
+    await page.waitForTimeout(1000)
+
+    await part_switchgroup_obj.clickSwitchPorts()
+    await page.waitForTimeout(1000)
+
+    await switchports_obj.clickStatistics()
+    await page.waitForTimeout(1000)
+
+    await statistics_obj.getRow(1)
+    await statistics_obj.getPortId(1)
+    await statistics_obj.getTotalRxPackets(1)
+    await statistics_obj.getPortDescription(1)
+    await statistics_obj.getPortLinkTransitions(1)
+    await statistics_obj.getSwitchNameOfPort(1)
+    await statistics_obj.getTotalTxPackets(1)
+
 })

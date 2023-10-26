@@ -1,5 +1,7 @@
 import { Page, Locator } from "@playwright/test"
 import loginPage from "./loginPage"
+import { isNumberObject } from "util/types"
+import { log } from "console"
 
 // This is the page of cnMaestro particular Switch Group Page
 
@@ -87,7 +89,7 @@ export class SwitchPortsPage {
         while(await switch_text.textContent() != switch_name){
 
             switch_text = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            console.log(await switch_text.textContent());
+            // console.log(await switch_text.textContent());
             // console.log(i)
             i = i + 1
             
@@ -102,7 +104,7 @@ export class SwitchPortsPage {
             i = i - 1
         }
 
-        console.log(`i is ${i} and switch_text is ${await switch_text.textContent()}`)
+        // console.log(`i is ${i} and switch_text is ${await switch_text.textContent()}`)
         await port_to_click.nth(i).click()
             
         // }
@@ -130,10 +132,11 @@ export class SwitchPortsPage {
 
     async getAdministrativeState(port:string, switch_name:string){
 
-        // Getting the Administrative State for a specific port in a Switch Group
+        // Getting the Administrative State for a specific port in a particular Switch Group
 
         await this.page.locator('[placeholder="Search"]').nth(1).fill(port)
         await this.page.locator('[placeholder="Search"]').nth(1).press("Enter")
+        await this.clickGeneral()
         await this.page.waitForTimeout(2000)
         
         let i = 0
@@ -143,7 +146,7 @@ export class SwitchPortsPage {
         while(await switch_text.textContent() != switch_name){
 
             switch_text = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            console.log(await switch_text.textContent());
+            // console.log(await switch_text.textContent());
             // console.log(i)
             i = i + 1
             
@@ -154,22 +157,23 @@ export class SwitchPortsPage {
             i = i + 1
         }
         
-        console.log(`i is ${i} and switch_text is ${await switch_text.textContent()}`)
+        // console.log(`i is ${i} and switch_text is ${await switch_text.textContent()}`)
         // console.log(await admins_state_text.nth(i).textContent());
         // console.log("###################")
         const admins_state = await admins_state_text.nth(i).textContent()
         console.log(admins_state?.trim()) 
 
-        return admins_state
+        return admins_state.trim()
 
     }
 
     async getOperationalState(port:string, switch_name:string){
 
-        // Getting the Administrative State for a specific port in a Switch Group
+        // Getting the Administrative State for a specific port in a particular Switch Group
 
         await this.page.locator('[placeholder="Search"]').nth(1).fill(port)
         await this.page.locator('[placeholder="Search"]').nth(1).press("Enter")
+        await this.clickGeneral()
         await this.page.waitForTimeout(2000)
         
         let i = 0
@@ -179,7 +183,7 @@ export class SwitchPortsPage {
         while(await switch_text.textContent() != switch_name){
 
             switch_text = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            console.log(await switch_text.textContent());
+            // console.log(await switch_text.textContent());
             // console.log(i)
             i = i + 1
             
@@ -190,12 +194,116 @@ export class SwitchPortsPage {
             i = i + 1
         }
         
-        console.log(`i is ${i} and switch_text is ${await switch_text.textContent()}`)
+        // console.log(`i is ${i} and switch_text is ${await switch_text.textContent()}`)
         const operational_state= await operational_state_text.nth(i).textContent()
         console.log(operational_state?.trim()) 
         
-        return operational_state
+        return operational_state.trim()
     }
+
+    async getType(port:string, switch_name:string) {
+
+        // Getting the Port Type of a port of a Switch in a particular Switch Group
+        
+        await this.page.locator('[placeholder="Search"]').nth(1).fill(port)
+        await this.page.locator('[placeholder="Search"]').nth(1).press("Enter")
+        await this.clickNetwork()
+        await this.page.waitForTimeout(2000)
+        
+        let i = 0
+        let switch_text : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
+        let type_text : Locator = this.page.locator('[data-column-id="type"]')
+
+        while(await switch_text.textContent() != switch_name){
+
+            switch_text = this.page.locator('[title="View Switch Dashboard"]').nth(i)
+            // console.log(await switch_text.textContent());
+            // console.log(i)
+            i = i + 1
+            
+        }
+
+        if (i == 0){
+
+            i = i + 1
+        }
+        
+        const type = await type_text.nth(i).textContent()
+        console.log(await type?.trim())
+
+        return type.trim()
+    }
+
+    async getVLANs(port:string, switch_name:string) {
+
+        // Getting the VLANs of a port of a Switch in a particular Switch Group
+        
+        await this.page.locator('[placeholder="Search"]').nth(1).fill(port)
+        await this.page.locator('[placeholder="Search"]').nth(1).press("Enter")
+        await this.clickNetwork()
+        await this.page.waitForTimeout(2000)
+        
+        let i = 0
+        let switch_text : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
+        let vlans_text : Locator = this.page.locator('[data-column-id="vlans"]')
+
+        while(await switch_text.textContent() != switch_name){
+
+            switch_text = this.page.locator('[title="View Switch Dashboard"]').nth(i)
+            // console.log(await switch_text.textContent());
+            // console.log(i)
+            i = i + 1
+            
+        }
+
+        if (i == 0){
+
+            i = i + 1
+        }
+        
+        const vlans = await vlans_text.nth(i).textContent()
+        console.log(vlans)
+
+        const vlans_list = vlans?.split(',')
+        console.log(vlans_list)
+        
+        return vlans_list
+    }
+
+    async getNativeVlan(port:string, switch_name:string) {
+
+        // Getting the Native VLAN of a port of a Switch in a particular Switch Group
+        
+        await this.page.locator('[placeholder="Search"]').nth(1).fill(port)
+        await this.page.locator('[placeholder="Search"]').nth(1).press("Enter")
+        await this.clickNetwork()
+        await this.page.waitForTimeout(2000)
+        
+        let i = 0
+        let switch_text : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
+        let native_vlan_text : Locator = this.page.locator('[data-column-id="nativeVlan"]')
+
+        while(await switch_text.textContent() != switch_name){
+
+            switch_text = this.page.locator('[title="View Switch Dashboard"]').nth(i)
+            // console.log(await switch_text.textContent());
+            // console.log(i)
+            i = i + 1
+            
+        }
+
+        if (i == 0){
+
+            i = i + 1
+        }
+        
+        const native_vlan = await native_vlan_text.nth(i).textContent()
+        console.log(native_vlan)
+        
+        return native_vlan?.trim()
+    }
+
+
 }
 
 export class PortPage {
@@ -278,10 +386,15 @@ export class PhysicalPortPage {
 export class NetworkPortPage {
 
     private readonly port_type_menu : Locator = this.page.locator('[id="accessMode"]')
+    private readonly stp_status : Locator = this.page.locator('[id="stpStatus"]')
+    private readonly bpdu_guard_status : Locator = this.page.locator('[id="bpduGuard"]')
+    private readonly portfast_status : Locator = this.page.locator('[id="portFast"]')
     private readonly vlan_id : Locator = this.page.locator('[name="vlanId"]')
     private readonly available_vlans : Locator = this.page.locator('[class="inline m-t-xs m-l-xs"]')
     private readonly native_vlan : Locator = this.page.locator('[name="nativeVlan"]')
     private readonly tagged_check : Locator = this.page.locator('[class="i-checks i-checks-sm"]')
+    private readonly vlan_priority_menu : Locator = this.page.locator('[class="col-md-2 no-padder table-responsive table-lg"]')
+    private readonly vlan_stp_priority_menu: Locator = this.page.locator('[id="stpPriority"]')
 
     constructor(public page:Page) {
 
@@ -327,7 +440,7 @@ export class NetworkPortPage {
     
     async insertVlan(vlan:string) {
 
-        // Inserting VLAN
+        // Inserting VLAN id
 
         if (await this.vlan_id.isDisabled()) {
 
@@ -343,6 +456,8 @@ export class NetworkPortPage {
 
     async insertNativeVlans(vlan_native:string) {
 
+        // Inserting Native VLAN id
+
         if (await this.native_vlan.isDisabled()){
 
             console.log("The button Native VLAN is disabled")
@@ -356,8 +471,6 @@ export class NetworkPortPage {
     }
 
     async checkTagged(answer:string) {
-        
-        // Trb sa rezolv cu butonul asta ca nu merge
 
         if (answer == "Yes") {
 
@@ -373,4 +486,205 @@ export class NetworkPortPage {
             }
         }
     }
+
+    async selectStatusSTP(status:string){
+
+        // Selecting the STP Status
+        if (status == "Enable" || status == "Disable"){
+                
+            await this.stp_status.nth(0).click()
+            await this.stp_status.nth(0).locator(`[title="${status}"]`).click()
+            console.log(`The status ${status} has been selected succesfully`)
+        }
+        else {
+
+            console.log("The status received can not be processed. Choose a valid Status!")
+        }
+    }
+
+    async selectStatusBPDUGuard(status:string){
+
+        // Selecting the BPDU Guard Status
+        
+        if (status == "Enable" || status == "Disable"){
+
+            await this.bpdu_guard_status.click()
+            await this.bpdu_guard_status.locator('[role="menu"]').locator(`[title="${status}"]`).click()
+            console.log(`The status ${status} has been selected succesfully`)
+        }
+        else {
+
+            console.log("The status received can not be processed. Choose a valid Status!")
+        }
+
+    }
+
+    async selectStatusPortFast(status:string){
+
+        // Selecting the Port Fast Status
+        
+        if (status == "Enable" || status == "Disable"){
+
+            await this.portfast_status.click()
+            await this.portfast_status.locator('[role="menu"]').locator(`[title="${status}"]`).click()
+            console.log(`The status ${status} has been selected succesfully`)
+        }
+
+        else {
+
+            console.log("The status received can not be processed. Choose a valid Status!")
+        }
+    }
+
+    async configurePriorityVLAN(vlan:string, priority:string) {
+
+        // Configuring the Priority for a Specific VLAN
+
+        if (Number(vlan)) {
+        
+            if (parseInt(priority) % 16 == 0) {
+
+                
+                const vlan_id = this.page.locator('[class="p-t-xs ng-binding"]')
+                let i = 0
+
+                while(await vlan_id.nth(i).textContent() != vlan) {
+
+                    console.log(await vlan_id.nth(i).textContent())
+                    i += 1
+                    
+                }
+
+                console.log(await vlan_id.nth(i).textContent())
+                console.log("Indexul este: " + i)
+
+                if (await vlan_id.nth(i).textContent() == vlan) {
+
+                    await this.vlan_stp_priority_menu.nth(i).click()
+                    await this.vlan_stp_priority_menu.nth(i).locator('[role="menu"]').locator(`[title="${priority}"]`).click()
+
+                }
+            }
+            
+            else{
+                
+                console.log("Select a valid priority. The priority must be multiple of 16")
+            }
+        }
+
+        else {
+
+            console.log("Select a valid VLAN");
+            
+        }
+    }
+
+    async configureStatusSTPVLAN(vlan:string, status:string) {
+
+        // Configuring the STP status for a Specific VLAN
+
+        if (Number(vlan)) {
+
+            if (status == "Enable" || status == "Disable") {
+
+                const vlan_id = this.page.locator('[class="p-t-xs ng-binding"]')
+                let i = 0
+
+                while(await vlan_id.nth(i).textContent() != vlan) {
+
+                    console.log(await vlan_id.nth(i).textContent())
+                    i += 1
+                    
+                }
+
+                console.log(await vlan_id.nth(i).textContent())
+                console.log("Indexul este: " + i)
+
+                if (await vlan_id.nth(i).textContent() == vlan) {
+
+                    await this.stp_status.nth(i+1).click()
+                    await this.stp_status.nth(i+1).locator('[role="menu"]').locator(`[title="${status}"]`).click()
+
+                }
+            }
+
+            else {
+
+                console.log("The status received can not be processed. Choose a valid Status")
+            }
+        }
+        else {
+            console.log("Select a valid VLAN")
+        }
+    }
+}
+
+export class StatisticsPage {
+
+    constructor(public page: Page) {
+
+    }
+
+    async getRow(index:number) {
+
+        const row = await this.page.getByRole('row').nth(index)
+        // console.log(await row.textContent())
+
+        return row
+    }
+
+    async getPortId(index:number) {
+
+        const row = await this.getRow(index)
+        const port_id = await row.locator('[data-column-id="port"]').textContent()
+        console.log(port_id);
+        
+        return port_id
+    }
+
+    async getPortDescription(index:number) {
+
+        const row = await this.getRow(index)
+        const description = await row.locator('[data-column-id="description"]').textContent()
+        console.log(description);
+        
+        return description
+    }
+
+    async getTotalRxPackets(index:number) {
+
+        const row = await this.getRow(index)
+        const total_rx_packets = await row.locator('[data-column-id="RxTotalPkts"]').textContent()
+        console.log(total_rx_packets)
+
+        return total_rx_packets
+    }
+
+    async getTotalTxPackets(index:number) {
+
+        const row = await this.getRow(index)
+        const total_tx_packets = await row.locator('[data-column-id="TxTotalPkts"]').textContent()
+        console.log(total_tx_packets)
+
+        return total_tx_packets
+    }
+
+    async getPortLinkTransitions(index:number) {
+
+        const row = await this.getRow(index)
+        const nr_of_link_transitions = await row.locator('[data-column-id="ifCnPortLinkTransitions"]').textContent()
+        console.log(nr_of_link_transitions);
+        
+        return nr_of_link_transitions
+    }
+    
+    async getSwitchNameOfPort(index:number) {
+
+        const row = await this.getRow(index)
+        const switch_name_of_port = await row.locator('[data-column-id="switch"]').textContent()
+        console.log(switch_name_of_port);
+        
+        return switch_name_of_port
+    }
+    
 }
