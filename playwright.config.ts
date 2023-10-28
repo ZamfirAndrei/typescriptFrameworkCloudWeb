@@ -7,7 +7,7 @@ const config: PlaywrightTestConfig = {
   //   headless: false
   // }
 
-  testMatch: ["tests/login.test.ts"],
+  testMatch: ["tests/testing.test.ts"],
   use: {
     baseURL: "https://qa.cloud.cambiumnetworks.com/#/",
     headless : false,
