@@ -8,6 +8,7 @@ const config: PlaywrightTestConfig = {
   // }
 
   testMatch: ["tests/testing.test.ts"],
+  // testMatch: ["tests/login.test.ts"],
   use: {
     baseURL: "https://qa.cloud.cambiumnetworks.com/#/",
     headless : false,

@@ -36,4 +36,8 @@ export default class toolbarPage {
         await this.homePg.click()
     }
 
+    async clickOnBoardPage()
+    {
+        await this.onboardPg.click()
+    }
 }

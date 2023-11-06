@@ -7,6 +7,7 @@ export default class switchgroupPage {
     private readonly searchbar: Locator = this.page.locator('[type="search"]').nth(1)
     private readonly switchgroupstable: Locator = this.page.locator('[class="table-wrapper"]')
     private readonly addswitchgroup: Locator = this.page.locator('[title="Add New Switch Group"]')
+    private readonly edit_switch_group : Locator = this.page.locator('[title="Edit"]')
     
 
     constructor (public page: Page) {
@@ -141,7 +142,7 @@ export default class switchgroupPage {
         return auto_sync
     }
 
-    async deleteSwitchGroup(index:number, answer : string) {
+    async deleteSwitchGroup(index:number, answer:string) {
 
         // Deleting a Switch Group
 
@@ -154,5 +155,13 @@ export default class switchgroupPage {
         }
     }
 
+    async editSwitchGroup(name_switchgroup:string) {
+
+        // Editing a Switch Group
+
+        await this.searchSwitchGroup(name_switchgroup)
+        await this.page.waitForTimeout(2000)
+        await this.edit_switch_group.click()
+    }
 
 }

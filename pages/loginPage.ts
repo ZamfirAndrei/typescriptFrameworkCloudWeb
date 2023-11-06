@@ -34,4 +34,30 @@ export default class loginPage {
             console.log("Choose one of this accounts!")
         }
     }
+
+    async introduceUser(user:string) {
+
+        await this.page.locator('[id="cs-email"]').fill(user)
+    }
+
+    async introducePassword(password:string) {
+
+        await this.page.locator('[id="cs-password"]').fill(password)   
+    }
+
+    async clickSignIn() {
+
+        await this.page.locator('[class="signin"]').locator('[role="button"]').nth(0).click()
+    }
+
+    async clickSubmit() {
+
+        await this.page.locator('[type="submit"]').click()
+    }
+
+    async checkRememberMe() {
+
+        await this.page.locator('[type="checkbox"]').check()
+
+    }
 }

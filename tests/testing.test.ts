@@ -10,6 +10,8 @@ import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage }
 import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage} from "../pages/particularSwitchGroupPage";
 
 import * as data from "../constants/constants.json"
+import { JobsPage, ConfigurationUpdatePage, JobsSoftwareUpdatePage } from "../pages/jobsPage";
+import { OnBoardPage } from "../pages/onboardPage";
 
 // const user = "andreigabriel.zamfir@dxc.com"
 // const password = "Solotov1998."
@@ -322,7 +324,7 @@ test("Tools CLI", async({page,baseURL})=>{
     await page.waitForTimeout(5000)
 })
 
-test.only ("Particular Switch Group and Switch Port", async({page,baseURL})=>{
+test ("Particular Switch Group and Switch Port", async({page,baseURL})=>{
 
     const login_obj = new loginPage(page)
     const toolbar_obj = new toolbarPage(page)
@@ -485,4 +487,155 @@ test ("Particular Switch Group and Statistics", async({page,baseURL})=>{
     await statistics_obj.getSwitchNameOfPort(1)
     await statistics_obj.getTotalTxPackets(1)
 
+})
+
+test ("Edit Switch Group", async({page,baseURL})=>{
+
+    const login_obj = new loginPage(page)
+    const toolbar_obj = new toolbarPage(page)
+    const switchgroup_obj = new switchgroupPage(page)
+    const addswitchgroup_obj = new addswitchgroupPage(page)
+    const basic_obj = new BasicPage(page)
+    const mngm_obj = new ManagementPage(page)
+    const network_obj = new NetworkPage(page)
+    const part_device = new ParticularDevicePage(page)
+    const device_obj = new devicePage(page)
+    const conf_obj = new ConfigurationPage(page)
+    const soft_update = new SoftwareUpdatePage(page)
+    const tools_obj = new ToolsPage(page)
+    const part_switchgroup_obj = new ParticularSwitchGroupPage(page)
+    const switchports_obj = new SwitchPortsPage(page) 
+    const port_obj = new PortPage(page)
+    const basic_port_obj = new PhysicalPortPage(page)
+    const network_port_obj = new NetworkPortPage(page)
+    const statistics_obj = new StatisticsPage(page)
+
+    await page.goto(`${baseURL}`)
+    await login_obj.login(data.user, data.password)
+    await login_obj.selectAccount(data.account2)
+
+    // Going to Switch Groups
+
+    await toolbar_obj.clickSwitchGroupsPage()
+    await page.waitForTimeout(2000)
+    await switchgroup_obj.editSwitchGroup("5.1")
+    await page.waitForTimeout(2000)
+})
+
+test ("Clicking Jobs Page", async({page,baseURL})=>{
+
+    const login_obj = new loginPage(page)
+    const toolbar_obj = new toolbarPage(page)
+    const switchgroup_obj = new switchgroupPage(page)
+    const addswitchgroup_obj = new addswitchgroupPage(page)
+    const basic_obj = new BasicPage(page)
+    const mngm_obj = new ManagementPage(page)
+    const network_obj = new NetworkPage(page)
+    const part_device = new ParticularDevicePage(page)
+    const device_obj = new devicePage(page)
+    const conf_obj = new ConfigurationPage(page)
+    const soft_update = new SoftwareUpdatePage(page)
+    const tools_obj = new ToolsPage(page)
+    const part_switchgroup_obj = new ParticularSwitchGroupPage(page)
+    const switchports_obj = new SwitchPortsPage(page) 
+    const port_obj = new PortPage(page)
+    const basic_port_obj = new PhysicalPortPage(page)
+    const network_port_obj = new NetworkPortPage(page)
+    const statistics_obj = new StatisticsPage(page)
+    const jobs_obj = new JobsPage(page)
+    const config_obj = new ConfigurationUpdatePage(page)
+    const jobs_softupdate_obj = new JobsSoftwareUpdatePage(page)
+
+    await page.goto(`${baseURL}`)
+    await login_obj.login(data.user, data.password)
+    await login_obj.selectAccount(data.account2)
+
+    // Hover Administration and clicking Jobs
+
+    await page.waitForTimeout(4000)
+    await page.locator('[title="Administration"]').hover()
+    await page.locator('[cns-auto="Nav-Jobs"]').click()
+
+    await page.waitForTimeout(2000)
+    await jobs_obj.clickSoftwareUpdate()
+    // await page.waitForTimeout(1000)
+    // await jobs_obj.clickReports()
+    // await page.waitForTimeout(1000)
+    // await jobs_obj.clickActions()
+    // await page.waitForTimeout(1000)
+    // await jobs_obj.clickConfigurationUpdate()
+
+    // Configuration Update Page of Jobs Page
+
+    // await config_obj.getId(5)
+    // await config_obj.getDetails(5)
+    // await config_obj.getTarget(5)
+    // await config_obj.getCreatedBy(5)
+    // await config_obj.getCreatedOn(5)
+    // await config_obj.getCompletedOn(5)
+    // await config_obj.getStatus(5)
+    // await config_obj.clickShowMore(5)
+    // await page.waitForTimeout(2000)
+    // await config_obj.getMessageUpdate()
+    // await config_obj.getDevice()
+
+    // Software Update Page of Jobs Page
+
+    await jobs_softupdate_obj.getId(1)
+    await jobs_softupdate_obj.getDetails(1)
+    await jobs_softupdate_obj.getTarget(1)
+    await jobs_softupdate_obj.getCreatedBy(1)
+    await jobs_softupdate_obj.getCreatedOn(1)
+    await jobs_softupdate_obj.getCompletedOn(1)
+    await jobs_softupdate_obj.getStatus(1)
+    await jobs_softupdate_obj.clickShowMore(1)
+    await jobs_softupdate_obj.getMessageUpdate()
+    await jobs_softupdate_obj.getLastUpdate()
+    await jobs_softupdate_obj.getOriginalVersion()
+
+    
+    await page.waitForTimeout(2000)
+})
+
+test.only ("Onboarding Page", async({page,baseURL})=>{
+
+    const login_obj = new loginPage(page)
+    const toolbar_obj = new toolbarPage(page)
+    const switchgroup_obj = new switchgroupPage(page)
+    const addswitchgroup_obj = new addswitchgroupPage(page)
+    const basic_obj = new BasicPage(page)
+    const mngm_obj = new ManagementPage(page)
+    const network_obj = new NetworkPage(page)
+    const part_device = new ParticularDevicePage(page)
+    const device_obj = new devicePage(page)
+    const conf_obj = new ConfigurationPage(page)
+    const soft_update = new SoftwareUpdatePage(page)
+    const tools_obj = new ToolsPage(page)
+    const part_switchgroup_obj = new ParticularSwitchGroupPage(page)
+    const switchports_obj = new SwitchPortsPage(page) 
+    const port_obj = new PortPage(page)
+    const basic_port_obj = new PhysicalPortPage(page)
+    const network_port_obj = new NetworkPortPage(page)
+    const statistics_obj = new StatisticsPage(page)
+    const jobs_obj = new JobsPage(page)
+    const config_obj = new ConfigurationUpdatePage(page)
+    const jobs_softupdate_obj = new JobsSoftwareUpdatePage(page)
+    const onboard_obj = new OnBoardPage(page)
+
+    await page.goto(`${baseURL}`)
+    await login_obj.login(data.user, data.password)
+    await login_obj.selectAccount(data.account2)
+
+    // Click OnBoardPage
+
+    await toolbar_obj.clickOnBoardPage()
+    await page.waitForTimeout(1500)
+    // await onboard_obj.claimDevice("XLZB046BTR3B")
+    // await onboard_obj.closeClaimDevice()
+    // await onboard_obj.backClaimDevice()
+    // await onboard_obj.editDevice(1)
+    // await onboard_obj.deleteDevice(1,"Yes")
+    await onboard_obj.approveDevice(1)
+    
+    await page.waitForTimeout(2000)
 })
