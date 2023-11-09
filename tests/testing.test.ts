@@ -12,6 +12,7 @@ import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage,
 import * as data from "../constants/constants.json"
 import { JobsPage, ConfigurationUpdatePage, JobsSoftwareUpdatePage } from "../pages/jobsPage";
 import { OnBoardPage } from "../pages/onboardPage";
+import { CloudObjects } from "../management/cloudObjects";
 
 // const user = "andreigabriel.zamfir@dxc.com"
 // const password = "Solotov1998."
@@ -597,7 +598,7 @@ test ("Clicking Jobs Page", async({page,baseURL})=>{
     await page.waitForTimeout(2000)
 })
 
-test.only ("Onboarding Page", async({page,baseURL})=>{
+test ("Onboarding a Device", async({page,baseURL})=>{
 
     const login_obj = new loginPage(page)
     const toolbar_obj = new toolbarPage(page)
@@ -636,6 +637,73 @@ test.only ("Onboarding Page", async({page,baseURL})=>{
     // await onboard_obj.editDevice(1)
     // await onboard_obj.deleteDevice(1,"Yes")
     await onboard_obj.approveDevice(1)
+    
+    await page.waitForTimeout(2000)
+})
+
+test ("Deleting device from Cloud", async({page,baseURL})=>{
+
+    // const login_obj = new loginPage(page)
+    // const toolbar_obj = new toolbarPage(page)
+    // const switchgroup_obj = new switchgroupPage(page)
+    // const addswitchgroup_obj = new addswitchgroupPage(page)
+    // const basic_obj = new BasicPage(page)
+    // const mngm_obj = new ManagementPage(page)
+    // const network_obj = new NetworkPage(page)
+    // const part_device = new ParticularDevicePage(page)
+    // const device_obj = new devicePage(page)
+    // const conf_obj = new ConfigurationPage(page)
+    // const soft_update = new SoftwareUpdatePage(page)
+    // const tools_obj = new ToolsPage(page)
+    // const part_switchgroup_obj = new ParticularSwitchGroupPage(page)
+    // const switchports_obj = new SwitchPortsPage(page) 
+    // const port_obj = new PortPage(page)
+    // const basic_port_obj = new PhysicalPortPage(page)
+    // const network_port_obj = new NetworkPortPage(page)
+    // const statistics_obj = new StatisticsPage(page)
+    // const jobs_obj = new JobsPage(page)
+    // const config_obj = new ConfigurationUpdatePage(page)
+    // const jobs_softupdate_obj = new JobsSoftwareUpdatePage(page)
+    // const onboard_obj = new OnBoardPage(page)
+    const cloud = new CloudObjects(page)
+
+    await cloud.page.goto(`${baseURL}`)
+    await cloud.login_obj.login(data.user, data.password)
+    await cloud.login_obj.selectAccount(data.account2)
+
+    // Click Devices Page
+
+    await cloud.toolbar_obj.clickDevicePage()
+    await cloud.device_obj.clickSwitches()
+    await cloud.page.waitForTimeout(2000)
+
+    // Searching and deleting
+
+    await cloud.device_obj.deleteDevice("Andrei-3052")
+
+    await cloud.page.waitForTimeout(2000)
+})
+
+test.only ("Onboarding a Device with CloudObjects", async({page,baseURL})=>{
+
+    const cloud = new CloudObjects(page)
+
+    await cloud.page.goto(`${baseURL}`)
+    await cloud.login_obj.login(data.user, data.password)
+    await cloud.login_obj.selectAccount(data.account2)
+
+    // Click OnBoardPage
+
+    await cloud.toolbar_obj.clickOnBoardPage()
+    await cloud.page.waitForTimeout(1500)
+    await cloud.onboard_obj.claimDevice("XLZB046BTR3B")
+    await cloud.onboard_obj.closeClaimDevice()
+
+    // Aproving the Device
+
+    await cloud.page.reload()
+    await page.waitForTimeout(2000)
+    await cloud.onboard_obj.approveDevice(1)
     
     await page.waitForTimeout(2000)
 })

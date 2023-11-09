@@ -11,21 +11,32 @@ import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage,
 
 import * as data from "../constants/constants.json"
 import { url } from "inspector";
+import { CloudObjects } from "../management/cloudObjects";
+import { LoginFlow } from "../flows/loginFlow";
+
+
+test.describe("Login ->", async() => {
+
+    test.beforeEach(async ({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const loginFlow = new LoginFlow(page)
+
+        await cloud.page.goto(`${baseURL}`)
+        await cloud.login_obj.clickSignIn()
+        await cloud.page.waitForTimeout(2000)
+    })
+})
 
 test ("1.Verify you can introduce a user in the user's blank", async({page, baseURL}) =>{
 
-    const login_obj = new loginPage(page)
-    await page.goto(`${baseURL}`)
-    await login_obj.clickSignIn()
-
-    await page.waitForTimeout(2000)
 
     const message1 : string | null = await page.locator('[class="alert cs-instructions"]').textContent()
     // console.log(await message1.trim())
-    await login_obj.introduceUser("gigi@yahoo.com")
+    await cloud.login_obj.introduceUser("gigi@yahoo.com")
 
     expect(message1).toContain("Please enter your email address")
-    await login_obj.clickSubmit()
+    await cloud.login_obj.clickSubmit()
     
     const message2 : string | null = await page.locator('[class="alert cs-instructions"]').textContent()
     // console.log(await message2.trim())

@@ -9,6 +9,8 @@ export default class devicePage {
     private readonly APs: Locator = this.page.locator('[cns-auto="APs"]');
     private readonly Switches: Locator = this.page.locator('[cns-auto="Switches"]');
     private readonly NSEs: Locator = this.page.locator('[cns-auto="NSEs"]');
+    private readonly check_box_device : Locator = this.page.locator('[type="checkbox"]')
+    private readonly delete_button : Locator = this.page.locator('[title="Bulk Delete"]')
 
     constructor (public page:Page){
 
@@ -35,10 +37,11 @@ export default class devicePage {
 
     async searchToolbar(device_name:string) {
         
-        // Geting the locator of the Search Tool Bar. Searching for a particular device name
+        // Searching for a particular device name
 
         await this.page.locator('[type="search"]').nth(1).fill(device_name)
         await this.page.locator('[type="search"]').nth(1).press("Enter")
+        await this.page.waitForTimeout(2000)
         
     }
 
@@ -65,9 +68,30 @@ export default class devicePage {
         return nr_of_devices_found
     }
 
-    // returning the locator of the row of the table
+    async deleteDevice(device_name:string) {
+
+        // Deleting the device from the Cloud
+        
+        await this.searchToolbar(device_name)
+        await this.page.waitForTimeout(2000)
+        await this.check_box_device.nth(1).check()
+
+        if (await this.delete_button.isDisabled()) {
+
+            console.log("The button is disabled")
+        }
+
+        else {
+
+            await this.delete_button.click()
+            await this.page.locator(`[ng-click="confirm('OK')"]`).click()
+            
+        }
+    }   
 
     async getRowContent(index: number): Promise <Locator> {
+
+        // returning the locator of the row of the table
 
         const row = this.deviceTable.getByRole('row').nth(index)
         // console.log(await row.textContent())
