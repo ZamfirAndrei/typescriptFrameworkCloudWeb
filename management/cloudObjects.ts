@@ -17,29 +17,29 @@ export class CloudObjects {
 
     // Declaring the objects
 
-    private readonly toolbar_obj : toolbarPage
-    private readonly login_obj : loginPage
-    private readonly home_obj : homePage
-    private readonly switchgroup_obj : switchgroupPage
-    private readonly addswitchgroup_obj : addswitchgroupPage
-    private readonly basic_obj : BasicPage
-    private readonly mngm_obj : ManagementPage
-    private readonly network_obj : NetworkPage
-    private readonly part_device : ParticularDevicePage
-    private readonly device_obj : devicePage
-    private readonly conf_obj : ConfigurationPage
-    private readonly soft_update : SoftwareUpdatePage
-    private readonly tools_obj : ToolsPage
-    private readonly part_switchgroup_obj : ParticularSwitchGroupPage
-    private readonly switchports_obj : SwitchPortsPage
-    private readonly port_obj : PortPage
-    private readonly basic_port_obj : PhysicalPortPage
-    private readonly network_port_obj : NetworkPortPage
-    private readonly statistics_obj : StatisticsPage
-    private readonly jobs_obj : JobsPage
-    private readonly config_obj : ConfigurationUpdatePage
-    private readonly jobs_softupdate_obj : JobsSoftwareUpdatePage
-    private readonly onboard_obj : OnBoardPage
+    public readonly toolbar_obj : toolbarPage
+    public readonly login_obj : loginPage
+    public readonly home_obj : homePage
+    public readonly switchgroup_obj : switchgroupPage
+    public readonly addswitchgroup_obj : addswitchgroupPage
+    public readonly basic_obj : BasicPage
+    public readonly mngm_obj : ManagementPage
+    public readonly network_obj : NetworkPage
+    public readonly part_device : ParticularDevicePage
+    public readonly device_obj : devicePage
+    public readonly conf_obj : ConfigurationPage
+    public readonly soft_update : SoftwareUpdatePage
+    public readonly tools_obj : ToolsPage
+    public readonly part_switchgroup_obj : ParticularSwitchGroupPage
+    public readonly switchports_obj : SwitchPortsPage
+    public readonly port_obj : PortPage
+    public readonly basic_port_obj : PhysicalPortPage
+    public readonly network_port_obj : NetworkPortPage
+    public readonly statistics_obj : StatisticsPage
+    public readonly jobs_obj : JobsPage
+    public readonly config_obj : ConfigurationUpdatePage
+    public readonly jobs_softupdate_obj : JobsSoftwareUpdatePage
+    public readonly onboard_obj : OnBoardPage
 
     constructor(public page:Page) {
 
