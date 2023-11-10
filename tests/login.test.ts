@@ -37,7 +37,7 @@ test.describe("Login ->", async() => {
 
         await loginFlow.confirmLoginWithoutPassword()
     
-        await page.waitForTimeout(2000)
+        await cloud.page.waitForTimeout(2000)
     })
     
     test ("2.Verify that you can not login with un-registered email", async({page,baseURL}) => {
@@ -52,7 +52,7 @@ test.describe("Login ->", async() => {
 
         await loginFlow.confirmLoginWithWrongCredentials()
     
-        await page.waitForTimeout(2000)
+        await cloud.page.waitForTimeout(2000)
     })
     
     test ("3.Verify that you can not login with a registered email and a wrong password", async({page,baseURL}) => {
@@ -67,7 +67,7 @@ test.describe("Login ->", async() => {
 
         await loginFlow.confirmLoginWithWrongCredentials()
     
-        await page.waitForTimeout(2000)
+        await cloud.page.waitForTimeout(2000)
         
     })
     
@@ -83,7 +83,7 @@ test.describe("Login ->", async() => {
 
         await loginFlow.confirmLoginWithProperCredentials()
     
-        await page.waitForTimeout(2000)
+        await cloud.page.waitForTimeout(2000)
     })
     
     test.only ("5.Verify that you can check 'Remember Me' box", async({page,baseURL}) => {
@@ -98,7 +98,6 @@ test.describe("Login ->", async() => {
         await loginFlow.confirmCheckBox()
         await cloud.login_obj.clickSubmit()
     
-        await page.waitForTimeout(2000)
+        await cloud.page.waitForTimeout(2000)
     })
 })
-
