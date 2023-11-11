@@ -44,7 +44,17 @@ export class OnBoardPage {
 
         const row = await this.getRowContent(index)
         await row.locator('[class=" dt-actions"]').hover()
-        await this.actions.locator('[title="Approve Device"]').nth(index-1).click()
+
+        console.log(await this.actions.locator('[title="Approve Device"]').isVisible())
+
+        if (await this.actions.locator('[title="Approve Device"]').isVisible())
+        {
+            await this.actions.locator('[title="Approve Device"]').nth(index-1).click()
+        }
+        else {
+
+            console.log("The device is already approved")
+        }
     }
     
     async editDevice(index:number) {

@@ -4,16 +4,16 @@ import { test, expect} from "@playwright/test";
 
 export class LoginFlow {
 
+    private readonly cloud = new CloudObjects(this.page)
+
     constructor(public page:Page) {
 
     }
 
-    private readonly cloud = new CloudObjects(this.page)
-
     async confirmLoginEmail() {
 
         const message : string | null = await this.cloud.page.locator('[class="alert cs-instructions"]').textContent()
-        console.log(await message.trim())
+        console.log(message.trim())
 
         expect(message).toContain("Please enter your email address")
     }
@@ -21,7 +21,7 @@ export class LoginFlow {
     async confirmLoginWithWrongCredentials() {
 
         const message : string | null = await this.cloud.page.locator('[class="alert alert-danger"]').textContent()
-        console.log(await message.trim())
+        console.log(message.trim())
 
         const page_title = await this.cloud.page.title()
         console.log(page_title)
@@ -33,7 +33,7 @@ export class LoginFlow {
     async confirmLoginWithoutPassword() {
 
         const message : string | null = await this.cloud.page.locator('[class="alert cs-instructions"]').textContent()
-        console.log(await message.trim())
+        console.log(message.trim())
 
         const alert : string  | null = await this.cloud.page.locator('[class="text-danger"]').textContent()
         console.log(alert?.trim())
@@ -68,6 +68,14 @@ export class LoginFlow {
         console.log(checkbox_after)
     
         expect(checkbox_after).toBe(true)
+    }
+
+    async expectPageTitle(expected_page_title : string) {
+
+        const page_title = await this.cloud.page.title()
+        console.log(page_title)
+
+        expect(page_title).toBe(expected_page_title)
     }
 
 }

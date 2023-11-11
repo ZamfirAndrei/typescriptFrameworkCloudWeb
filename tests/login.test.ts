@@ -96,7 +96,10 @@ test.describe("Login ->", async() => {
         await cloud.login_obj.introducePassword("Solotov1998.")
 
         await loginFlow.confirmCheckBox()
+        await loginFlow.expectPageTitle("Log In / Cambium Networks Support")
+
         await cloud.login_obj.clickSubmit()
+        await loginFlow.expectPageTitle("cnMaestro™")
     
         await cloud.page.waitForTimeout(2000)
     })
