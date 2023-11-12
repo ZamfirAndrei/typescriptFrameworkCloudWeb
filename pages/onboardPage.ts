@@ -45,7 +45,8 @@ export class OnBoardPage {
         const row = await this.getRowContent(index)
         await row.locator('[class=" dt-actions"]').hover()
 
-        console.log(await this.actions.locator('[title="Approve Device"]').isVisible())
+        const status = await this.actions.locator('[title="Approve Device"]').isVisible()
+        console.log(status)
 
         if (await this.actions.locator('[title="Approve Device"]').isVisible())
         {
@@ -55,6 +56,8 @@ export class OnBoardPage {
 
             console.log("The device is already approved")
         }
+
+        return status
     }
     
     async editDevice(index:number) {
@@ -79,5 +82,14 @@ export class OnBoardPage {
 
             await this.page.locator('[class="btn btn-plain w-xs"]').nth(index-1).click()
         }
+    }
+
+    async getOnboardingStatus(index : number) {
+
+        const row = await this.getRowContent(index)
+        const onboard_status = await row.locator('[data-column-id="status"]').textContent()
+        console.log(onboard_status?.trim())
+        
+        return onboard_status?.trim()
     }
 }

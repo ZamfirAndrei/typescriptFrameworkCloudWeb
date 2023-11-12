@@ -3,6 +3,8 @@ import * as data from "../constants/constants.json"
 import { url } from "inspector";
 import { CloudObjects } from "../management/cloudObjects";
 import { LoginFlow } from "../flows/loginFlow";
+import { OnBoardFlow } from "../flows/onboardFlow";
+
 
 
 test.describe("OnBoard ->", async() => {
@@ -17,31 +19,26 @@ test.describe("OnBoard ->", async() => {
         await cloud.page.waitForTimeout(2000)
     })
 
-    test ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
+    test.only ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
     
         const cloud = new CloudObjects(page)
-        const onboardFlow = new LoginFlow(page)
+        const onboardFlow = new OnBoardFlow(page)
 
-        // Click OnBoardPage
-
-        await cloud.toolbar_obj.clickOnBoardPage()
-        await cloud.onboard_obj.claimDevice("XLZB046BTR3B")
-        await cloud.onboard_obj.closeClaimDevice()
-
-        // Aproving the Device
-
-        await cloud.page.reload()
+        await onboardFlow.onboardDevice("XLZB046BTR3B")
+        await onboardFlow.confirmDeviceOnboarded(1)
+        await onboardFlow.confirmDUTisAvailableInTheCloud("Andrei-3052", 1)
+    
         await cloud.page.waitForTimeout(2000)
-        await cloud.onboard_obj.approveDevice(1)
+    })
 
-        // Checking the Device is added in the Cloud
+    test ("2.Test to verify if a DUT is already onboarded", async({page,baseURL}) => {
+    
+        const cloud = new CloudObjects(page)
+        const onboardFlow = new OnBoardFlow(page)
 
-        await cloud.page.waitForTimeout(40000)
-
-        await cloud.toolbar_obj.clickDevicePage()
-        await cloud.device_obj.clickSwitches()
-        await cloud.page.waitForTimeout(2000)
-        await cloud.device_obj.searchToolbar("Andrei-3052")
+        await onboardFlow.onboardDevice("XLZB046BTR3B")
+        await onboardFlow.confirmDeviceAlreadyOnboarded(1)
+        await onboardFlow.confirmDUTisAvailableInTheCloud("Andrei-3052", 1)
     
         await cloud.page.waitForTimeout(2000)
     })
