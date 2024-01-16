@@ -129,32 +129,32 @@ export class ConfigurationPage{
 export class SoftwareUpdatePage{
 
     private readonly img_dropbox : Locator = this.page.locator('[class="col-md-7 no-padder ng-isolate-scope"]')
-    private readonly add_software_job : Locator = this.page.locator('[class="ng-binding ng-scope"]').nth(7)
-
+    private readonly add_software_job : Locator = this.page.locator('[class="ng-binding ng-scope"]', {hasText : "Add Software Job"})
+    private readonly view_jobs : Locator = this.page.locator('[class="cn-link"]', {hasText: "View Update Jobs"})
+    private readonly job_option : Locator = this.page.locator('[class="cnico cnico-action-add-remove-rect-outline"]')
     
     constructor(public page:Page){
 
     }
 
-    async selecImgForUpdate(img_version : string){
+    async selectImgForUpdate(img_version : string){
 
         await this.img_dropbox.click()
         await this.page.waitForTimeout(2000)
         await this.page.locator(`[title="${img_version}"]`).nth(1).click()
         
         // console.log(await this.img_dropbox.textContent())
-        console.log(await this.page.locator(`[title="${img_version}"]`).nth(1).textContent());
+        // console.log(await this.page.locator(`[title="${img_version}"]`).nth(1).textContent());
         
     }
 
     async expandJobOptions(){
 
-        const job_option = this.page.locator('[class="cnico cn-link cnico-action-add-remove-rect-outline"]')
-        console.log(await job_option.isDisabled());
+        console.log(await this.job_option.isDisabled());
         
-        if (await job_option.isDisabled() == true ){
+        if (await this.job_option.isDisabled() == true ){
 
-            await job_option.click()
+            await this.job_option.click()
         }
 
         else {
@@ -179,6 +179,11 @@ export class SoftwareUpdatePage{
     async addSoftwareJob() {
 
         this.add_software_job.click()
+    }
+
+    async clickViewUpdateJobs() {
+
+        await this.view_jobs.click()
     }
 
 

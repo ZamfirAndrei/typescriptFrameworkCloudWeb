@@ -54,7 +54,7 @@ export class ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const id = await row.locator('[data-column-id="displayId"]').textContent()
-        console.log(id?.trim())
+        // console.log(id?.trim())
 
         return id?.trim()
     }
@@ -63,7 +63,7 @@ export class ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const target = await row.locator('[data-column-id="target"]').textContent()
-        console.log(target?.trim())
+        // console.log(target?.trim())
 
         return target?.trim()
     }
@@ -72,7 +72,7 @@ export class ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const created_by = await row.locator('[data-column-id="Created_By"]').textContent()
-        console.log(created_by?.trim())
+        // console.log(created_by?.trim())
 
         return created_by?.trim()
     }
@@ -81,7 +81,7 @@ export class ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const created_on = await row.locator('[data-column-id="Created_On"]').textContent()
-        console.log(created_on?.trim())
+        // console.log(created_on?.trim())
 
         return created_on?.trim()
     }
@@ -90,7 +90,7 @@ export class ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const completed_on = await row.locator('[data-column-id="completedOn"]').textContent()
-        console.log(completed_on?.trim())
+        // console.log(completed_on?.trim())
 
         return completed_on?.trim()
     }
@@ -98,17 +98,19 @@ export class ConfigurationUpdatePage{
     async getStatus(index:number) {
 
         const row = await this.getRowContent(index)
-        const id = await row.locator('[data-column-id="state"]').textContent()
-        console.log(id?.trim())
+        const stat = await row.locator('[data-column-id="state"]').textContent()
+        const status = stat?.split(":")[0]
 
-        return id?.trim()
+        // console.log(status?.trim())
+
+        return status?.trim()
     }
 
     async getDetails(index:number) {
 
         const row = await this.getRowContent(index)
         const details = await row.locator('[data-column-id="details"]').textContent()
-        console.log(details?.trim())
+        // console.log(details?.trim())
 
         return details?.trim()
     }
@@ -123,7 +125,7 @@ export class ConfigurationUpdatePage{
     async getMessageUpdate() {
 
         const message = await this.page.locator('[data-column-id="devMsg"]').locator('[class="ng-binding"]').textContent()
-        console.log(message?.trim())
+        // console.log(message?.trim())
 
         return message?.trim()
     }
@@ -131,9 +133,17 @@ export class ConfigurationUpdatePage{
     async getDevice() {
 
         const device = await this.page.locator('[data-column-id="displayName"]').nth(1).textContent()
-        console.log(device?.trim())
+        // console.log(device?.trim())
 
         return device?.trim()
+    }
+
+    async getResult() {
+
+        const result = await this.page.locator('[data-column-id="devSts"]').nth(1).textContent()
+        // console.log(result?.trim())
+
+        return result?.trim()
     }
 }
 
@@ -150,7 +160,7 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const details = await row.locator('[data-column-id="eType"]').textContent()
-        console.log(details?.trim())
+        // console.log(details?.trim())
 
         return details?.trim()
     }
@@ -159,7 +169,7 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const imageType = await row.locator('[data-column-id="imageType"]').textContent()
-        console.log(imageType?.trim())
+        // console.log(imageType?.trim())
 
         return imageType?.trim()
     }
@@ -168,7 +178,7 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const target = await row.locator('[data-column-id="newSV"]').textContent()
-        console.log(target?.trim())
+        // console.log(target?.trim())
 
         return target?.trim()
     }
@@ -176,7 +186,7 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
     async getLastUpdate() {
 
         const last_update = await this.page.locator('[data-column-id="initTs"]').nth(1).textContent()
-        console.log(last_update?.trim())
+        // console.log(last_update?.trim())
 
         return last_update?.trim() 
     }
@@ -184,7 +194,7 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
     async getOriginalVersion() {
 
         const last_update = await this.page.locator('[data-column-id="actSw"]').nth(1).textContent()
-        console.log(last_update?.trim())
+        // console.log(last_update?.trim())
 
         return last_update?.trim() 
     }

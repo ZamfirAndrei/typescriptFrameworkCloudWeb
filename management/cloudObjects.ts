@@ -7,7 +7,7 @@ import switchgroupPage from "../pages/SwitchGroupPage";
 // import addswitchgroupPage from "../pages/addswitchgroupPage";
 import {  addswitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
 import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
-import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage} from "../pages/particularSwitchGroupPage";
+import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage, SoftwareUpgrade} from "../pages/particularSwitchGroupPage";
 
 import * as data from "../constants/constants.json"
 import { JobsPage, ConfigurationUpdatePage, JobsSoftwareUpdatePage } from "../pages/jobsPage";
@@ -40,6 +40,7 @@ export class CloudObjects {
     public readonly config_obj : ConfigurationUpdatePage
     public readonly jobs_softupdate_obj : JobsSoftwareUpdatePage
     public readonly onboard_obj : OnBoardPage
+    public readonly switch_group_softupdate : SoftwareUpgrade
 
     constructor(public page:Page) {
 
@@ -68,6 +69,7 @@ export class CloudObjects {
         this.config_obj = new ConfigurationUpdatePage(this.page)
         this.jobs_softupdate_obj = new JobsSoftwareUpdatePage(this.page)
         this.onboard_obj = new OnBoardPage(this.page)
+        this.switch_group_softupdate = new SoftwareUpgrade(this.page)
 
     }
 }

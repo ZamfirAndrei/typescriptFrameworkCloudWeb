@@ -2,5 +2,8 @@
     "user" : "andreigabriel.zamfir@dxc.com",
     "password" : "Solotov1998.",
     "account1" : "LUXOFT301SRV4",
-    "account2" : "QA_USSRV3_LUXOFT"
+    "account2" : "QA_USSRV3_LUXOFT",
+    "image_to_upgrade" : "5.0.2-r4",
+    "image_to_downgrade" : "5.0.1-r3"
+
 }

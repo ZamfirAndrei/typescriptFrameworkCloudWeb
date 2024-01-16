@@ -110,4 +110,29 @@ export class OnBoardFlow {
         expect(nr_of_devices).toBe("1")
         expect(device_name).toBe(name)
     }
+
+    async confirmDeleteDUTfromCloud(name : string) {
+
+        await this.cloud.device_obj.deleteDevice(name)
+        await this.cloud.page.waitForTimeout(3500)
+
+        const [message_delete_1, message_delete_2] = await this.cloud.device_obj.getDeleteMessage()
+
+        console.log(message_delete_1)
+        console.log(message_delete_2)
+
+        expect(message_delete_1).toBe("Success")
+        expect(message_delete_2).toBe("Deletion of 1 devices has been started.")
+
+        await this.cloud.page.waitForTimeout(6000)
+
+        const [message_delete_3, message_delete_4] = await this.cloud.device_obj.getDeleteMessage()
+
+        console.log(message_delete_3)
+        console.log(message_delete_4)
+
+        expect(message_delete_3).toBe("Success")
+        expect(message_delete_4).toBe("The device deletion operation completed.")
+
+    }
 }

@@ -7,7 +7,7 @@ import switchgroupPage from "../pages/SwitchGroupPage";
 // import addswitchgroupPage from "../pages/addswitchgroupPage";
 import {  addswitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
 import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
-import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage} from "../pages/particularSwitchGroupPage";
+import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage, SoftwareUpgrade} from "../pages/particularSwitchGroupPage";
 
 import * as data from "../constants/constants.json"
 import { JobsPage, ConfigurationUpdatePage, JobsSoftwareUpdatePage } from "../pages/jobsPage";
@@ -256,10 +256,11 @@ test ("Software Update", async({page,baseURL})=>{
     // await conf_obj.clickApplyConfiguration()
 
     // await page.waitForTimeout(10000)
-    await soft_update.selecImgForUpdate("5.0.1-r3")
+    await soft_update.selectImgForUpdate("5.0.1-r3")
     await soft_update.expandJobOptions()
     await soft_update.checkDisableAutoReboot("No")
     // await soft_update.addSoftwareJob()
+    await soft_update.clickViewUpdateJobs()
 
     await page.waitForTimeout(5000)
 })
@@ -684,7 +685,7 @@ test ("Deleting device from Cloud", async({page,baseURL})=>{
     await cloud.page.waitForTimeout(2000)
 })
 
-test.only ("Onboarding a Device with CloudObjects", async({page,baseURL})=>{
+test ("Onboarding a Device with CloudObjects", async({page,baseURL})=>{
 
     const cloud = new CloudObjects(page)
 
@@ -706,4 +707,58 @@ test.only ("Onboarding a Device with CloudObjects", async({page,baseURL})=>{
     await cloud.onboard_obj.approveDevice(1)
     
     await page.waitForTimeout(2000)
+})
+
+test.only ("Particular Switch Group Configuration/Update", async({page,baseURL})=>{
+
+    const login_obj = new loginPage(page)
+    const toolbar_obj = new toolbarPage(page)
+    const switchgroup_obj = new switchgroupPage(page)
+    const addswitchgroup_obj = new addswitchgroupPage(page)
+    const basic_obj = new BasicPage(page)
+    const mngm_obj = new ManagementPage(page)
+    const network_obj = new NetworkPage(page)
+    const part_device = new ParticularDevicePage(page)
+    const device_obj = new devicePage(page)
+    const conf_obj = new ConfigurationPage(page)
+    const soft_update = new SoftwareUpdatePage(page)
+    const tools_obj = new ToolsPage(page)
+    const part_switchgroup_obj = new ParticularSwitchGroupPage(page)
+    const switchports_obj = new SwitchPortsPage(page) 
+    const port_obj = new PortPage(page)
+    const basic_port_obj = new PhysicalPortPage(page)
+    const network_port_obj = new NetworkPortPage(page)
+    const statistics_obj = new StatisticsPage(page)
+    const switch_group_softupdate = new SoftwareUpgrade(page)
+
+    await page.goto(`${baseURL}`)
+    await login_obj.login(data.user, data.password)
+    await login_obj.selectAccount(data.account2)
+
+    // Going to Switch Groups
+
+    await toolbar_obj.clickSwitchGroupsPage()
+    await page.waitForTimeout(2000)
+    await switchgroup_obj.clickSwitchGroup("5.1")
+
+    // Going to Switches Menu
+
+    await page.waitForTimeout(2000)
+    await part_switchgroup_obj.clickSwitches()
+
+    await page.waitForTimeout(2000)
+    
+    await switch_group_softupdate.clickCheckSwitch("Andrei-2028")
+    await switch_group_softupdate.clickActions()
+
+    await page.waitForTimeout(2000)
+    await switch_group_softupdate.clickSoftUpdate()
+    await page.waitForTimeout(2000)
+    await switch_group_softupdate.chooseSoftwareImageForUpdate('5.0-r4')
+    await page.waitForTimeout(2000)
+    // await switch_group_softupdate.clickAddSoftwareUpdate()
+    // await switch_group_softupdate.clickViewJobs()
+    await switch_group_softupdate.checkDisableAutoReboot()
+    await page.waitForTimeout(5000)
+   
 })

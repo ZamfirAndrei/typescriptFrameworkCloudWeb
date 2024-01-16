@@ -40,6 +40,7 @@ export default class devicePage {
         // Searching for a particular device name
 
         await this.page.locator('[type="search"]').nth(1).fill(device_name)
+        // await this.page.waitForTimeout(1000)
         await this.page.locator('[type="search"]').nth(1).press("Enter")
         await this.page.waitForTimeout(2000)
         
@@ -157,5 +158,16 @@ export default class devicePage {
         
 
         return (deviceImgVersionText as string).trim()
+    }
+
+    async getDeleteMessage() {
+        
+        const message_1 = await this.page.locator('[class="toaster"]').locator('[class="mr-auto"]').textContent()
+        const message_2 = await this.page.locator('[class="toaster"]').locator('[id="cns-toaster-msg"]').textContent()
+        
+        // console.log(message_1)
+        // console.log(message_2)
+
+        return [message_1?.trim(), message_2?.trim()]
     }
 }   

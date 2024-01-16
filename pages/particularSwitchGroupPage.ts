@@ -688,3 +688,92 @@ export class StatisticsPage {
     }
     
 }
+
+export class SoftwareUpgrade {
+
+    private readonly actions_menu : Locator = this.page.locator('[default-label="Actions"]')
+    private readonly configuration_button : Locator = this.page.locator('[class="ng-binding ng-scope"]',{hasText: "Configuration"})
+    private readonly softupdate_button : Locator = this.page.locator('[class="ng-binding ng-scope"]',{hasText: "Software Upgrade"})
+    private readonly searchbar: Locator = this.page.locator('[type="search"]').nth(1)
+    private readonly checkbox : Locator = this.page.locator('[type="checkbox"]').nth(1)
+    private readonly software_image_dropdown : Locator = this.page.locator('[name="dropDownButton"]')
+    private readonly add_software_job_to_device_button : Locator = this.page.locator('[type="button"]', {hasText: "Add Software Job to  device(s)"})
+    private readonly view_jobs : Locator = this.page.locator('[class="cn-link"]', {hasText: "View Update Jobs"})
+    private readonly disableAutoReboot_checkbox : Locator = this.page.locator('[class="i-checks i-checks-sm"]', {hasText: "Disable Auto Reboot"})
+
+    constructor(public page:Page) {
+
+    }
+
+    async clickActions() {
+
+        // console.log(await this.actions_menu.isDisabled())
+        // console.log(await this.actions_menu.isEnabled())
+        // console.log(await this.actions_menu.isVisible())
+        // console.log(await this.actions_menu.isHidden())
+
+        if (await this.actions_menu.isEnabled()) {
+
+            // console.log("The button is 'Actions' is enabled")
+            await this.actions_menu.click()
+        }
+        
+        else {
+            console.log("The button 'Actions' is disabled")
+        }
+        
+    }
+    async searchSwitch(switch_name: string) {
+
+        // Searching for a Swith Group
+
+        await this.searchbar.fill(switch_name)
+        await this.searchbar.press("Enter")
+    }
+
+    async clickCheckSwitch(switch_name:string){
+
+        // Checking the Switch
+
+        await this.searchbar.fill(switch_name)
+        await this.searchbar.press("Enter")
+        await this.page.waitForTimeout(2000)
+        await this.checkbox.click()
+    }
+
+
+    async clickConfiguration() {
+
+        await this.configuration_button.click()
+    }
+
+    async clickSoftUpdate() {
+
+        await this.softupdate_button.click()
+    }
+
+    async chooseSoftwareImageForUpdate(image:string) {
+
+        // Choosing the software image to update to
+
+        await this.software_image_dropdown.click()
+        await this.page.locator(`[title="${image}"]`).click()
+    }
+
+    async clickAddSoftwareUpdate() {
+
+        await this.add_software_job_to_device_button.click()
+    }
+
+    async clickViewJobs() {
+
+        await this.view_jobs.click()
+    }
+
+    async checkDisableAutoReboot() {
+
+        // console.log(await this.disableAutoReboot_checkbox.isChecked())
+        await this.disableAutoReboot_checkbox.check()
+        // console.log(await this.disableAutoReboot_checkbox.isChecked())
+    }
+}

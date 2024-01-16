@@ -19,7 +19,7 @@ test.describe("OnBoard ->", async() => {
         await cloud.page.waitForTimeout(2000)
     })
 
-    test.only ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
+    test ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
     
         const cloud = new CloudObjects(page)
         const onboardFlow = new OnBoardFlow(page)
@@ -39,6 +39,20 @@ test.describe("OnBoard ->", async() => {
         await onboardFlow.onboardDevice("XLZB046BTR3B")
         await onboardFlow.confirmDeviceAlreadyOnboarded(1)
         await onboardFlow.confirmDUTisAvailableInTheCloud("Andrei-3052", 1)
+    
+        await cloud.page.waitForTimeout(2000)
+    })
+
+    test.only ("3.Test to verify if a DUT can be deleted from cloud", async({page,baseURL}) => {
+    
+        const cloud = new CloudObjects(page)
+        const onboardFlow = new OnBoardFlow(page)
+
+        await cloud.toolbar_obj.clickDevicePage()
+        await cloud.device_obj.clickSwitches()
+        await cloud.page.waitForTimeout(2000)
+
+        await onboardFlow.confirmDeleteDUTfromCloud("Andrei-3052")
     
         await cloud.page.waitForTimeout(2000)
     })
