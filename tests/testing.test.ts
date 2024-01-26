@@ -591,9 +591,9 @@ test ("Clicking Jobs Page", async({page,baseURL})=>{
     await jobs_softupdate_obj.getCompletedOn(1)
     await jobs_softupdate_obj.getStatus(1)
     await jobs_softupdate_obj.clickShowMore(1)
-    await jobs_softupdate_obj.getMessageUpdate()
-    await jobs_softupdate_obj.getLastUpdate()
-    await jobs_softupdate_obj.getOriginalVersion()
+    await jobs_softupdate_obj.getMessageUpdate(1)
+    await jobs_softupdate_obj.getLastUpdate(1)
+    await jobs_softupdate_obj.getOriginalVersion(1)
 
     
     await page.waitForTimeout(2000)
@@ -748,7 +748,7 @@ test.only ("Particular Switch Group Configuration/Update", async({page,baseURL})
 
     await page.waitForTimeout(2000)
     
-    await switch_group_softupdate.clickCheckSwitch("Andrei-2028")
+    await switch_group_softupdate.clickCheckSwitch("Andrei-2028", 1)
     await switch_group_softupdate.clickActions()
 
     await page.waitForTimeout(2000)
@@ -762,3 +762,4 @@ test.only ("Particular Switch Group Configuration/Update", async({page,baseURL})
     await page.waitForTimeout(5000)
    
 })
+

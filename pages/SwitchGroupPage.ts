@@ -114,7 +114,7 @@ export default class switchgroupPage {
         console.log("Nr of Up Ports is: " + nr_of_up_ports)
         console.log("Nr of Total Ports is: " + nr_of_total_ports)
 
-        return nr_of_total_ports, nr_of_up_ports
+        return [nr_of_total_ports, nr_of_up_ports]
     }
 
     async getNrOfVLANs(index:number) {

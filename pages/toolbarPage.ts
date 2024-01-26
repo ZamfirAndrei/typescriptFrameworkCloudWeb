@@ -16,6 +16,7 @@ export default class toolbarPage {
     private readonly networkservicesPg: Locator = this.page.locator('[title="Network Services"]')
     private readonly administrationPg: Locator = this.page.locator('[title="Administration"]')
     private readonly managesubscriptionsPg: Locator = this.page.locator('[title="Manage Subscriptions"]')
+    
 
     constructor (public page: Page) {
 
@@ -39,5 +40,11 @@ export default class toolbarPage {
     async clickOnBoardPage()
     {
         await this.onboardPg.click()
+    }
+
+    async clickJobsPage() {
+
+        await this.administrationPg.hover()
+        await this.page.locator('[cns-auto="Nav-Jobs"]').click()
     }
 }

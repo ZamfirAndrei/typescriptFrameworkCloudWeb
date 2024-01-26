@@ -122,25 +122,25 @@ export class ConfigurationUpdatePage{
         await this.show_more.nth(index-1).click()
     }
 
-    async getMessageUpdate() {
+    async getMessageUpdate(index: number) {
 
-        const message = await this.page.locator('[data-column-id="devMsg"]').locator('[class="ng-binding"]').textContent()
+        const message = await this.page.locator('[data-column-id="devMsg"]').nth(index).locator('[class="ng-binding"]').textContent()
         // console.log(message?.trim())
 
         return message?.trim()
     }
 
-    async getDevice() {
+    async getDevice(index: number) {
 
-        const device = await this.page.locator('[data-column-id="displayName"]').nth(1).textContent()
+        const device = await this.page.locator('[data-column-id="displayName"]').nth(index).textContent()
         // console.log(device?.trim())
 
         return device?.trim()
     }
 
-    async getResult() {
+    async getResult(index: number) {
 
-        const result = await this.page.locator('[data-column-id="devSts"]').nth(1).textContent()
+        const result = await this.page.locator('[data-column-id="devSts"]').nth(index).textContent()
         // console.log(result?.trim())
 
         return result?.trim()
@@ -183,17 +183,17 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
         return target?.trim()
     }
 
-    async getLastUpdate() {
+    async getLastUpdate(index: number) {
 
-        const last_update = await this.page.locator('[data-column-id="initTs"]').nth(1).textContent()
+        const last_update = await this.page.locator('[data-column-id="initTs"]').nth(index).textContent()
         // console.log(last_update?.trim())
 
         return last_update?.trim() 
     }
 
-    async getOriginalVersion() {
+    async getOriginalVersion(index: number) {
 
-        const last_update = await this.page.locator('[data-column-id="actSw"]').nth(1).textContent()
+        const last_update = await this.page.locator('[data-column-id="actSw"]').nth(index).textContent()
         // console.log(last_update?.trim())
 
         return last_update?.trim() 

@@ -693,13 +693,16 @@ export class SoftwareUpgrade {
 
     private readonly actions_menu : Locator = this.page.locator('[default-label="Actions"]')
     private readonly configuration_button : Locator = this.page.locator('[class="ng-binding ng-scope"]',{hasText: "Configuration"})
-    private readonly softupdate_button : Locator = this.page.locator('[class="ng-binding ng-scope"]',{hasText: "Software Upgrade"})
+    private readonly softupgrade_button : Locator = this.page.locator('[class="ng-binding ng-scope"]',{hasText: "Software Upgrade"})
     private readonly searchbar: Locator = this.page.locator('[type="search"]').nth(1)
-    private readonly checkbox : Locator = this.page.locator('[type="checkbox"]').nth(1)
+    private readonly checkbox : Locator = this.page.locator('[type="checkbox"]')
     private readonly software_image_dropdown : Locator = this.page.locator('[name="dropDownButton"]')
     private readonly add_software_job_to_device_button : Locator = this.page.locator('[type="button"]', {hasText: "Add Software Job to  device(s)"})
     private readonly view_jobs : Locator = this.page.locator('[class="cn-link"]', {hasText: "View Update Jobs"})
     private readonly disableAutoReboot_checkbox : Locator = this.page.locator('[class="i-checks i-checks-sm"]', {hasText: "Disable Auto Reboot"})
+    private readonly software_version : Locator = this.page.locator('[data-column-id="actSw"]')
+    private readonly dropdown_image_menu : Locator = this.page.locator('[class="dropdown-menu h-down"]')
+    private readonly switch_group_name : Locator = this.page.locator('[data-column-id="swGroup"]')
 
     constructor(public page:Page) {
 
@@ -731,14 +734,20 @@ export class SoftwareUpgrade {
         await this.searchbar.press("Enter")
     }
 
-    async clickCheckSwitch(switch_name:string){
+    async clickCheckSwitch(switch_name:string, id: number){
 
         // Checking the Switch
 
         await this.searchbar.fill(switch_name)
         await this.searchbar.press("Enter")
         await this.page.waitForTimeout(2000)
-        await this.checkbox.click()
+        await this.checkbox.nth(id).click()
+    }
+
+    async clickCheckAll() {
+
+        await this.page.waitForTimeout(2000)
+        await this.checkbox.nth(0).click()
     }
 
 
@@ -749,7 +758,7 @@ export class SoftwareUpgrade {
 
     async clickSoftUpdate() {
 
-        await this.softupdate_button.click()
+        await this.softupgrade_button.click()
     }
 
     async chooseSoftwareImageForUpdate(image:string) {
@@ -757,7 +766,8 @@ export class SoftwareUpgrade {
         // Choosing the software image to update to
 
         await this.software_image_dropdown.click()
-        await this.page.locator(`[title="${image}"]`).click()
+        await this.page.waitForTimeout(1000)
+        await this.dropdown_image_menu.locator(`[title="${image}"]`).click()
     }
 
     async clickAddSoftwareUpdate() {
@@ -775,5 +785,21 @@ export class SoftwareUpgrade {
         // console.log(await this.disableAutoReboot_checkbox.isChecked())
         await this.disableAutoReboot_checkbox.check()
         // console.log(await this.disableAutoReboot_checkbox.isChecked())
+    }
+
+    async getSoftwareVersion(id: number) {
+
+        const soft_version = await this.software_version.nth(id).textContent()
+        console.log(soft_version?.trim())
+
+        return soft_version?.trim()
+    }
+
+    async getSwitchGroup(id: number) {
+
+        const switch_group = await this.switch_group_name.nth(id).textContent()
+        console.log(switch_group?.trim())
+
+        return switch_group?.trim()
     }
 }
