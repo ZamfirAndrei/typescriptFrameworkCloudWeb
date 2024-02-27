@@ -5,10 +5,10 @@ import path from "path"
 export class OnBoardPage {
 
     private readonly claim_device_button : Locator = this.page.locator('[title="Claim device from cnMaestro"]')
-    private readonly claim_device_box : Locator = this.page.locator('[name="claimdevice"]')
-    private readonly claim_device_button_final : Locator = this.page.locator('[translate="onboarding.claimDevices"]')
-    private readonly close_claim_device_button : Locator = this.page.locator('[translate="common.Close"]')
-    private readonly back_claim_device_button : Locator = this.page.locator('[translate="common.Back"]')
+    private readonly claim_device_box : Locator = this.page.locator('[id="sns"]')
+    private readonly claim_device_button_final : Locator = this.page.locator('[cns-auto="claimDeviceBtn"]')
+    private readonly close_claim_device_button : Locator = this.page.locator('[cns-auto="closeBtn"]')
+    private readonly back_claim_device_button : Locator = this.page.locator('[cns-auto="backBtn"]')
     private readonly actions : Locator = this.page.locator('[class=" dt-actions"]')
 
     constructor(public page:Page) {
@@ -45,10 +45,10 @@ export class OnBoardPage {
         const row = await this.getRowContent(index)
         await row.locator('[class=" dt-actions"]').hover()
 
-        const status = await this.actions.locator('[title="Approve Device"]').isVisible()
+        const status = await this.actions.locator('[title="Approve Device"]').nth(index-1).isVisible()
         console.log(status)
 
-        if (await this.actions.locator('[title="Approve Device"]').isVisible())
+        if (await this.actions.locator('[title="Approve Device"]').nth(index-1).isVisible())
         {
             await this.actions.locator('[title="Approve Device"]').nth(index-1).click()
         }

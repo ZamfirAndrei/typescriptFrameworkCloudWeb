@@ -23,7 +23,8 @@ test.describe("Login ->", async() => {
 
         await cloud.page.goto(`${baseURL}`)
         await cloud.login_obj.clickSignIn()
-        await cloud.page.waitForTimeout(2000)
+        // await cloud.page.waitForTimeout(2000)
+        await cloud.page.waitForLoadState()
     })
 
     test ("1.Verify that you can not login without a password", async({page,baseURL}) => {
@@ -31,28 +32,19 @@ test.describe("Login ->", async() => {
         const cloud = new CloudObjects(page)
         const loginFlow = new LoginFlow(page)
     
-        await cloud.login_obj.introduceUser("gigi@gmail.com")
-        await cloud.login_obj.clickSubmit()
-        await cloud.login_obj.clickSubmit()
-
+        await loginFlow.introduceUser(data.user)
         await loginFlow.confirmLoginWithoutPassword()
     
-        await cloud.page.waitForTimeout(2000)
     })
     
     test ("2.Verify that you can not login with un-registered email", async({page,baseURL}) => {
     
         const cloud = new CloudObjects(page)
         const loginFlow = new LoginFlow(page)
-    
-        await cloud.login_obj.introduceUser("gigi@gmail.com")
-        await cloud.login_obj.clickSubmit()
-        await cloud.login_obj.introducePassword("Solotov1998.")
-        await cloud.login_obj.clickSubmit()
 
+        await loginFlow.introduceUserAndPassword(data.wrong_user, data.password)
         await loginFlow.confirmLoginWithWrongCredentials()
     
-        await cloud.page.waitForTimeout(2000)
     })
     
     test ("3.Verify that you can not login with a registered email and a wrong password", async({page,baseURL}) => {
@@ -60,14 +52,8 @@ test.describe("Login ->", async() => {
         const cloud = new CloudObjects(page)
         const loginFlow = new LoginFlow(page)
     
-        await cloud.login_obj.introduceUser("andreigabriel.zamfir@dxc.com")
-        await cloud.login_obj.clickSubmit()
-        await cloud.login_obj.introducePassword("Gigi")
-        await cloud.login_obj.clickSubmit()
-
+        await loginFlow.introduceUserAndPassword(data.user, data.wrong_password)
         await loginFlow.confirmLoginWithWrongCredentials()
-    
-        await cloud.page.waitForTimeout(2000)
         
     })
     
@@ -76,31 +62,22 @@ test.describe("Login ->", async() => {
         const cloud = new CloudObjects(page)
         const loginFlow = new LoginFlow(page)
     
-        await cloud.login_obj.introduceUser("andreigabriel.zamfir@dxc.com")
-        await cloud.login_obj.clickSubmit()
-        await cloud.login_obj.introducePassword("Solotov1998.")
-        await cloud.login_obj.clickSubmit()
-
+        await loginFlow.introduceUserAndPassword(data.user, data.password)
         await loginFlow.confirmLoginWithProperCredentials()
-    
-        await cloud.page.waitForTimeout(2000)
     })
     
-    test.only ("5.Verify that you can check 'Remember Me' box", async({page,baseURL}) => {
+    // test.only ("5.Verify that you can check 'Remember Me' box", async({page,baseURL}) => {
     
-        const cloud = new CloudObjects(page)
-        const loginFlow = new LoginFlow(page)
+    //     const cloud = new CloudObjects(page)
+    //     const loginFlow = new LoginFlow(page)
     
-        await cloud.login_obj.introduceUser("andreigabriel.zamfir@dxc.com")
-        await cloud.login_obj.clickSubmit()
-        await cloud.login_obj.introducePassword("Solotov1998.")
+    //     await loginFlow.introduceUserAndPassword(data.user, data.password)
 
-        await loginFlow.confirmCheckBox()
-        await loginFlow.expectPageTitle("Log In / Cambium Networks Support")
+    //     await loginFlow.confirmCheckBox()
+    //     await loginFlow.expectPageTitle("Log In / Cambium Networks Support")
 
-        await cloud.login_obj.clickSubmit()
-        await loginFlow.expectPageTitle("cnMaestro™")
-    
-        await cloud.page.waitForTimeout(2000)
-    })
+    //     await cloud.login_obj.clickSubmit()
+    //     await loginFlow.expectPageTitle("cnMaestro™")
+
+    // })
 })

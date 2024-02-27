@@ -19,18 +19,25 @@ export class OnBoardFlow {
         expect(page_title).toBe(expected_page_title)
     }
 
+    async goToSwitchesList() {
+
+        await this.cloud.toolbar_obj.clickDevicePage()
+        await this.cloud.device_obj.clickSwitches()
+        await this.cloud.page.waitForTimeout(2000)
+    }
+
     async confirmOnboardDevice() {
 
         // Waiting for Device
         // Onboarded
     }
 
-    async onboardDevice(device : string) {
+    async onboardDevice(device_serial_number : string) {
 
         // Onboard Device
 
         await this.cloud.toolbar_obj.clickOnBoardPage()
-        await this.cloud.onboard_obj.claimDevice(device)
+        await this.cloud.onboard_obj.claimDevice(device_serial_number)
         await this.cloud.onboard_obj.closeClaimDevice()
 
     }
@@ -51,7 +58,7 @@ export class OnBoardFlow {
         
         // Checking the device Onboarding status before approve
 
-        const device_status_before = await this.cloud.onboard_obj.getOnboardingStatus(1)
+        const device_status_before = await this.cloud.onboard_obj.getOnboardingStatus(index)
 
         expect(device_status_before).toBe("Onboarded")
 
@@ -62,7 +69,7 @@ export class OnBoardFlow {
  
         // Checking the device Onboarding status after approve
  
-         const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(1)
+         const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(index)
 
          expect(device_status_after).toBe("Onboarded")
          expect(device_status_before).toBe(device_status_after)
@@ -72,6 +79,8 @@ export class OnBoardFlow {
     async confirmDeviceOnboarded(index : number) {
         
         // Checking the device Onboarding status before approve
+
+        await this.page.waitForTimeout(2000)
 
         const device_status_before = await this.cloud.onboard_obj.getOnboardingStatus(1)
 
@@ -89,6 +98,8 @@ export class OnBoardFlow {
          const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(1)
 
          expect(device_status_after).toBe("Onboarded")
+
+         await this.cloud.page.waitForTimeout(2000)
         
     }
 
@@ -134,5 +145,6 @@ export class OnBoardFlow {
         expect(message_delete_3).toBe("Success")
         expect(message_delete_4).toBe("The device deletion operation completed.")
 
+        await this.cloud.page.waitForTimeout(2000)
     }
 }

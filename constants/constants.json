@@ -5,6 +5,8 @@
     "account2" : "QA_USSRV3_LUXOFT",
     "image_to_upgrade" : "5.0.2-r4",
     "image_to_downgrade" : "5.0.1-r3",
-    "switchgroup": "sanity"
+    "switchgroup": "sanity",
+    "wrong_user": "gigi@gmail.com",
+    "wrong_password": "Gigi" 
 
 }

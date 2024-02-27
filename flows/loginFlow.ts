@@ -6,8 +6,24 @@ export class LoginFlow {
 
     private readonly cloud = new CloudObjects(this.page)
 
-    constructor(public page:Page) {
+    constructor(public page: Page) {
 
+    }
+
+    async introduceUser(user: string) {
+
+        await this.cloud.login_obj.introduceUser(user)
+        await this.cloud.login_obj.clickSubmit()
+        await this.cloud.login_obj.clickSubmit()
+
+    }
+
+    async introduceUserAndPassword(user: string, password: string) {
+
+        await this.cloud.login_obj.introduceUser(user)
+        await this.cloud.login_obj.clickSubmit()
+        await this.cloud.login_obj.introducePassword(password)
+        await this.cloud.login_obj.clickSubmit()
     }
 
     async confirmLoginEmail() {
@@ -28,6 +44,8 @@ export class LoginFlow {
 
         expect(message?.trim()).toBe("Invalid email address or password")
         expect(page_title).toBe("Log In / Cambium Networks Support")
+
+        await this.cloud.page.waitForTimeout(2000)
     }
 
     async confirmLoginWithoutPassword() {
@@ -44,6 +62,8 @@ export class LoginFlow {
         expect(message?.trim()).toBe("Please enter your password.")
         expect(alert?.trim()).toBe("Required")
         expect(page_title).toBe("Log In / Cambium Networks Support")
+
+        await this.cloud.page.waitForTimeout(2000)
     }
 
     async confirmLoginWithProperCredentials() {
@@ -52,6 +72,8 @@ export class LoginFlow {
         console.log(page_title)
 
         expect(page_title).toBe("cnMaestro™")
+
+        await this.cloud.page.waitForTimeout(2000)
     }
 
     async confirmCheckBox() {
@@ -76,6 +98,8 @@ export class LoginFlow {
         console.log(page_title)
 
         expect(page_title).toBe(expected_page_title)
+
+        await this.cloud.page.waitForTimeout(2000)
     }
 
 }
