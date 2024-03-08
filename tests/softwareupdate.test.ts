@@ -15,7 +15,8 @@ test.describe("SoftwareUpdate ->", async() => {
         await cloud.page.goto(`${baseURL}`)
         await cloud.login_obj.login(data.user, data.password)
         await cloud.login_obj.selectAccount(data.account2)
-        await cloud.page.waitForTimeout(2000)
+        // await cloud.page.waitForTimeout(2000)
+        await cloud.page.waitForLoadState()
     })
 
     test ("1.Test to verify if you can upgrade to a new software - Particular Switch - EX3028R-P", async({page,baseURL}) => {

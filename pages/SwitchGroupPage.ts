@@ -8,6 +8,7 @@ export default class switchgroupPage {
     private readonly switchgroupstable: Locator = this.page.locator('[class="table-wrapper"]')
     private readonly addswitchgroup: Locator = this.page.locator('[title="Add New Switch Group"]')
     private readonly edit_switch_group : Locator = this.page.locator('[title="Edit"]')
+    private readonly delete_message: Locator = this.page.locator('[id="cns-toaster-msg"]')
     
 
     constructor (public page: Page) {
@@ -20,6 +21,28 @@ export default class switchgroupPage {
 
         await this.searchbar.fill(switch_group_name)
         await this.searchbar.press("Enter")
+    }
+
+    async searchingForSwitchGroup(switch_group_name: string) {
+
+        // Searching for a Swith Group
+
+        await this.searchSwitchGroup(switch_group_name)
+        await this.page.waitForTimeout(2000)
+
+        if(await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switch_group_name}`}).isVisible()) {
+
+            console.log(`The Switch Group ${switch_group_name} exists`)
+            const switch_group = await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switch_group_name}`}).textContent()
+            return switch_group?.trim()
+        }
+
+        else {
+            
+            console.log(`The Switch Group ${switch_group_name} does not exists`)
+            return undefined
+        }
+        
     }
 
     async clickSwitchGroup(switch_group_name:string){
@@ -153,7 +176,13 @@ export default class switchgroupPage {
             await this.page.locator('[class="btn btn-primary w-xs"]').click()
             console.log(`The Switch Group from Row ${index} has been deleted`)
         }
+
+        const message = await this.delete_message.textContent()
+        // console.log(message)
+
+        return message?.trim()
     }
+
 
     async editSwitchGroup(name_switchgroup:string) {
 

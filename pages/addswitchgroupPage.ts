@@ -10,6 +10,7 @@ export class addswitchgroupPage {
     public readonly network: Locator = this.page.locator('[title="Configure VLANs, PBA, IP Routes, STP settings."]')
     public readonly security: Locator = this.page.locator('[title="Configure RADIUS, ACL IP settings."]')
     public readonly show_advanced: Locator = this.page.locator('[class="i-switch bg-info v-middle pull-right xmd-pull-none m-l-xs"]')
+    public readonly message_after_save : Locator = this.page.locator('[id="cns-toaster-msg"]')
 
     constructor (public page: Page) {
 
@@ -50,6 +51,25 @@ export class addswitchgroupPage {
 
         await this.page.locator('[class="btn btn-primary w-xs m-r-sm ng-binding"]').click()
         // console.log("The configuration has been saved")
+    }
+
+    async getMessageAfterSave() {
+
+        // Getting the message after saving the Switch Group
+
+        const message = await this.message_after_save.textContent()
+        // console.log(message?.trim())
+
+        return message?.trim()
+    }
+
+    async searchForSwithGroupOnTheMainPage(switchgroup: string) {
+
+        const name_switch_group = await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switchgroup}`}).textContent()
+        // const name_switch_group = await this.page.locator(`[title ="${switchgroup}"]`).textContent()
+        // console.log(name_switch_group?.trim())
+
+        return name_switch_group?.trim()
     }
 
 
@@ -171,6 +191,28 @@ export class ManagementPage {
         else if (answer=="No"){
             await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(2).uncheck()
         }
+    }
+
+    async createPasswordAdmin(password: string) {
+
+        // Creating the password for the admin user
+
+        await this.clickAdminEdit()
+        await this.addPasswordAdmin(password)
+        await this.confirmPasswordAdmin(password)
+        await this.clickUpdatePassword()
+
+    }
+
+    async createPasswordGuest(password: string) {
+
+        // Creating the password for the admin user
+    
+        await this.clickGuestEdit()
+        await this.addPasswordGuest(password)
+        await this.confirmPasswordGuest(password)
+        await this.clickUpdatePassword()
+
     }
 }
 

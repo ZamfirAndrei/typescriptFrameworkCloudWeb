@@ -95,11 +95,11 @@ export class OnBoardFlow {
 
         // Checking the device Onboarding status after 6 mins and after approve
  
-         const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(1)
+        const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(1)
 
-         expect(device_status_after).toBe("Onboarded")
+        expect(device_status_after).toBe("Onboarded")
 
-         await this.cloud.page.waitForTimeout(2000)
+        await this.cloud.page.waitForTimeout(2000)
         
     }
 

@@ -556,7 +556,7 @@ export class NetworkPortPage {
                 }
 
                 console.log(await vlan_id.nth(i).textContent())
-                console.log("Indexul este: " + i)
+                console.log("The index is: " + i)
 
                 if (await vlan_id.nth(i).textContent() == vlan) {
 
@@ -598,7 +598,7 @@ export class NetworkPortPage {
                 }
 
                 console.log(await vlan_id.nth(i).textContent())
-                console.log("Indexul este: " + i)
+                console.log("The index is: " + i)
 
                 if (await vlan_id.nth(i).textContent() == vlan) {
 

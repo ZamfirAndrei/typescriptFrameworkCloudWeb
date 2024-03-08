@@ -9,8 +9,9 @@ const config: PlaywrightTestConfig = {
 
   // testMatch: ["tests/testing.test.ts"],
   // testMatch: ["tests/onboard.test.ts"],
-  testMatch: ["tests/login.test.ts"],
+  // testMatch: ["tests/login.test.ts"],
   // testMatch: ["tests/softwareupdate.test.ts"],
+  testMatch: ["tests/switchgroup.test.ts"],
   use: {
     baseURL: "https://qa.cloud.cambiumnetworks.com/#/",
     headless : false,
