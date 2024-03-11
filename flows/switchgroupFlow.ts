@@ -56,6 +56,7 @@ export class switchGroupFlow {
         // console.log(switch_group)
 
         expect(switch_group).toBe(search_switch_group_name)
+        console.log(`The Switch Group ${switch_group} has been created`)
       
         await this.cloud.page.waitForTimeout(2000)
     }
@@ -73,11 +74,11 @@ export class switchGroupFlow {
 
     }
 
-    async checkDeleteSwitchGroup(switch_group: string, index: number, message: string) {
+    async checkDeleteSwitchGroup(switch_group: string, message: string) {
 
         // Delete a Switch Group
 
-        const delete_message = await this.cloud.switchgroup_obj.deleteSwitchGroup(index, "Yes")
+        const delete_message = await this.cloud.switchgroup_obj.deleteSwitchGroupByName(switch_group)
         console.log(delete_message)
 
         expect(delete_message).toBe(message)

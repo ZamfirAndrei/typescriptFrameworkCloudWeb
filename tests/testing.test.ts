@@ -89,7 +89,7 @@ test ("Searching for a switch group", async({page,baseURL})=>{
     await switchgroup_obj.getAutoSync(1)
     await switchgroup_obj.getAutoSync(2)
 
-    await switchgroup_obj.deleteSwitchGroup(1, "Yes")
+    await switchgroup_obj.deleteSwitchGroup(1)
     
 
     await page.waitForTimeout(3000)

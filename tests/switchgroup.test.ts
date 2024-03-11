@@ -4,6 +4,8 @@ import * as data from "../constants/constants.json"
 import { switchGroupFlow } from "../flows/switchgroupFlow";
 import { CloudObjects } from "../management/cloudObjects";
 import { DUTs, DUT1, DUT2, DUT3, DUT4 } from "../constants/duts";
+import {mock1, mock2, mock3} from "../constants/mocks"
+
 
 
 test.describe("SwitchGroup ->", async() => {
@@ -23,14 +25,9 @@ test.describe("SwitchGroup ->", async() => {
         const cloud = new CloudObjects(page)
         const switchgroupFlow = new switchGroupFlow(page)
 
-        const switch_group_name = "test1234"
-        const admin_password = "Admin124!"
-        const guest_password = "Guest124!"
-        const check_message = "Switch Group is created successfully."
-
-        await switchgroupFlow.createSwitchGroup(switch_group_name, admin_password, guest_password)
-        await switchgroupFlow.confirmSwithGroupCreation(check_message)
-        await switchgroupFlow.checkTheSwitchGroupHasBeenCreated(switch_group_name)
+        await switchgroupFlow.createSwitchGroup(mock1[0].switch_group_name, mock1[0].admin_password, mock1[0].guest_password)
+        await switchgroupFlow.confirmSwithGroupCreation(mock1[0].check_message)
+        await switchgroupFlow.checkTheSwitchGroupHasBeenCreated(mock1[0].switch_group_name)
 
     })
 
@@ -39,14 +36,9 @@ test.describe("SwitchGroup ->", async() => {
         const cloud = new CloudObjects(page)
         const switchgroupFlow = new switchGroupFlow(page)
 
-        const switch_group_name = "test1234"
-        const admin_password = "Admin124!"
-        const guest_password = "Guest124!"
-        const check_message = "The specified profile name already exists."
-
-        await switchgroupFlow.createSwitchGroup(switch_group_name, admin_password, guest_password)
-        await switchgroupFlow.confirmSwithGroupCreation(check_message)
-        await switchgroupFlow.checkTheSwitchGroupHasBeenCreated(switch_group_name)
+        await switchgroupFlow.createSwitchGroup(mock2[0].switch_group_name, mock2[0].admin_password, mock2[0].guest_password)
+        await switchgroupFlow.confirmSwithGroupCreation(mock2[0].check_message)
+        await switchgroupFlow.checkTheSwitchGroupHasBeenCreated(mock2[0].switch_group_name)
     })
 
     test("3.Test to verify you can delete a switch group", async({page, baseURL}) => {
@@ -54,13 +46,8 @@ test.describe("SwitchGroup ->", async() => {
         const cloud = new CloudObjects(page)
         const switchgroupFlow = new switchGroupFlow(page)
 
-        const switch_group_name = "test1234"
-        const admin_password = "Admin124!"
-        const guest_password = "Guest124!"
-        const check_message = "Delete Successful"
-
-        await switchgroupFlow.checkIfTheSwitchGroupExists(switch_group_name)
-        await switchgroupFlow.checkDeleteSwitchGroup(switch_group_name, 1, check_message)
+        await switchgroupFlow.checkIfTheSwitchGroupExists(mock3[0].switch_group_name)
+        await switchgroupFlow.checkDeleteSwitchGroup(mock3[0].switch_group_name, mock3[0].check_message)
 
     })
 

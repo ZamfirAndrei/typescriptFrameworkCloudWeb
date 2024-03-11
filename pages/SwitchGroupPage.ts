@@ -1,4 +1,5 @@
 import { Page, Locator } from "@playwright/test"
+import { escape } from "querystring"
 
 // This is the page of cnMaestro Switch Group Page
 
@@ -39,7 +40,7 @@ export default class switchgroupPage {
 
         else {
             
-            console.log(`The Switch Group ${switch_group_name} does not exists`)
+            console.log(`The Switch Group ${switch_group_name} does not exist`)
             return undefined
         }
         
@@ -165,23 +166,48 @@ export default class switchgroupPage {
         return auto_sync
     }
 
-    async deleteSwitchGroup(index:number, answer:string) {
+    async deleteSwitchGroup(index:number) {
 
-        // Deleting a Switch Group
+        // Deleting a Switch Group using the index of the row
 
         const row = await this.getRowContent(index)
         await row.locator('[title="Delete"]').click()
 
-        if (answer == "Yes"){
-            await this.page.locator('[class="btn btn-primary w-xs"]').click()
-            console.log(`The Switch Group from Row ${index} has been deleted`)
-        }
+        await this.page.locator('[class="btn btn-primary w-xs"]').click()
+        console.log(`The Switch Group from Row ${index} has been deleted`)
 
         const message = await this.delete_message.textContent()
         // console.log(message)
 
         return message?.trim()
     }
+
+    async deleteSwitchGroupByName(switch_group_name: string) {
+
+        // Deleting a Switch Group using the name of the switch group
+
+        const switch_group = await this.searchingForSwitchGroup(switch_group_name)
+        // console.log(switch_group)
+        
+        if (switch_group == switch_group_name && switch_group != undefined) {
+
+            await this.page.locator('[title="Delete"]').click()
+
+            await this.page.locator('[class="btn btn-primary w-xs"]').click()
+            console.log(`The Switch Group${switch_group_name} has been deleted`)
+
+            const message = await this.delete_message.textContent()
+            // console.log(message)
+
+            return message?.trim()
+        }
+
+        else {
+
+            console.log(`The Switch Group${switch_group_name} does not exists`)
+        }
+
+    } 
 
 
     async editSwitchGroup(name_switchgroup:string) {
