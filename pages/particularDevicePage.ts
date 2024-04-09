@@ -1,5 +1,6 @@
 import { Page, Locator } from "@playwright/test"
 import loginPage from "./loginPage"
+import { test, expect} from "@playwright/test";
 
 // This is the page of a particular Device 
 
@@ -60,39 +61,63 @@ export class ParticularDevicePage{
 
 export class ConfigurationPage{
 
-    private readonly switch_group_table : Locator = this.page.locator('[name="dropDownButton"]').nth(2)
     private readonly status : Locator = this.page.locator('[class="col-md-8 b b-form-muted r p-y-4 ng-scope"]')
+    private readonly switch_group_menu : Locator = this.page.locator('[class="btn-group w-full"]').nth(2)
+    private readonly switch_group_search_bar : Locator = this.page.locator('[name="searchInp"]').nth(2)
+    private readonly apply_configuration_button : Locator = this.page.locator('[class="ng-binding"]', {hasText: "Apply Configuration"})
+    private readonly apply_configuration_message: Locator = this.page.locator('[id="cns-toaster-msg"]')
 
     constructor(public page:Page){
 
     }
 
-    async selectSwitchGroup(switch_group:string) {
+    async clickSwitchGroup() {
+
+        // Click the Switch Group Menu
+
+        await this.switch_group_menu.click()
+    }
+
+    async selectSwitchGroup(switch_group: string) {
 
         // Selecting the Switch Group for the device
 
-        await this.switch_group_table.click()
+        await this.switch_group_menu.click()
         // await this.page.waitForTimeout(1000)
-        // await this.switch_group_table.locator('[name="searchInp"]').fill(switch_group)
-        await this.page.locator('[name="searchInp"]').nth(2).fill(switch_group)
-        await this.page.locator('[ng-show="dropDownType.name"]').nth(11).click()
-        // console.log(await this.page.locator('[ng-show="dropDownType.name"]').nth(11).textContent())
+        await this.switch_group_search_bar.fill(switch_group)
+        await this.page.locator(`[title="${switch_group}"]`).click()
+        
+    }
+
+    async getValueSwitchGroup() {
+
+        // Getting the value of the Switch Group box
+
+        const value = await this.switch_group_menu.locator('[name="dropDownButton"]').textContent()
+        // console.log(value?.trim())
+
+        return value?.trim()
     }
 
     async clickApplyConfiguration() {
 
-        await this.page.locator('[class="btn btn-primary m-r-xs"]').click()
+        await this.apply_configuration_button.click()
+    }
+    
+    async getMessageApplyConfiguration() {
+
+        const message = await this.apply_configuration_message.textContent()
+        // console.log(message?.trim())
+
+        return message?.trim()
     }
 
     async getSyncStatusDevice() {
-
-        const sync_status_device_text = await this.status.textContent()
-        const status = sync_status_device_text?.split(" ")
-        console.log(status)
-        const sync_status_device = (status[3] + " " + status[4] + " " + status[5]).trim()
-        console.log(sync_status_device)
         
-        return sync_status_device
+        const sync_status_device_text = await this.status.locator('[class="inline ng-binding"]').textContent()
+        // console.log(sync_status_device_text?.trim())
+        
+        return sync_status_device_text?.trim()
     }
 
     async getIpAddressDevice() {
@@ -100,7 +125,7 @@ export class ConfigurationPage{
         const ip_address_text = await this.page.locator('[class="cn-link ng-binding ng-scope"]').textContent()
         // console.log(ip_address_text);
         const ip_address = ip_address_text?.trim()
-        console.log(ip_address)
+        // console.log(ip_address)
 
         return ip_address
     }
@@ -110,7 +135,7 @@ export class ConfigurationPage{
         const serial_number_text = await this.page.locator('[class="col-md-8 read-form-control ng-binding"]').nth(0).textContent()
         // console.log(serial_number_text)
         const serial_number = serial_number_text?.trim()
-        console.log(serial_number)
+        // console.log(serial_number)
 
         return serial_number
     }
@@ -120,9 +145,18 @@ export class ConfigurationPage{
         const mac_address_text = await this.page.locator('[class="col-md-8 read-form-control ng-binding"]').nth(1).textContent()
         // console.log(mac_address_text)
         const mac_address = mac_address_text?.trim()
-        console.log(mac_address)
+        // console.log(mac_address)
 
         return mac_address
+    }
+
+    async expectSyncStatusDeviceToBe(sync_status_device: string) {
+
+        // console.log(sync_status_device)
+        // console.log("The test is + " + await this.status.locator('[class="inline ng-binding"]').textContent())
+        await expect(this.status.locator('[class="inline ng-binding"]')).toHaveText(sync_status_device,
+            {timeout: 15000})
+        // console.log("The test is + " + await this.status.locator('[class="inline ng-binding"]').textContent())
     }
 }
 

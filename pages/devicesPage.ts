@@ -100,6 +100,13 @@ export default class devicePage {
         return row
     }
 
+    async getRowContentByName(switch_name: string) {
+
+        const row = this.page.locator("[role='row']", {hasText: `${switch_name}`})
+
+        return row
+    }  
+
     async getDeviceName(index: number): Promise <string> {
 
         // Getting the Device Name 
@@ -111,6 +118,19 @@ export default class devicePage {
 
         return (deviceNameText as string).trim()
     }
+
+    async getDeviceNameByName(switch_name: string): Promise <string> {
+
+        // Getting the Device Name 
+
+        const row = await this.getRowContentByName(switch_name)
+        const deviceNameText = await row.locator('[data-column-id="deviceName"]').textContent()
+        // console.log(deviceNameText.trim());
+        
+
+        return (deviceNameText as string).trim()
+    }
+
 
     async getDeviceMac(index: number): Promise <string> {
 

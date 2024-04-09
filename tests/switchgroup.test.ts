@@ -4,7 +4,7 @@ import * as data from "../constants/constants.json"
 import { switchGroupFlow } from "../flows/switchgroupFlow";
 import { CloudObjects } from "../management/cloudObjects";
 import { DUTs, DUT1, DUT2, DUT3, DUT4 } from "../constants/duts";
-import {mock1, mock2, mock3} from "../constants/mocks"
+import {mock1, mock2, mock3, result_update, message_update, job_message, sync_status_device} from "../constants/mocks"
 
 
 
@@ -16,7 +16,8 @@ test.describe("SwitchGroup ->", async() => {
 
         await cloud.page.goto(`${baseURL}`)
         await cloud.login_obj.login(data.user, data.password)
-        await cloud.login_obj.selectAccount(data.account2)
+        // await cloud.login_obj.selectAccount(data.account2)
+        await cloud.login_obj.selectAccount(data.account1)
         await cloud.page.waitForLoadState()
     })
 
@@ -48,6 +49,17 @@ test.describe("SwitchGroup ->", async() => {
 
         await switchgroupFlow.checkIfTheSwitchGroupExists(mock3[0].switch_group_name)
         await switchgroupFlow.checkDeleteSwitchGroup(mock3[0].switch_group_name, mock3[0].check_message)
+
+    })
+
+    test.only("4. Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const switchgroupFlow = new switchGroupFlow(page)
+
+        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, job_message[0].JobStartedSuccessfully, 
+            sync_status_device[0].InSync)
+
 
     })
 

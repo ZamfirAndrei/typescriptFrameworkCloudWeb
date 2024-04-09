@@ -1,15 +1,32 @@
-import { Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import { CloudObjects } from "../management/cloudObjects";
 import { expect } from "@playwright/test";
+import { job_message } from "../constants/mocks";
+import { TIMEOUT } from "dns";
 
 
 export class switchGroupFlow {
 
     private readonly cloud : CloudObjects
 
+    apply_configuration_button : Locator = this.page.locator('[class="ng-binding"]', {hasText: "Apply Configuration"})
+
     constructor(public page: Page){
 
         this.cloud = new CloudObjects(this.page)
+    }
+
+    async searchAndSelectSwitch(switch_name: string) {
+
+        // Searching and selecting the device which you want to upgrade
+
+        await this.cloud.toolbar_obj.clickDevicePage()
+        await this.cloud.device_obj.clickSwitches()
+ 
+        await this.page.waitForTimeout(2000)
+        await this.cloud.device_obj.clickDevice(switch_name)
+        await this.page.waitForTimeout(2000)
+
     }
 
     async createSwitchGroup(switch_group_name: string, admin_password: string, guest_password: string) {
@@ -84,6 +101,98 @@ export class switchGroupFlow {
         expect(delete_message).toBe(message)
         
     }
+
+    async selectConfigurationPageOfTheSwitch(switch_name: string) {
+
+        // Selecting the Switch and going to the configuration page of the Switch
+
+        await this.searchAndSelectSwitch(switch_name)
+        await this.cloud.part_device.clickConfiguration()
+        await this.cloud.page.waitForTimeout(3000)
+
+    }
+
+    async gettingDetailsOfTheSwitch() {
+
+        // Getting the Sync Status of the device and the Value of Switch Group BEFORE syncing
+
+        const sync_status_device = await this.cloud.conf_obj.getSyncStatusDevice()
+        const value_switch_group = await this.cloud.conf_obj.getValueSwitchGroup()
+
+        return [sync_status_device, value_switch_group]
+
+    }
+
+    async selectSwitchGroupToSync(switch_group_name: string) {
+
+        // Selecting the Switch Group to sync
+
+        await this.cloud.conf_obj.selectSwitchGroup(switch_group_name)
+        await this.cloud.page.waitForTimeout(2000)
+        await this.cloud.conf_obj.clickApplyConfiguration()
+        await this.cloud.page.waitForTimeout(2000)
+
+    }
+
+    async checkIfTheSwitchGroupIsNotAlreadyConfigured(switch_group_name: string) {
+
+        const value_switch_group = await this.cloud.conf_obj.getValueSwitchGroup()
+        console.log(`The value is: ${value_switch_group}`)
+
+        if (value_switch_group != switch_group_name) {
+
+            console.log("The Switch Group is not configured!")
+            this.selectSwitchGroupToSync(switch_group_name)
+        }
+
+        else {
+
+            console.log("The Switch Group was configured before...We will apply the configuration!")
+            await this.cloud.page.waitForTimeout(2000)
+            await this.cloud.conf_obj.clickApplyConfiguration()
+        }
+    }
+
+    async confirmDetailsSwitch(sync_status_message: string) {
+
+        // Getting the Details of the Switch 
+
+        var [sync_status_device, value_switch_group] = await this.gettingDetailsOfTheSwitch()
+        console.log("The sync status of the device is : " + sync_status_device)
+        console.log("The value of the switch group of the device is : " + value_switch_group)
+
+        // expect(sync_status_device).toBe(sync_status_message)
+        await this.cloud.conf_obj.expectSyncStatusDeviceToBe(sync_status_message)
+    }
+
+    async confirmSwitchGroupSyncing(switch_name: string, switch_group_name: string, job_message: string, sync_status_message: string){
+
+        await this.selectConfigurationPageOfTheSwitch(switch_name)
+        // await this.cloud.page.waitForTimeout(2000)
+        await expect(this.apply_configuration_button).toBeVisible({timeout:2000})
+        await this.checkIfTheSwitchGroupIsNotAlreadyConfigured(switch_group_name)
+
+        // await this.cloud.page.waitForTimeout(2000)
+        await expect(this.apply_configuration_button).toBeVisible({timeout:2000})
+
+        // Getting the sync message of the Switch Group Configuration
+
+        console.log("####### Getting the sync message of the Switch Group Configuration #######")
+
+        const message = await this.cloud.conf_obj.getMessageApplyConfiguration()
+        console.log(message)
+        expect(message).toBe(job_message)
+
+        // Getting the Details of the Switch AFTER applying the configuration and syncing
+
+        console.log("####### Getting the Details of the Switch AFTER applying the configuration and syncing #######")
+
+        await this.confirmDetailsSwitch(sync_status_message)
+    }
+
+
+
+
 
 
 

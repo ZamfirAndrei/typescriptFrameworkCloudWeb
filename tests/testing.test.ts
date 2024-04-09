@@ -709,7 +709,7 @@ test ("Onboarding a Device with CloudObjects", async({page,baseURL})=>{
     await page.waitForTimeout(2000)
 })
 
-test.only ("Particular Switch Group Configuration/Update", async({page,baseURL})=>{
+test ("Particular Switch Group Configuration/Update", async({page,baseURL})=>{
 
     const login_obj = new loginPage(page)
     const toolbar_obj = new toolbarPage(page)
@@ -763,3 +763,21 @@ test.only ("Particular Switch Group Configuration/Update", async({page,baseURL})
    
 })
 
+// test.only ("Login Web Page", async({page})=>{
+
+//     const home_obj = new webHomePage(page)
+//     const tool_obj = new webToolBarPage(page)
+//     const log_obj = new webLogin(page)
+//     const syst_obj = new webSystemPage(page)
+
+//     await page.goto("http://10.2.109.173")
+//     await log_obj.login("admin", "Admin1234!")
+//     await page.waitForLoadState()
+//     await tool_obj.clickSystem()
+//     await page.waitForTimeout(3000)
+//     await syst_obj.clickSoftwareUpgrade()
+//     await syst_obj.getInformationSoftwareUpgrade()
+//     await syst_obj.selectUpgradeFrom("SFTP")
+//     await page.waitForTimeout(3000)
+
+// })

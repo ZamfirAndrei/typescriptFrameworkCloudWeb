@@ -63,7 +63,7 @@ export default class switchgroupPage {
         const nr_of_switch_groups_text = await this.page.locator('[class="dataTables_info"]').textContent()
         // console.log(nr_of_switch_groups_text)
         const nr_of_switch_groups = nr_of_switch_groups_text?.split(":")[1].trim()
-        console.log("The nr of switch groups is: " +nr_of_switch_groups);
+        console.log("The nr of switch groups is: " + nr_of_switch_groups);
         
         return nr_of_switch_groups
 
@@ -84,7 +84,7 @@ export default class switchgroupPage {
 
        const row =  await this.getRowContent(index)
        const name_switchgroup_text = await row.locator('[data-column-id="name"]').textContent()
-       console.log(name_switchgroup_text);
+    //    console.log(name_switchgroup_text);
 
        return (name_switchgroup_text as string).trim()
     }  
@@ -95,7 +95,7 @@ export default class switchgroupPage {
 
        const row =  await this.getRowContent(index)
        const nr_of_switches_of_switchgroup_text = await row.locator('[data-column-id="col-1"]').textContent()
-    //    console.log(nr_of_switches_of_switchgroup_text)
+    // console.log(nr_of_switches_of_switchgroup_text)
        const nr_of_switches_of_switchgroup = nr_of_switches_of_switchgroup_text?.split("of")[1].trim()
        console.log("The nr of switches is: " +nr_of_switches_of_switchgroup)
        
@@ -210,11 +210,11 @@ export default class switchgroupPage {
     } 
 
 
-    async editSwitchGroup(name_switchgroup:string) {
+    async editSwitchGroup(switch_group_name:string) {
 
         // Editing a Switch Group
 
-        await this.searchSwitchGroup(name_switchgroup)
+        await this.searchSwitchGroup(switch_group_name)
         await this.page.waitForTimeout(2000)
         await this.edit_switch_group.click()
     }

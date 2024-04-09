@@ -7,6 +7,8 @@
     "image_to_downgrade" : "5.0.1-r3",
     "switchgroup": "sanity",
     "wrong_user": "gigi@gmail.com",
-    "wrong_password": "Gigi" 
+    "wrong_password": "Gigi",
+    "image_to_upgrade_FA" : "6.0-r1",
+    "image_to_downgrade_FA" : "5.0.1-r3" 
 
 }

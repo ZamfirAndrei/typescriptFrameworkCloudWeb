@@ -430,7 +430,7 @@ export class NetworkPortPage {
     async checkAvailableVlans() {
 
         const available_vlans_text = await this.available_vlans.textContent()
-        console.log(await available_vlans_text)
+        console.log(available_vlans_text)
 
         const vlan_list = available_vlans_text.split(" - ")[1].trim()
         console.log(vlan_list.split(","))

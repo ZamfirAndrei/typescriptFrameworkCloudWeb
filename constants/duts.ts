@@ -33,4 +33,10 @@ const DUT4 : DUT [] = [
     
 ]
 
-export {DUTs, DUT1, DUT2, DUT3, DUT4}
+const DUT5 : DUT [] = [
+
+    {name : "FA2", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: "XSZG001N36RK"},
+    
+]
+
+export {DUTs, DUT1, DUT2, DUT3, DUT4, DUT5}

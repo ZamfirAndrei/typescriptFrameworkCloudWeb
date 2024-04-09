@@ -16,10 +16,13 @@ const config: PlaywrightTestConfig = {
     baseURL: "https://qa.cloud.cambiumnetworks.com/#/",
     headless : false,
     screenshot : "only-on-failure",
-    video : "retain-on-failure"
+    video : "retain-on-failure",
+    navigationTimeout: 40000,
+    actionTimeout: 20000
   },
 
   timeout: 60 * 1000 * 10,
+  // timeout: 3000,
   reporter : [["dot"],["html", {open : "never"}],["json", {open : "never"}]]
   
   

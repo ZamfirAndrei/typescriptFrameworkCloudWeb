@@ -3,7 +3,7 @@ import * as data from "../constants/constants.json"
 
 import { softwareUpdateFlow } from "../flows/softwareUpdateFlow";
 import { CloudObjects } from "../management/cloudObjects";
-import { DUTs, DUT1, DUT2, DUT3, DUT4 } from "../constants/duts";
+import { DUTs, DUT1, DUT2, DUT3, DUT4, DUT5 } from "../constants/duts";
 
 
 test.describe("SoftwareUpdate ->", async() => {
@@ -14,7 +14,8 @@ test.describe("SoftwareUpdate ->", async() => {
 
         await cloud.page.goto(`${baseURL}`)
         await cloud.login_obj.login(data.user, data.password)
-        await cloud.login_obj.selectAccount(data.account2)
+        // await cloud.login_obj.selectAccount(data.account2)
+        await cloud.login_obj.selectAccount(data.account1)
         // await cloud.page.waitForTimeout(2000)
         await cloud.page.waitForLoadState()
     })
@@ -31,7 +32,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test.only ("2.Test to verify if you can downgrade to an older software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
+    test ("2.Test to verify if you can downgrade to an older software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
         const softUpdateFlow = new softwareUpdateFlow(page)
@@ -125,6 +126,78 @@ test.describe("SoftwareUpdate ->", async() => {
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_upgrade)
         await softUpdateFlow.confirmDetails(DUT3[0].name, "Skipped", "Device is already running same version!", 1)
         await softUpdateFlow.confirmDetails(DUT4[0].name, "Skipped", "Device is already running same version!", 2)
+
+    })
+
+    test.only ("10.Test to verify if you can upgrade to a new software - Particular Switch - FA", async({page,baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const softUpdateFlow = new softwareUpdateFlow(page)
+
+        await softUpdateFlow.searchAndSelectDUT(DUT5[0].name)
+        await softUpdateFlow.updateDUT(data.image_to_upgrade_FA)
+        await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_upgrade_FA)
+        await softUpdateFlow.confirmUpgradeDowngrade(DUT5[0].name, data.image_to_upgrade_FA, 1, 210000)
+
+    })
+
+    test ("11.Test to verify if you can downgrade to an older software - Particular Switch - FA", async({page,baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const softUpdateFlow = new softwareUpdateFlow(page)
+
+        await softUpdateFlow.searchAndSelectDUT(DUT5[0].name)
+        await softUpdateFlow.updateDUT(data.image_to_downgrade_FA)
+        await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_downgrade_FA)
+        await softUpdateFlow.confirmUpgradeDowngrade(DUT5[0].name, data.image_to_downgrade_FA, 1, 210000)
+
+    })
+
+    test ("12.Test to verify if you can not upgrade/downgrade to the same software - Particular Switch - FA", async({page,baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const softUpdateFlow = new softwareUpdateFlow(page)
+
+        await softUpdateFlow.searchAndSelectDUT(DUT5[0].name)
+        await softUpdateFlow.updateDUT(data.image_to_upgrade_FA)
+        await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_upgrade_FA)
+        await softUpdateFlow.confirmDetails(DUT5[0].name, "Skipped", "Device is already running same version!", 1)
+
+    })
+
+    test ("13.Test to verify if you can upgrade to a new software - Switch Group - FA", async({page,baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const softUpdateFlow = new softwareUpdateFlow(page)
+
+        await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
+        await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_upgrade, 1)
+        await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_upgrade)
+        await softUpdateFlow.confirmUpgradeDowngrade(DUT4[0].name, data.image_to_upgrade, 1, 210000)
+
+    })
+
+    test ("14.Test to verify if you can downgrade to an older software - Switch Group - FA", async({page,baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const softUpdateFlow = new softwareUpdateFlow(page)
+
+        await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
+        await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_downgrade, 1)
+        await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_downgrade)
+        await softUpdateFlow.confirmUpgradeDowngrade(DUT4[0].name, data.image_to_downgrade, 1, 210000)
+
+    })
+
+    test ("15.Test to verify if you can not upgrade/downgrade to the same software - Switch Group - FA", async({page,baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const softUpdateFlow = new softwareUpdateFlow(page)
+
+        await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
+        await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_downgrade, 1)
+        await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_downgrade)
+        await softUpdateFlow.confirmDetails(DUT4[0].name, "Skipped", "Device is already running same version!", 1)
 
     })
 

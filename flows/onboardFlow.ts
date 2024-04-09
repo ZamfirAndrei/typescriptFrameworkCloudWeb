@@ -42,7 +42,7 @@ export class OnBoardFlow {
 
     }
 
-    async aproveDevice(index:number) {
+    async aproveDevice(index: number) {
 
         // Aproving the Device
 
@@ -54,39 +54,56 @@ export class OnBoardFlow {
         return status
     }
 
-    async confirmDeviceAlreadyOnboarded(index : number) {
+    async aproveDeviceBySerialNumber(switch_serial_number: string) {
+
+        // Aproving the Device
+
+        await this.cloud.page.reload()
+        await this.cloud.page.waitForTimeout(2000)
+        const status = await this.cloud.onboard_obj.approveDeviceBySerialNumber(switch_serial_number)
+        // console.log(status)
+
+        return status
+    }
+
+    async confirmDeviceAlreadyOnboarded(switch_serial_number : string) {
         
         // Checking the device Onboarding status before approve
 
-        const device_status_before = await this.cloud.onboard_obj.getOnboardingStatus(index)
+        // const device_status_before = await this.cloud.onboard_obj.getOnboardingStatus(index)
+        const device_status_before = await this.cloud.onboard_obj.getOnboardingStatusBySerialNumber(switch_serial_number)
 
         expect(device_status_before).toBe("Onboarded")
 
-        const status = await this.aproveDevice(index)
-        // console.log(status)
+        // const status = await this.aproveDevice(index)
+        const status = await this.aproveDeviceBySerialNumber(switch_serial_number)
+        console.log(status)
 
         expect(status).toBe(false)
  
         // Checking the device Onboarding status after approve
  
-         const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(index)
+        // const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(index)
+        const device_status_after = await this.cloud.onboard_obj.getOnboardingStatusBySerialNumber(switch_serial_number)
 
-         expect(device_status_after).toBe("Onboarded")
-         expect(device_status_before).toBe(device_status_after)
+        expect(device_status_after).toBe("Onboarded")
+        expect(device_status_before).toBe(device_status_after)
         
     }
 
-    async confirmDeviceOnboarded(index : number) {
+    async confirmDeviceOnboarded(switch_serial_number : string) {
         
         // Checking the device Onboarding status before approve
 
         await this.page.waitForTimeout(2000)
 
-        const device_status_before = await this.cloud.onboard_obj.getOnboardingStatus(1)
+        // const device_status_before = await this.cloud.onboard_obj.getOnboardingStatus(index)
+        const device_status_before = await this.cloud.onboard_obj.getOnboardingStatusBySerialNumber(switch_serial_number)
 
         expect(device_status_before).toBe("Waiting for Device")
 
-        const status = await this.aproveDevice(index)
+        // const status = await this.aproveDevice(index)
+        const status = await this.aproveDeviceBySerialNumber(switch_serial_number)
         console.log(status)
 
         expect(status).toBe(true)
@@ -95,7 +112,8 @@ export class OnBoardFlow {
 
         // Checking the device Onboarding status after 6 mins and after approve
  
-        const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(1)
+        // const device_status_after = await this.cloud.onboard_obj.getOnboardingStatus(index)
+        const device_status_after = await this.cloud.onboard_obj.getOnboardingStatusBySerialNumber(switch_serial_number)
 
         expect(device_status_after).toBe("Onboarded")
 
@@ -103,28 +121,29 @@ export class OnBoardFlow {
         
     }
 
-    async confirmDUTisAvailableInTheCloud(name : string, index : number) {
+    async confirmDUTisAvailableInTheCloud(switch_name : string) {
 
         // Checking the Device is added in the Cloud
 
         await this.cloud.toolbar_obj.clickDevicePage()
         await this.cloud.device_obj.clickSwitches()
         await this.cloud.page.waitForTimeout(2000)
-        await this.cloud.device_obj.searchToolbar(name)
+        await this.cloud.device_obj.searchToolbar(switch_name)
 
         const nr_of_devices = await this.cloud.device_obj.numberOfDevicesFound()
         // console.log(nr_of_devices)
 
-        const device_name = await this.cloud.device_obj.getDeviceName(1)
-        // console.log(device_name)
+        // const device_name = await this.cloud.device_obj.getDeviceName(index)
+        const device_name = await this.cloud.device_obj.getDeviceNameByName(switch_name)
+        console.log(device_name)
 
         expect(nr_of_devices).toBe("1")
-        expect(device_name).toBe(name)
+        expect(device_name).toBe(switch_name)
     }
 
-    async confirmDeleteDUTfromCloud(name : string) {
+    async confirmDeleteDUTfromCloud(switch_name : string) {
 
-        await this.cloud.device_obj.deleteDevice(name)
+        await this.cloud.device_obj.deleteDevice(switch_name)
         await this.cloud.page.waitForTimeout(3500)
 
         const [message_delete_1, message_delete_2] = await this.cloud.device_obj.getDeleteMessage()

@@ -33,20 +33,27 @@ export class OnBoardPage {
         await this.back_claim_device_button.click()
     }   
 
-    async getRowContent(index:number) {
+    async getRowContent(index: number) {
 
         const row = this.page.getByRole('row').nth(index)
 
         return row
     } 
 
-    async approveDevice(index:number) {
+    async getRowContentBySerialNumber(switch_serial_number: string) {
+
+        const row = this.page.locator("[role='row']", {hasText: `${switch_serial_number}`})
+
+        return row
+    }  
+
+    async approveDevice(index: number) {
 
         const row = await this.getRowContent(index)
         await row.locator('[class=" dt-actions"]').hover()
 
         const status = await this.actions.locator('[title="Approve Device"]').nth(index-1).isVisible()
-        console.log(status)
+        // console.log(status)
 
         if (await this.actions.locator('[title="Approve Device"]').nth(index-1).isVisible())
         {
@@ -60,14 +67,14 @@ export class OnBoardPage {
         return status
     }
     
-    async editDevice(index:number) {
+    async editDevice(index: number) {
 
         const row = await this.getRowContent(index)
         await row.locator('[class=" dt-actions"]').hover()
         await this.actions.locator('[class="cnico cnico-action-edit "]').nth(index-1).click()
     }
 
-    async deleteDevice(index:number, answer:string) {
+    async deleteDevice(index: number, answer: string) {
 
         const row = await this.getRowContent(index)
         await row.locator('[class=" dt-actions"]').hover()
@@ -92,4 +99,36 @@ export class OnBoardPage {
         
         return onboard_status?.trim()
     }
+
+    async getOnboardingStatusBySerialNumber(switch_serial_number : string) {
+
+        const row = await this.getRowContentBySerialNumber(switch_serial_number)
+        // console.log(await row.textContent())
+        const onboard_status = await row.locator('[data-column-id="status"]').textContent()
+        console.log(onboard_status?.trim())
+        
+        return onboard_status?.trim()
+    }
+
+    async approveDeviceBySerialNumber(switch_serial_number: string) {
+
+        const row = await this.getRowContentBySerialNumber(switch_serial_number)
+        await row.locator('[class=" dt-actions"]').hover()
+
+        const status = await row.locator('[class=" dt-actions"]').locator('[title="Approve Device"]').isVisible()
+        // console.log(status)
+
+        if (await row.locator('[class=" dt-actions"]').locator('[title="Approve Device"]').isVisible())
+        {
+            await row.locator('[class=" dt-actions"]').locator('[title="Approve Device"]').click()
+        }
+        else {
+
+            console.log("The device is already approved")
+        }
+
+        return status
+    }
+
+
 }
