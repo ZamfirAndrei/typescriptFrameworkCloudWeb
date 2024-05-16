@@ -1,4 +1,6 @@
 import { Page,Locator } from "@playwright/test"
+import { test, expect} from "@playwright/test";
+
 
 // This is the devices page of cnMaestro
 
@@ -11,6 +13,8 @@ export default class devicePage {
     private readonly NSEs: Locator = this.page.locator('[cns-auto="NSEs"]');
     private readonly check_box_device : Locator = this.page.locator('[type="checkbox"]')
     private readonly delete_button : Locator = this.page.locator('[title="Bulk Delete"]')
+    private readonly message_delete_1 = this.page.locator('[class="toaster"]').locator('[class="mr-auto"]')
+    private readonly message_delete_2 = this.page.locator('[class="toaster"]').locator('[id="cns-toaster-msg"]')
 
     constructor (public page:Page){
 
@@ -50,6 +54,7 @@ export default class devicePage {
 
         await this.page.locator('[type="search"]').nth(1).fill(device_name)
         await this.page.locator('[type="search"]').nth(1).press("Enter")
+        await this.page.waitForLoadState()
         await this.page.waitForTimeout(2000)
         await this.page.locator('[class="cn-link ng-binding"]').click()
     }
@@ -63,7 +68,7 @@ export default class devicePage {
         // console.log(text)
         const list_of_text = text?.split(":")
         // console.log(list_of_text)
-        const nr_of_devices_found = list_of_text[1].trim()
+        const nr_of_devices_found = list_of_text[1]?.trim()
         console.log(nr_of_devices_found)
 
         return nr_of_devices_found
@@ -113,7 +118,7 @@ export default class devicePage {
 
         const row = await this.getRowContent(index)
         const deviceNameText = await row.locator('[data-column-id="deviceName"]').textContent()
-        console.log(deviceNameText.trim());
+        console.log(deviceNameText?.trim());
         
 
         return (deviceNameText as string).trim()
@@ -138,7 +143,7 @@ export default class devicePage {
 
         const row = await this.getRowContent(index)
         const deviceMACText = await row.locator('[data-column-id="mac"]').textContent()
-        console.log(deviceMACText.trim());
+        console.log(deviceMACText?.trim());
         
 
         return (deviceMACText as string).trim()
@@ -150,7 +155,7 @@ export default class devicePage {
 
         const row = await this.getRowContent(index)
         const deviceSwitchGroupText = await row.locator('[data-column-id="swGroup"]').textContent()
-        console.log(deviceSwitchGroupText.trim());
+        console.log(deviceSwitchGroupText?.trim());
         
 
         return (deviceSwitchGroupText as string).trim()
@@ -162,7 +167,7 @@ export default class devicePage {
 
         const row = await this.getRowContent(index)
         const deviceStatusText = await row.locator('[data-column-id="healthStr"]').textContent()
-        console.log(deviceStatusText.trim());
+        console.log(deviceStatusText?.trim());
         
 
         return (deviceStatusText as string).trim()
@@ -189,5 +194,17 @@ export default class devicePage {
         // console.log(message_2)
 
         return [message_1?.trim(), message_2?.trim()]
+    }
+
+    async expectDeleteMessage1ToBe(delete_message: string) {
+
+        await expect(this.message_delete_1).toHaveText(delete_message,
+            {timeout: 30000})
+    }
+
+    async expectDeleteMessage2ToBe(delete_message: string) {
+
+        await expect(this.message_delete_2).toHaveText(delete_message,
+            {timeout: 30000})
     }
 }   

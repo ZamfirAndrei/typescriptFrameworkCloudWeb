@@ -5,6 +5,7 @@ import { CloudObjects } from "../management/cloudObjects";
 import { LoginFlow } from "../flows/loginFlow";
 import { OnBoardFlow } from "../flows/onboardFlow";
 import { DUTs, DUT1, DUT2, DUT3, DUT4, DUT5 } from "../constants/duts";
+import { onboard_status_device } from "../constants/mocks";
 
 
 
@@ -22,25 +23,25 @@ test.describe("OnBoard ->", async() => {
         await cloud.page.waitForLoadState()
     })
 
-    test.only ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
+    test ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
     
         const cloud = new CloudObjects(page)
         const onboardFlow = new OnBoardFlow(page)
 
-        await onboardFlow.onboardDevice(DUT5[0].serial_number)
-        await onboardFlow.confirmDeviceOnboarded(DUT5[0].serial_number)
-        await onboardFlow.confirmDUTisAvailableInTheCloud(DUT5[0].name)
+        await onboardFlow.onboardDevice(DUT3[0].serial_number)
+        await onboardFlow.confirmDeviceOnboarded(DUT3[0].serial_number, onboard_status_device[0].Onboarded)
+        await onboardFlow.confirmDeviceisAvailableInTheCloud(DUT3[0].name)
 
     })
 
-    test ("2.Test to verify if a DUT is already onboarded", async({page,baseURL}) => {
+    test.only ("2.Test to verify if a DUT is already onboarded", async({page,baseURL}) => {
     
         const cloud = new CloudObjects(page)
         const onboardFlow = new OnBoardFlow(page)
 
-        await onboardFlow.onboardDevice(DUT5[0].serial_number)
-        await onboardFlow.confirmDeviceAlreadyOnboarded(DUT5[0].name)
-        await onboardFlow.confirmDUTisAvailableInTheCloud(DUT5[0].name)
+        await onboardFlow.onboardDevice(DUT3[0].serial_number)
+        await onboardFlow.confirmDeviceIsOnboarded(DUT3[0].serial_number)
+        await onboardFlow.confirmDeviceisAvailableInTheCloud(DUT3[0].name)
 
     })
 
@@ -50,7 +51,7 @@ test.describe("OnBoard ->", async() => {
         const onboardFlow = new OnBoardFlow(page)
 
         await onboardFlow.goToSwitchesList()
-        await onboardFlow.confirmDeleteDUTfromCloud(DUT5[0].name)
+        await onboardFlow.confirmDeleteDeviceFromCloud(DUT3[0].name)
     
     })
 })

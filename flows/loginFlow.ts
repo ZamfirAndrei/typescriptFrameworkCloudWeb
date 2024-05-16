@@ -37,7 +37,7 @@ export class LoginFlow {
     async confirmLoginWithWrongCredentials() {
 
         const message : string | null = await this.cloud.page.locator('[class="alert alert-danger"]').textContent()
-        console.log(message.trim())
+        console.log(message?.trim())
 
         const page_title = await this.cloud.page.title()
         console.log(page_title)
@@ -51,7 +51,7 @@ export class LoginFlow {
     async confirmLoginWithoutPassword() {
 
         const message : string | null = await this.cloud.page.locator('[class="alert cs-instructions"]').textContent()
-        console.log(message.trim())
+        console.log(message?.trim())
 
         const alert : string  | null = await this.cloud.page.locator('[class="text-danger"]').textContent()
         console.log(alert?.trim())

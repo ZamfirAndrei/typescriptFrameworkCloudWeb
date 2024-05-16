@@ -1,4 +1,4 @@
-import { job_messages, mocks, message_soft_update, result_soft_update, sync_status_messages } from "./mocks-interface";
+import { job_messages, mocks, message_soft_update, result_soft_update, sync_status_messages, onboard_status_messages } from "./mocks-interface";
 
 const result_messages_list = ["Initiated", "Completed", "Skipped"]
 const messages_update_list = ["Initiated software update operation", "Successfully updated the device version to ", "Device is already running same version!"]
@@ -58,6 +58,7 @@ const job_message : job_messages[] = [
 
     {
         JobStartedSuccessfully: "Job started successfully",
+        DeviceDetailsAreSavedSuccessfully: "Device details are saved successfully.",
     }
 ]
 
@@ -70,4 +71,13 @@ const sync_status_device : sync_status_messages[] = [
     }
 ]
 
-export {mock1, mock2, mock3, result_update, message_update, job_message, sync_status_device}
+const onboard_status_device : onboard_status_messages[] = [
+
+    {
+        Onboarded : "Onboarded",
+        Waiting_for_Device : "Waitting for Device",
+        Waiting_for_Approval : "Waitting for Approval"
+    }
+]
+
+export {mock1, mock2, mock3, result_update, message_update, job_message, sync_status_device, onboard_status_device}

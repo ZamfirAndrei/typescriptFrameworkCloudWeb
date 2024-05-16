@@ -65,19 +65,4 @@ test.describe("Login ->", async() => {
         await loginFlow.introduceUserAndPassword(data.user, data.password)
         await loginFlow.confirmLoginWithProperCredentials()
     })
-    
-    // test.only ("5.Verify that you can check 'Remember Me' box", async({page,baseURL}) => {
-    
-    //     const cloud = new CloudObjects(page)
-    //     const loginFlow = new LoginFlow(page)
-    
-    //     await loginFlow.introduceUserAndPassword(data.user, data.password)
-
-    //     await loginFlow.confirmCheckBox()
-    //     await loginFlow.expectPageTitle("Log In / Cambium Networks Support")
-
-    //     await cloud.login_obj.clickSubmit()
-    //     await loginFlow.expectPageTitle("cnMaestro™")
-
-    // })
 })

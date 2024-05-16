@@ -137,14 +137,14 @@ test ("Creating a switch group", async({page,baseURL})=>{
     expect(message).toContain("Switch Group is created successfully")
     // expect(message).toContain("The specified profile name already exists")
     await addswitchgroup_obj.clickNetwork()
-    await addswitchgroup_obj.ShowAdvancedButton("Yes") // Nu reusesc cu butonul asta!
+    await addswitchgroup_obj.checkShowAdvancedButton() // Nu reusesc cu butonul asta!
    
     await network_obj.addVlan("10","zece")
     // await addswitchgroup_obj.ShowAdvancedButton("No")
-    await network_obj.addSpanningTree("MSTP")
+    await network_obj.changeSpanningTree("MSTP")
     await network_obj.enableSTP("Yes")
     await network_obj.choosePathCost("short")
-    await network_obj.addSpanningTree("RSTP")
+    await network_obj.changeSpanningTree("RSTP")
     await network_obj.choosePathCost("long")
     await network_obj.configureStpPriority("16384")
 

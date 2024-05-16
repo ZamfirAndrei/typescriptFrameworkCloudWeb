@@ -52,12 +52,49 @@ test.describe("SwitchGroup ->", async() => {
 
     })
 
-    test.only("4. Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
+    test("4.Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
         const switchgroupFlow = new switchGroupFlow(page)
 
         await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, job_message[0].JobStartedSuccessfully, 
+            sync_status_device[0].InSync)
+
+
+    })
+
+    test("5.Test to verify you can remove a DUT from a switch group", async({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const switchgroupFlow = new switchGroupFlow(page)
+
+        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, "None ", job_message[0].DeviceDetailsAreSavedSuccessfully, 
+            sync_status_device[0].NA)
+
+
+    })
+    // Added again the test to run test 7
+    test.only("6.Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const switchgroupFlow = new switchGroupFlow(page)
+
+        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, job_message[0].JobStartedSuccessfully, 
+            sync_status_device[0].InSync)
+
+
+    })
+
+    test("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const switchgroupFlow = new switchGroupFlow(page)
+
+        await switchgroupFlow.selectConfigurationPageOfTheSwitch(DUT3[0].name)
+        await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(mock1[0].switch_group_name)
+        await switchgroupFlow.changeSTPofTheSwitchGroup("RSTP")
+        await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
+        await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
             sync_status_device[0].InSync)
 
 

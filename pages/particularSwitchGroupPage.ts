@@ -13,7 +13,7 @@ export class ParticularSwitchGroupPage {
     private readonly statistics_menu : Locator = this.page.locator('[cns-auto="Statistics"]').nth(0)
     private readonly switches_menu : Locator = this.page.locator('[cns-auto="Switches"]')
     private readonly switch_ports_menu : Locator = this.page.locator('[cns-auto="Switch Ports"]')
-   
+    private readonly management_menu : Locator = this.page.locator('[title="Management"]')
 
     constructor(public page:Page) {
 
@@ -163,7 +163,7 @@ export class SwitchPortsPage {
         const admins_state = await admins_state_text.nth(i).textContent()
         console.log(admins_state?.trim()) 
 
-        return admins_state.trim()
+        return admins_state?.trim()
 
     }
 
@@ -198,7 +198,7 @@ export class SwitchPortsPage {
         const operational_state= await operational_state_text.nth(i).textContent()
         console.log(operational_state?.trim()) 
         
-        return operational_state.trim()
+        return operational_state?.trim()
     }
 
     async getType(port:string, switch_name:string) {
@@ -231,7 +231,7 @@ export class SwitchPortsPage {
         const type = await type_text.nth(i).textContent()
         console.log(await type?.trim())
 
-        return type.trim()
+        return type?.trim()
     }
 
     async getVLANs(port:string, switch_name:string) {
@@ -432,10 +432,10 @@ export class NetworkPortPage {
         const available_vlans_text = await this.available_vlans.textContent()
         console.log(available_vlans_text)
 
-        const vlan_list = available_vlans_text.split(" - ")[1].trim()
-        console.log(vlan_list.split(","))
+        const vlan_list = available_vlans_text?.split(" - ")[1].trim()
+        console.log(vlan_list?.split(","))
 
-        return vlan_list.split(",")
+        return vlan_list?.split(",")
     }
     
     async insertVlan(vlan:string) {
@@ -687,6 +687,29 @@ export class StatisticsPage {
         return switch_name_of_port
     }
     
+}
+
+export class SwitchesPage {
+
+    private readonly searchbar : Locator = this.page.locator('[placeholder="Search"]').nth(1)
+
+    constructor(public page: Page) {
+
+    }
+
+    async searchForSwitch(switch_name:string){
+
+        await this.searchbar.fill(switch_name)
+        await this.searchbar.press('Enter')
+        
+    }
+
+    async clickSwitch(switch_name:string) {
+
+        await this.searchForSwitch(switch_name)
+        await this.page.waitForTimeout(2000)
+        await this.page.locator('[title="View Dashboard Details"]').getByText(switch_name).click()
+    }
 }
 
 export class SoftwareUpgrade {

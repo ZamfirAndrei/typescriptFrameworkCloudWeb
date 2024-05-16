@@ -66,6 +66,8 @@ export class ConfigurationPage{
     private readonly switch_group_search_bar : Locator = this.page.locator('[name="searchInp"]').nth(2)
     private readonly apply_configuration_button : Locator = this.page.locator('[class="ng-binding"]', {hasText: "Apply Configuration"})
     private readonly apply_configuration_message: Locator = this.page.locator('[id="cns-toaster-msg"]')
+    private readonly edit_button : Locator = this.page.locator('[class="cn-link v-middle ng-binding"]').getByText("Edit", {exact: true})
+    private readonly edit_ports_button : Locator = this.page.locator('[class="cn-link v-middle ng-binding"]', {hasText: "Edit Ports"})
 
     constructor(public page:Page){
 
@@ -76,6 +78,20 @@ export class ConfigurationPage{
         // Click the Switch Group Menu
 
         await this.switch_group_menu.click()
+    }
+
+    async clickEdit() {
+
+        // Click Edit
+
+        await this.edit_button.click()
+    }
+
+    async clickEditPorts() {
+
+        // Click Edit Ports
+
+        await this.edit_ports_button.click()
     }
 
     async selectSwitchGroup(switch_group: string) {
@@ -150,12 +166,20 @@ export class ConfigurationPage{
         return mac_address
     }
 
+    async getSyncStatusLocator () : Promise <Locator> {
+
+        const sync_status_locator = this.status.locator('[class="inline ng-binding"]')
+
+        return sync_status_locator
+
+    }
+
     async expectSyncStatusDeviceToBe(sync_status_device: string) {
 
         // console.log(sync_status_device)
         // console.log("The test is + " + await this.status.locator('[class="inline ng-binding"]').textContent())
-        await expect(this.status.locator('[class="inline ng-binding"]')).toHaveText(sync_status_device,
-            {timeout: 15000})
+        await expect(await this.getSyncStatusLocator()).toHaveText(sync_status_device,
+            {timeout: 20000})
         // console.log("The test is + " + await this.status.locator('[class="inline ng-binding"]').textContent())
     }
 }

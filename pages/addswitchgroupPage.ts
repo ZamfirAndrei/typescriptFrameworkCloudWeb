@@ -5,12 +5,14 @@ import { Page, Locator } from "@playwright/test"
 
 export class addswitchgroupPage {
     
-    public readonly basic: Locator = this.page.locator('[title="Configure Switch Group Name, Description etc."]')
-    public readonly management: Locator = this.page.locator('[title="Configure SNTP, DNS, Administrator Access settings."]')
-    public readonly network: Locator = this.page.locator('[title="Configure VLANs, PBA, IP Routes, STP settings."]')
-    public readonly security: Locator = this.page.locator('[title="Configure RADIUS, ACL IP settings."]')
-    public readonly show_advanced: Locator = this.page.locator('[class="i-switch bg-info v-middle pull-right xmd-pull-none m-l-xs"]')
+    public readonly basic: Locator = this.page.locator('[title="Basic"]')
+    public readonly management: Locator = this.page.locator('[title="Management"]')
+    public readonly network: Locator = this.page.locator('[title="Network"]')
+    public readonly security: Locator = this.page.locator('[title="Security"]')
+    public readonly show_advanced: Locator = this.page.locator('[class="i-switch bg-primary v-middle pull-right xmd-pull-none m-l-xs"]')
     public readonly message_after_save : Locator = this.page.locator('[id="cns-toaster-msg"]')
+    public save_button : Locator = this.page.locator('[class="btn btn-primary w-xs m-r-sm ng-binding"]')
+    public disable_save_button : Locator = this.page.locator('[class="col-md-10 wrapper-sm b-l m-n form-actns"]').locator('[disabled="disabled"]')
 
     constructor (public page: Page) {
 
@@ -36,21 +38,39 @@ export class addswitchgroupPage {
         await this.security.click()
     }
 
-    async ShowAdvancedButton(answer:string) {
+    async checkShowAdvancedButton() {
 
-        if (answer == "Yes"){
-            await this.show_advanced.check()
-        }
-        else if (answer == "No")
-            await this.show_advanced.uncheck()
+       await this.show_advanced.check()
+        
     }
+
+    async unCheckShowAdvancedButton() {
+
+        await this.show_advanced.uncheck()
+         
+     }
 
     async clickSave() {
         
         // Saving the configuration of the Switch Group
 
-        await this.page.locator('[class="btn btn-primary w-xs m-r-sm ng-binding"]').click()
-        // console.log("The configuration has been saved")
+        await this.save_button.click()
+            
+    }
+
+    async checkIfSaveButtonIsEnabled() {
+
+        if (await this.disable_save_button.isVisible()){
+
+            console.log("The button is disabled")
+            return await this.disable_save_button.isVisible()
+        }
+        
+        else {
+
+            console.log("The button is enabled")
+            return await this.disable_save_button.isVisible()
+        }
     }
 
     async getMessageAfterSave() {
@@ -240,11 +260,11 @@ export class NetworkPage {
 
     }
 
-    async addSpanningTree(mode:string) {
+    async changeSpanningTree(mode:string) {
         
-        // Adding Spanning Tree
+        // Change Spanning Tree
 
-        await this.page.locator('[id="stpMode"]').click()
+        await this.stpdropdown.nth(1).click()
         // await this.page.selectOption('[class="dropdown-menu h-down"]',{
         //     label:mode
         // })
