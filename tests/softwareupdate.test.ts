@@ -13,9 +13,9 @@ test.describe("SoftwareUpdate ->", async() => {
         const cloud = new CloudObjects(page)
 
         await cloud.page.goto(`${baseURL}`)
-        await cloud.login_obj.login(data.user, data.password)
+        await cloud.loginObj.login(data.user, data.password)
         // await cloud.login_obj.selectAccount(data.account2)
-        await cloud.login_obj.selectAccount(data.account1)
+        await cloud.loginObj.selectAccount(data.account1)
         // await cloud.page.waitForTimeout(2000)
         await cloud.page.waitForLoadState()
     })
@@ -25,10 +25,10 @@ test.describe("SoftwareUpdate ->", async() => {
         const cloud = new CloudObjects(page)
         const softUpdateFlow = new softwareUpdateFlow(page)
 
-        await softUpdateFlow.searchAndSelectDUT(DUT4[0].name)
+        await softUpdateFlow.searchAndSelectDUT(DUT5[0].name)
         await softUpdateFlow.updateDUT(data.image_to_upgrade)
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_upgrade)
-        await softUpdateFlow.confirmUpgradeDowngrade(DUT4[0].name, data.image_to_upgrade, 1, 210000)
+        await softUpdateFlow.confirmUpgradeDowngrade(DUT5[0].name, data.image_to_upgrade, 1, 210000)
 
     })
 
@@ -44,15 +44,16 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test ("3.Test to verify if you can not upgrade/downgrade to the same software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
+    test.only ("3.Test to verify if you can not upgrade/downgrade to the same software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
         const softUpdateFlow = new softwareUpdateFlow(page)
 
-        await softUpdateFlow.searchAndSelectDUT(DUT4[0].name)
+        await softUpdateFlow.searchAndSelectDUT(DUT3[0].name)
         await softUpdateFlow.updateDUT(data.image_to_upgrade)
+        // await softUpdateFlow.confirmUpdateIsCompleted(1)
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_upgrade)
-        await softUpdateFlow.confirmDetails(DUT4[0].name, "Skipped", "Device is already running same version!", 1)
+        await softUpdateFlow.confirmDetails(DUT3[0].name, "Skipped", "Device is already running same version!", 1)
 
     })
 
@@ -129,7 +130,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test.only ("10.Test to verify if you can upgrade to a new software - Particular Switch - FA", async({page,baseURL}) => {
+    test ("10.Test to verify if you can upgrade to a new software - Particular Switch - FA", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
         const softUpdateFlow = new softwareUpdateFlow(page)

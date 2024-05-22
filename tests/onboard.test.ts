@@ -16,9 +16,9 @@ test.describe("OnBoard ->", async() => {
         const cloud = new CloudObjects(page)
 
         await cloud.page.goto(`${baseURL}`)
-        await cloud.login_obj.login(data.user, data.password)
+        await cloud.loginObj.login(data.user, data.password)
         // await cloud.login_obj.selectAccount(data.account2)
-        await cloud.login_obj.selectAccount(data.account1)
+        await cloud.loginObj.selectAccount(data.account1)
         // await cloud.page.waitForTimeout(2000)
         await cloud.page.waitForLoadState()
     })

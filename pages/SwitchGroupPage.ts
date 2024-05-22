@@ -6,169 +6,134 @@ import { escape } from "querystring"
 export default class switchgroupPage {
 
     private readonly searchbar: Locator = this.page.locator('[type="search"]').nth(1)
-    private readonly switchgroupstable: Locator = this.page.locator('[class="table-wrapper"]')
-    private readonly addswitchgroup: Locator = this.page.locator('[title="Add New Switch Group"]')
-    private readonly edit_switch_group : Locator = this.page.locator('[title="Edit"]')
-    private readonly delete_message: Locator = this.page.locator('[id="cns-toaster-msg"]')
+    private readonly switchGroupsTable: Locator = this.page.locator('[class="table-wrapper"]')
+    private readonly addSwitchGroup: Locator = this.page.locator('[title="Add New Switch Group"]')
+    private readonly editswitchGroupButton : Locator = this.page.locator('[title="Edit"]')
+    private readonly deleteMessage: Locator = this.page.locator('[id="cns-toaster-msg"]')
     
 
     constructor (public page: Page) {
 
     }
 
-    async searchSwitchGroup(switch_group_name: string) {
+    async searchSwitchGroup(switchGroupName: string) {
 
-        // Searching for a Swith Group
-
-        await this.searchbar.fill(switch_group_name)
+        await this.searchbar.fill(switchGroupName)
         await this.searchbar.press("Enter")
     }
 
-    async searchingForSwitchGroup(switch_group_name: string) {
+    async searchingForSwitchGroup(switchGroupName: string) {
 
-        // Searching for a Swith Group
-
-        await this.searchSwitchGroup(switch_group_name)
+        await this.searchSwitchGroup(switchGroupName)
         await this.page.waitForTimeout(2000)
 
-        if(await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switch_group_name}`}).isVisible()) {
+        if(await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switchGroupName}`}).isVisible()) {
 
-            console.log(`The Switch Group ${switch_group_name} exists`)
-            const switch_group = await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switch_group_name}`}).textContent()
-            return switch_group?.trim()
+            console.log(`The Switch Group ${switchGroupName} exists`)
+            const switchGroup = await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switchGroupName}`}).textContent()
+            return switchGroup?.trim()
         }
 
         else {
             
-            console.log(`The Switch Group ${switch_group_name} does not exist`)
+            console.log(`The Switch Group ${switchGroupName} does not exist`)
             return undefined
         }
         
     }
 
-    async clickSwitchGroup(switch_group_name:string){
+    async clickSwitchGroup(switchGroupName:string){
 
-        await this.searchbar.fill(switch_group_name)
+        await this.searchbar.fill(switchGroupName)
         await this.searchbar.press("Enter")
         await this.page.waitForTimeout(2000)
-        const switch_group = await this.page.locator('[class="cn-link ng-binding"]').getByText(switch_group_name)
-        await switch_group.click()
+        const switchGroup = this.page.locator('[class="cn-link ng-binding"]').getByText(switchGroupName)
+        await switchGroup.click()
     }
 
     async getNrOfSwitchGroups(){
 
-        // Getting the Nr. of Switch Groups
-
         await this.page.waitForTimeout(1500)
-        const nr_of_switch_groups_text = await this.page.locator('[class="dataTables_info"]').textContent()
-        // console.log(nr_of_switch_groups_text)
-        const nr_of_switch_groups = nr_of_switch_groups_text?.split(":")[1].trim()
-        console.log("The nr of switch groups is: " + nr_of_switch_groups);
+        const nrOfSwitchGroupsText = await this.page.locator('[class="dataTables_info"]').textContent()
+        const nrOfSwitchGroups = nrOfSwitchGroupsText?.split(":")[1].trim()
+        console.log("The nr of switch groups is: " + nrOfSwitchGroups);
         
-        return nr_of_switch_groups
+        return nrOfSwitchGroups
 
     }
     async getRowContent(index: number): Promise <Locator> {
 
-        // Getting the locator of the row
-
-        const row = this.switchgroupstable.getByRole('row').nth(index)
-        // console.log(await row.textContent())
+        const row = this.switchGroupsTable.getByRole('row').nth(index)
 
         return row
     }
 
-    async getSwitchGroupName(index:number): Promise <string> {
-
-        // Getting the Switch Group Name 
+    async getSwitchGroupName(index: number): Promise <string> {
 
        const row =  await this.getRowContent(index)
-       const name_switchgroup_text = await row.locator('[data-column-id="name"]').textContent()
-    //    console.log(name_switchgroup_text);
+       const nameSwitchgroupText = await row.locator('[data-column-id="name"]').textContent()
 
-       return (name_switchgroup_text as string).trim()
+       return (nameSwitchgroupText as string).trim()
     }  
 
-    async getSwitchGroupNrOfSwitches(index:number): Promise <string> {
-
-        // Getting the Switch Group Nr.of Switches
+    async getSwitchGroupNrOfSwitches(index: number): Promise <string> {
 
        const row =  await this.getRowContent(index)
-       const nr_of_switches_of_switchgroup_text = await row.locator('[data-column-id="col-1"]').textContent()
-    // console.log(nr_of_switches_of_switchgroup_text)
-       const nr_of_switches_of_switchgroup = nr_of_switches_of_switchgroup_text?.split("of")[1].trim()
-       console.log("The nr of switches is: " +nr_of_switches_of_switchgroup)
+       const nrOfSwitchesOfSwitchgroupText = await row.locator('[data-column-id="col-1"]').textContent()
+       const nrOfSwitchesOfSwitchgroup = nrOfSwitchesOfSwitchgroupText?.split("of")[1].trim()
        
-
-       return nr_of_switches_of_switchgroup as string
+       
+       return nrOfSwitchesOfSwitchgroup as string
         
     }
 
-    async getSwitchGroupNrOfflineSwitches(index:number): Promise <string> {
-
-        // Getting the Switch Group Nr.of Switches
+    async getSwitchGroupNrOfflineSwitches(index: number): Promise <string> {
 
        const row =  await this.getRowContent(index)
-       const nr_of_switches_offline_switchgroup_text = await row.locator('[data-column-id="col-1"]').textContent()
-    // console.log(nr_of_switches_offline_switchgroup_text)
-       const nr_of_switches_offline_switchgroup = nr_of_switches_offline_switchgroup_text?.split("of")[0].trim()
-       console.log("The nr of offline switches is: " + nr_of_switches_offline_switchgroup)
+       const nrOfSwitchesOfflineSwitchgroupText = await row.locator('[data-column-id="col-1"]').textContent()
+       const nrOfSwitchesOfflineSwitchgroup = nrOfSwitchesOfflineSwitchgroupText?.split("of")[0].trim()
        
-
-       return nr_of_switches_offline_switchgroup as string
+       return nrOfSwitchesOfflineSwitchgroup as string
         
     }
 
     async clickAddSwitchGroup(){
 
-        // Clicking the Add button
-
-        await this.addswitchgroup.click()
+        await this.addSwitchGroup.click()
     }
 
-    async getNrOfPorts(index:number) {
-
-        // Getting the number of Up Ports from the total
+    async getNrOfPorts(index: number) {
 
         const row = await this.getRowContent(index)
-        const nr_of_up_ports_text = await row.locator('[data-column-id="col-4"]').textContent()
-        // console.log(nr_of_up_ports_text);
-        const nr_of_up_ports = nr_of_up_ports_text?.split("of")[0].trim()
-        const nr_of_total_ports = nr_of_up_ports_text?.split("of")[1].trim()
-        console.log("Nr of Up Ports is: " + nr_of_up_ports)
-        console.log("Nr of Total Ports is: " + nr_of_total_ports)
+        const nrOfUpPortsText = await row.locator('[data-column-id="col-4"]').textContent()
+        const nrOfUpPorts = nrOfUpPortsText?.split("of")[0].trim()
+        const nrOfTotalPorts = nrOfUpPortsText?.split("of")[1].trim()
+        console.log("Nr of Up Ports is: " + nrOfUpPorts)
+        console.log("Nr of Total Ports is: " + nrOfTotalPorts)
 
-        return [nr_of_total_ports, nr_of_up_ports]
+        return [nrOfTotalPorts, nrOfUpPorts]
     }
 
-    async getNrOfVLANs(index:number) {
-
-        // Getting the number of Up Ports from the total
+    async getNrOfVLANs(index: number) {
 
         const row = await this.getRowContent(index)
-        const nr_of_vlans_text = await row.locator('[data-column-id="vlans"]').textContent()
-        console.log(nr_of_vlans_text);
-        const nr_of_vlans : string [] = (nr_of_vlans_text as string).split(",")
-        console.log("Nr of VLANs is: " + nr_of_vlans)
-        // console.log(nr_of_vlans[0], nr_of_vlans[1])
+        const nrOfVlansText = await row.locator('[data-column-id="vlans"]').textContent()
+        const nrOfVlans : string [] = (nrOfVlansText as string).split(",")
+        console.log("Nr of VLANs is: " + nrOfVlans)
 
-        return nr_of_vlans
+        return nrOfVlans
     }
 
     async getAutoSync(index:number) {
 
-        // Getting if Auto-Sync is enabled or not
-
         const row = await this.getRowContent(index)
-        const auto_sync = await row.locator('[data-column-id="autoSync"]').textContent()
-        console.log("Auto-sync is: " + auto_sync);
+        const autoSync = await row.locator('[data-column-id="autoSync"]').textContent()
+        console.log("Auto-sync is: " + autoSync);
         
-        return auto_sync
+        return autoSync
     }
 
     async deleteSwitchGroup(index:number) {
-
-        // Deleting a Switch Group using the index of the row
 
         const row = await this.getRowContent(index)
         await row.locator('[title="Delete"]').click()
@@ -176,47 +141,40 @@ export default class switchgroupPage {
         await this.page.locator('[class="btn btn-primary w-xs"]').click()
         console.log(`The Switch Group from Row ${index} has been deleted`)
 
-        const message = await this.delete_message.textContent()
-        // console.log(message)
+        const message = await this.deleteMessage.textContent()
 
         return message?.trim()
     }
 
-    async deleteSwitchGroupByName(switch_group_name: string) {
+    async deleteSwitchGroupByName(switchGroupName: string) {
 
-        // Deleting a Switch Group using the name of the switch group
-
-        const switch_group = await this.searchingForSwitchGroup(switch_group_name)
-        // console.log(switch_group)
+        const switchGroup = await this.searchingForSwitchGroup(switchGroupName)
         
-        if (switch_group == switch_group_name && switch_group != undefined) {
+        if (switchGroup == switchGroupName && switchGroup != undefined) {
 
             await this.page.locator('[title="Delete"]').click()
 
             await this.page.locator('[class="btn btn-primary w-xs"]').click()
-            console.log(`The Switch Group${switch_group_name} has been deleted`)
+            console.log(`The Switch Group${switchGroupName} has been deleted`)
 
-            const message = await this.delete_message.textContent()
-            // console.log(message)
+            const message = await this.deleteMessage.textContent()
 
             return message?.trim()
         }
 
         else {
 
-            console.log(`The Switch Group${switch_group_name} does not exists`)
+            console.log(`The Switch Group${switchGroupName} does not exists`)
         }
 
     } 
 
+    async editSwitchGroup(switchGroupName:string) {
 
-    async editSwitchGroup(switch_group_name:string) {
-
-        // Editing a Switch Group
-
-        await this.searchSwitchGroup(switch_group_name)
+        await this.searchSwitchGroup(switchGroupName)
+        await this.page.waitForLoadState()
         await this.page.waitForTimeout(2000)
-        await this.edit_switch_group.click()
+        await this.editswitchGroupButton.click()
     }
 
 }

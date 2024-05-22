@@ -13,84 +13,59 @@ export default class homePage {
     }
     
     async getNumberOfDevices() {
-        
-        // Getting the number of devices from the panel of the home page
 
-        var nr_of_devices = await this.devicePanel.locator('[class="text-center text-ellipsis"]').nth(0).textContent()
+        var nrOfDevices = await this.devicePanel.locator('[class="text-center text-ellipsis"]').nth(0).textContent()
         var tete = await this.devicePanel.locator('[class="text-center text-ellipsis"]').nth(0).getAttribute("title")
         // same thing as above
         // var tete2 = await devicesPanel.locator('[class="text-center text-ellipsis"]').nth(0) 
-        console.log(nr_of_devices)
-        // console.log(tete)
         
-        return nr_of_devices
+        return nrOfDevices
     }
 
     async getNumberOfDevicesOffline() {
 
-        // Getting the number of offline devices from the panel of the home page
+        const nrOfDevicesOffline = await this.devicePanel.locator('[class="text-center text-ellipsis"]').nth(1).textContent()
 
-        const nr_of_devices_offline = await this.devicePanel.locator('[class="text-center text-ellipsis"]').nth(1).textContent()
-        console.log(nr_of_devices_offline)
-
-        return nr_of_devices_offline
+        return nrOfDevicesOffline
     } 
 
     async getNumberOfDevicesOnboarding() {
 
-        // Getting the number of offline devices from the panel of the home page
+        const nrOfDevicesOnboarding = await this.devicePanel.locator('[class="text-center bg-soft-blue"]').textContent()
 
-        const nr_of_devices_onboarding = await this.devicePanel.locator('[class="text-center bg-soft-blue"]').textContent()
-        console.log(nr_of_devices_onboarding)
-
-        return nr_of_devices_onboarding
+        return nrOfDevicesOnboarding
     } 
 
     async getMajorAlarms() {
 
-        // Getting the number of major alarms
+        const nrOfMajorAlarmsText = await this.alarmPanel.locator('[cns-auto="majorAlarmsCount"]').textContent()
+        const nrOfMajorAlarms = nrOfMajorAlarmsText?.split("Major")[0]
 
-        const nr_of_major_alarms_text = await this.alarmPanel.locator('[cns-auto="majorAlarmsCount"]').textContent()
-        // console.log(nr_of_major_alarms_text?.split("Major")[0])
-        const nr_of_major_alarms = nr_of_major_alarms_text?.split("Major")[0]
-        console.log(nr_of_major_alarms)
-
-        return nr_of_major_alarms
+        return nrOfMajorAlarms
     }
 
     async getMinorAlarms() {
 
-        // Getting the number of minor alarms
+        const nrOfMinorAlarmsText = await this.alarmPanel.locator('[cns-auto="minorAlarmsCount"]').textContent()
+        const nrOfMinorAlarms = nrOfMinorAlarmsText?.split("Minor")[0]
 
-        const nr_of_minor_alarms_text = await this.alarmPanel.locator('[cns-auto="minorAlarmsCount"]').textContent()
-        // console.log(nr_of_minor_alarms_text?.split("Minor")[0])
-        const nr_of_minor_alarms = nr_of_minor_alarms_text?.split("Minor")[0]
-        console.log(nr_of_minor_alarms)
-
-        return nr_of_minor_alarms
+        return nrOfMinorAlarms
     }
 
     async getCriticalAlarms() {
 
-        // Getting the number of critical alarms
+        const nrOfCriticalAlarmsText = await this.alarmPanel.locator('[cns-auto="criticalAlarmsCount"]').textContent()
+        const nrOfCriticalAlarms = nrOfCriticalAlarmsText?.split("Critical")[0]
 
-        const nr_of_critical_alarms_text = await this.alarmPanel.locator('[cns-auto="criticalAlarmsCount"]').textContent()
-        // console.log(nr_of_critical_alarms_text?.split("Critical")[0])
-        const nr_of_critical_alarms = nr_of_critical_alarms_text?.split("Critical")[0]
-        console.log(nr_of_critical_alarms)
-
-        return nr_of_critical_alarms
+        return nrOfCriticalAlarms
     }
 
 
     async getSwitchGroupsNumber() {
 
-        // Getting the number of switch groups from the account
+        const nrOfSwitchGroups = await this.systemDetailsPanel.locator('[class="widget-text-ellipsis"]').nth(4).textContent()
 
-        const nr_of_switch_groups = await this.systemDetailsPanel.locator('[class="widget-text-ellipsis"]').nth(4).textContent()
-        console.log(nr_of_switch_groups)
-
-        return nr_of_switch_groups
+        return nrOfSwitchGroups
     }
     
 }

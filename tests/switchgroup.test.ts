@@ -15,9 +15,9 @@ test.describe("SwitchGroup ->", async() => {
         const cloud = new CloudObjects(page)
 
         await cloud.page.goto(`${baseURL}`)
-        await cloud.login_obj.login(data.user, data.password)
+        await cloud.loginObj.login(data.user, data.password)
         // await cloud.login_obj.selectAccount(data.account2)
-        await cloud.login_obj.selectAccount(data.account1)
+        await cloud.loginObj.selectAccount(data.account1)
         await cloud.page.waitForLoadState()
     })
 
@@ -74,7 +74,7 @@ test.describe("SwitchGroup ->", async() => {
 
     })
     // Added again the test to run test 7
-    test.only("6.Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
+    test("6.Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
         const switchgroupFlow = new switchGroupFlow(page)
@@ -85,17 +85,33 @@ test.describe("SwitchGroup ->", async() => {
 
     })
 
-    test("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
+    test.only("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
         const switchgroupFlow = new switchGroupFlow(page)
 
-        await switchgroupFlow.selectConfigurationPageOfTheSwitch(DUT3[0].name)
-        await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(mock1[0].switch_group_name)
+        await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
         await switchgroupFlow.changeSTPofTheSwitchGroup("RSTP")
         await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
             sync_status_device[0].InSync)
+        
+
+
+    })
+
+    test("8.Test to verify you can modify the Priority of a Instance in PVRST", async({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const switchgroupFlow = new switchGroupFlow(page)
+
+        await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
+        await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")
+        // await cloud.networkSwitchgroupObj.configureStpPriorityPVRST("1"")
+        // await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
+        // await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
+        //     sync_status_device[0].InSync)
+        
 
 
     })

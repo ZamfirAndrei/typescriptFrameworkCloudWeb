@@ -1,13 +1,14 @@
 import { Page, Locator } from "@playwright/test"
 import { waitForDebugger } from "inspector"
+import { test, expect} from "@playwright/test";
 
 export class JobsPage {
 
-    private readonly configuration_update_menu = this.page.locator('[cns-auto="Configuration Update"]')
-    private readonly software_update_menu = this.page.locator('[cns-auto="Software Update"]')
-    private readonly reports_menu = this.page.locator('[cns-auto="Reports"]')
-    private readonly actions_menu = this.page.locator('[cns-auto="Actions"]')
-    private readonly show_more = this.page.locator('[title="Show More"]')
+    private readonly configurationUpdateMenu = this.page.locator('[cns-auto="Configuration Update"]')
+    private readonly softwareUpdateMenu = this.page.locator('[cns-auto="Software Update"]')
+    private readonly reportsMenu = this.page.locator('[cns-auto="Reports"]')
+    private readonly actionsMenu = this.page.locator('[cns-auto="Actions"]')
+    private readonly showMore = this.page.locator('[title="Show More"]')
 
     constructor(public page: Page) {
 
@@ -15,46 +16,60 @@ export class JobsPage {
 
     async clickConfigurationUpdate(){
 
-        await this.configuration_update_menu.click()
+        await this.configurationUpdateMenu.click()
     }
 
     async clickSoftwareUpdate(){
 
-        await this.software_update_menu.click()
+        await this.softwareUpdateMenu.click()
     }
 
     async clickReports(){
 
-        await this.reports_menu.click()
+        await this.reportsMenu.click()
     }
 
     async clickActions(){
 
-        await this.actions_menu.click()
+        await this.actionsMenu.click()
     }
 
 }
 
 export class ConfigurationUpdatePage{
 
-    private readonly show_more = this.page.locator('[title="Show More"]')
-
+    private readonly showMore = this.page.locator('[title="Show More"]')
+    
     constructor(public page:Page) {
 
     }
 
-    async getRowContent(index:number) {
+    async getRowContent(index: number) : Promise <Locator> {
 
-        const row = await this.page.getByRole('row').nth(index)
+        const row = this.page.getByRole('row').nth(index)
 
         return row
+    }
+    
+    private getRowContentBy = (index: number)  => {
+
+        const row = this.page.locator('[role="row"]').nth(index)
+
+        return row
+    }
+
+    private getStatusLocator = (index: number) => {
+
+        const row = this.getRowContentBy(index)
+        const statusLocator = row.locator('[class="pull-left col-xs-4 no-padder ng-binding ng-scope"]')
+
+        return statusLocator
     }
 
     async getId(index:number) {
 
         const row = await this.getRowContent(index)
         const id = await row.locator('[data-column-id="displayId"]').textContent()
-        // console.log(id?.trim())
 
         return id?.trim()
     }
@@ -63,7 +78,6 @@ export class ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const target = await row.locator('[data-column-id="target"]').textContent()
-        // console.log(target?.trim())
 
         return target?.trim()
     }
@@ -71,28 +85,25 @@ export class ConfigurationUpdatePage{
     async getCreatedBy(index:number) {
 
         const row = await this.getRowContent(index)
-        const created_by = await row.locator('[data-column-id="Created_By"]').textContent()
-        // console.log(created_by?.trim())
+        const createdBy = await row.locator('[data-column-id="Created_By"]').textContent()
 
-        return created_by?.trim()
+        return createdBy?.trim()
     }
 
     async getCreatedOn(index:number) {
 
         const row = await this.getRowContent(index)
-        const created_on = await row.locator('[data-column-id="Created_On"]').textContent()
-        // console.log(created_on?.trim())
+        const createdOn = await row.locator('[data-column-id="Created_On"]').textContent()
 
-        return created_on?.trim()
+        return createdOn?.trim()
     }
 
     async getCompletedOn(index:number) {
 
         const row = await this.getRowContent(index)
-        const completed_on = await row.locator('[data-column-id="completedOn"]').textContent()
-        // console.log(completed_on?.trim())
+        const completedOn = await row.locator('[data-column-id="completedOn"]').textContent()
 
-        return completed_on?.trim()
+        return completedOn?.trim()
     }
 
     async getStatus(index:number) {
@@ -101,8 +112,6 @@ export class ConfigurationUpdatePage{
         const stat = await row.locator('[data-column-id="state"]').textContent()
         const status = stat?.split(":")[0]
 
-        // console.log(status?.trim())
-
         return status?.trim()
     }
 
@@ -110,7 +119,6 @@ export class ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const details = await row.locator('[data-column-id="details"]').textContent()
-        // console.log(details?.trim())
 
         return details?.trim()
     }
@@ -119,13 +127,12 @@ export class ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         await row.locator('[data-column-id="state"]').hover()
-        await this.show_more.nth(index-1).click()
+        await this.showMore.nth(index-1).click()
     }
 
     async getMessageUpdate(index: number) {
 
         const message = await this.page.locator('[data-column-id="devMsg"]').nth(index).locator('[class="ng-binding"]').textContent()
-        // console.log(message?.trim())
 
         return message?.trim()
     }
@@ -133,7 +140,6 @@ export class ConfigurationUpdatePage{
     async getDevice(index: number) {
 
         const device = await this.page.locator('[data-column-id="displayName"]').nth(index).textContent()
-        // console.log(device?.trim())
 
         return device?.trim()
     }
@@ -141,10 +147,16 @@ export class ConfigurationUpdatePage{
     async getResult(index: number) {
 
         const result = await this.page.locator('[data-column-id="devSts"]').nth(index).textContent()
-        // console.log(result?.trim())
 
         return result?.trim()
     }
+
+    async expectJobStatusToBeCompleted (index : number) {
+
+        await expect(this.getStatusLocator(index)).toHaveText('Completed: ', {timeout: 20000})
+
+    }
+
 }
 
 // Using OOP inheritence to get the methods from ConfigurationUpdatePage Class
@@ -160,7 +172,6 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const details = await row.locator('[data-column-id="eType"]').textContent()
-        // console.log(details?.trim())
 
         return details?.trim()
     }
@@ -169,8 +180,7 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const imageType = await row.locator('[data-column-id="imageType"]').textContent()
-        // console.log(imageType?.trim())
-
+        
         return imageType?.trim()
     }
     
@@ -178,25 +188,22 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
 
         const row = await this.getRowContent(index)
         const target = await row.locator('[data-column-id="newSV"]').textContent()
-        // console.log(target?.trim())
 
         return target?.trim()
     }
 
     async getLastUpdate(index: number) {
 
-        const last_update = await this.page.locator('[data-column-id="initTs"]').nth(index).textContent()
-        // console.log(last_update?.trim())
+        const lastUpdate = await this.page.locator('[data-column-id="initTs"]').nth(index).textContent()
 
-        return last_update?.trim() 
+        return lastUpdate?.trim() 
     }
 
     async getOriginalVersion(index: number) {
 
-        const last_update = await this.page.locator('[data-column-id="actSw"]').nth(index).textContent()
-        // console.log(last_update?.trim())
+        const lastUpdate = await this.page.locator('[data-column-id="actSw"]').nth(index).textContent()
 
-        return last_update?.trim() 
+        return lastUpdate?.trim() 
     }
 
 }

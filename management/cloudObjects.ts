@@ -7,7 +7,7 @@ import switchgroupPage from "../pages/SwitchGroupPage";
 // import addswitchgroupPage from "../pages/addswitchgroupPage";
 import {  addswitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
 import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
-import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage, SoftwareUpgrade, SwitchesPage} from "../pages/particularSwitchGroupPage";
+import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage, SoftwareUpgrade, SwitchesPage, ConfigurationPageSwitchGroup, NetworkPageSwitchGroup} from "../pages/particularSwitchGroupPage";
 
 import * as data from "../constants/constants.json"
 import { JobsPage, ConfigurationUpdatePage, JobsSoftwareUpdatePage } from "../pages/jobsPage";
@@ -17,61 +17,65 @@ export class CloudObjects {
 
     // Declaring the objects
 
-    public readonly toolbar_obj : toolbarPage
-    public readonly login_obj : loginPage
-    public readonly home_obj : homePage
-    public readonly switchgroup_obj : switchgroupPage
-    public readonly addswitchgroup_obj : addswitchgroupPage
-    public readonly basic_obj : BasicPage
-    public readonly mngm_obj : ManagementPage
-    public readonly network_obj : NetworkPage
-    public readonly part_device : ParticularDevicePage
-    public readonly device_obj : devicePage
-    public readonly conf_obj : ConfigurationPage
-    public readonly soft_update : SoftwareUpdatePage
-    public readonly tools_obj : ToolsPage
-    public readonly part_switchgroup_obj : ParticularSwitchGroupPage
-    public readonly switchports_obj : SwitchPortsPage
-    public readonly port_obj : PortPage
-    public readonly basic_port_obj : PhysicalPortPage
-    public readonly network_port_obj : NetworkPortPage
-    public readonly statistics_obj : StatisticsPage
-    public readonly jobs_obj : JobsPage
-    public readonly config_obj : ConfigurationUpdatePage
-    public readonly jobs_softupdate_obj : JobsSoftwareUpdatePage
-    public readonly onboard_obj : OnBoardPage
-    public readonly switch_group_softupdate : SoftwareUpgrade
-    public readonly switches_obj : SwitchesPage
+    public readonly toolbarObj : toolbarPage
+    public readonly loginObj : loginPage
+    public readonly homeObj : homePage
+    public readonly switchgroupObj : switchgroupPage
+    public readonly addSwitchgroupObj : addswitchgroupPage
+    public readonly basicObj : BasicPage
+    public readonly mngmObj : ManagementPage
+    public readonly networkObj : NetworkPage
+    public readonly partDeviceObj : ParticularDevicePage
+    public readonly deviceObj : devicePage
+    public readonly confObj : ConfigurationPage
+    public readonly softUpdate : SoftwareUpdatePage
+    public readonly toolsObj : ToolsPage
+    public readonly partSwitchgroupObj : ParticularSwitchGroupPage
+    public readonly switchportsObj : SwitchPortsPage
+    public readonly portObj : PortPage
+    public readonly basicPortObj : PhysicalPortPage
+    public readonly networkPortObj : NetworkPortPage
+    public readonly statisticsObj : StatisticsPage
+    public readonly jobsObj : JobsPage
+    public readonly configObj : ConfigurationUpdatePage
+    public readonly jobsSoftupdateObj : JobsSoftwareUpdatePage
+    public readonly onboardObj : OnBoardPage
+    public readonly switchGroupSoftupdate : SoftwareUpgrade
+    public readonly switchesObj : SwitchesPage
+    public readonly configSwitchgroupObj : ConfigurationPageSwitchGroup
+    public readonly networkSwitchgroupObj : NetworkPageSwitchGroup
 
     constructor(public page:Page) {
 
         // Instantiating objects
         
-        this.toolbar_obj = new toolbarPage(this.page)
-        this.login_obj = new loginPage(this.page)
-        this.home_obj = new homePage(this.page)
-        this.switchgroup_obj = new switchgroupPage(this.page)
-        this.addswitchgroup_obj = new addswitchgroupPage(this.page)
-        this.basic_obj = new BasicPage(this.page)
-        this.mngm_obj = new ManagementPage(this.page)
-        this.network_obj = new NetworkPage(this.page)
-        this.part_device = new ParticularDevicePage(this.page)
-        this.device_obj = new devicePage(this.page)
-        this.conf_obj = new ConfigurationPage(this.page)
-        this.soft_update = new SoftwareUpdatePage(this.page)
-        this.tools_obj = new ToolsPage(this.page)
-        this.part_switchgroup_obj = new ParticularSwitchGroupPage(this.page)
-        this.switchports_obj = new SwitchPortsPage(this.page) 
-        this.port_obj = new PortPage(this.page)
-        this.basic_port_obj = new PhysicalPortPage(this.page)
-        this.network_port_obj = new NetworkPortPage(this.page)
-        this.statistics_obj = new StatisticsPage(this.page)
-        this.jobs_obj = new JobsPage(this.page)
-        this.config_obj = new ConfigurationUpdatePage(this.page)
-        this.jobs_softupdate_obj = new JobsSoftwareUpdatePage(this.page)
-        this.onboard_obj = new OnBoardPage(this.page)
-        this.switch_group_softupdate = new SoftwareUpgrade(this.page)
-        this.switches_obj = new SwitchesPage(this.page)
+        this.toolbarObj = new toolbarPage(this.page)
+        this.loginObj = new loginPage(this.page)
+        this.homeObj = new homePage(this.page)
+        this.switchgroupObj = new switchgroupPage(this.page)
+        this.addSwitchgroupObj = new addswitchgroupPage(this.page)
+        this.basicObj = new BasicPage(this.page)
+        this.mngmObj = new ManagementPage(this.page)
+        this.networkObj = new NetworkPage(this.page)
+        this.partDeviceObj = new ParticularDevicePage(this.page)
+        this.deviceObj = new devicePage(this.page)
+        this.confObj = new ConfigurationPage(this.page)
+        this.softUpdate = new SoftwareUpdatePage(this.page)
+        this.toolsObj = new ToolsPage(this.page)
+        this.partSwitchgroupObj = new ParticularSwitchGroupPage(this.page)
+        this.switchportsObj = new SwitchPortsPage(this.page) 
+        this.portObj = new PortPage(this.page)
+        this.basicPortObj = new PhysicalPortPage(this.page)
+        this.networkPortObj = new NetworkPortPage(this.page)
+        this.statisticsObj = new StatisticsPage(this.page)
+        this.jobsObj = new JobsPage(this.page)
+        this.configObj = new ConfigurationUpdatePage(this.page)
+        this.jobsSoftupdateObj = new JobsSoftwareUpdatePage(this.page)
+        this.onboardObj = new OnBoardPage(this.page)
+        this.switchGroupSoftupdate = new SoftwareUpgrade(this.page)
+        this.switchesObj = new SwitchesPage(this.page)
+        this.configSwitchgroupObj = new ConfigurationPageSwitchGroup(this.page)
+        this.networkSwitchgroupObj = new NetworkPageSwitchGroup(this.page)
 
     }
 }

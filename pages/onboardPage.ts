@@ -5,35 +5,35 @@ import { test, expect} from "@playwright/test";
 
 export class OnBoardPage {
 
-    private readonly claim_device_button : Locator = this.page.locator('[title="Claim device from cnMaestro"]')
+    private readonly claimDeviceButton : Locator = this.page.locator('[title="Claim device from cnMaestro"]')
     private readonly claim_device_box : Locator = this.page.locator('[id="sns"]')
-    private readonly claim_device_button_final : Locator = this.page.locator('[cns-auto="claimDeviceBtn"]')
-    private readonly close_claim_device_button : Locator = this.page.locator('[cns-auto="closeBtn"]')
-    private readonly back_claim_device_button : Locator = this.page.locator('[cns-auto="backBtn"]')
+    private readonly claimDeviceButtonFinal : Locator = this.page.locator('[cns-auto="claimDeviceBtn"]')
+    private readonly closeClaimDeviceButton : Locator = this.page.locator('[cns-auto="closeBtn"]')
+    private readonly backClaimDeviceButton : Locator = this.page.locator('[cns-auto="backBtn"]')
     private readonly actions : Locator = this.page.locator('[class=" dt-actions"]')
-    private readonly claim_device_info : Locator = this.page.locator('[class="inline m-t-sm ng-scope"]')
+    private readonly claimDeviceInfo : Locator = this.page.locator('[class="inline m-t-sm ng-scope"]')
     
 
     constructor(public page:Page) {
 
     }
 
-    async claimDevice(serial_number:string) {
+    async claimDevice(serialNumber:string) {
 
-        await this.claim_device_button.click()
+        await this.claimDeviceButton.click()
         // await this.page.waitForTimeout(1500)
-        await this.claim_device_box.fill(serial_number)
-        await this.claim_device_button_final.click()
+        await this.claim_device_box.fill(serialNumber)
+        await this.claimDeviceButtonFinal.click()
     }
 
     async closeClaimDevice() {
 
-        await this.close_claim_device_button.click()
+        await this.closeClaimDeviceButton.click()
     }  
     
     async backClaimDevice() {
 
-        await this.back_claim_device_button.click()
+        await this.backClaimDeviceButton.click()
     }   
 
     async getRowContent(index: number) {
@@ -43,9 +43,9 @@ export class OnBoardPage {
         return row
     } 
 
-    async getRowContentBySerialNumber(switch_serial_number: string) {
+    async getRowContentBySerialNumber(switchSerialNumber: string) {
 
-        const row = this.page.locator("[role='row']", {hasText: `${switch_serial_number}`})
+        const row = this.page.locator("[role='row']", {hasText: `${switchSerialNumber}`})
 
         return row
     }  
@@ -56,7 +56,6 @@ export class OnBoardPage {
         await row.locator('[class=" dt-actions"]').hover()
 
         const status = await this.actions.locator('[title="Approve Device"]').nth(index-1).isVisible()
-        // console.log(status)
 
         if (await this.actions.locator('[title="Approve Device"]').nth(index-1).isVisible())
         {
@@ -97,56 +96,53 @@ export class OnBoardPage {
     async getOnboardingStatus(index : number) {
 
         const row = await this.getRowContent(index)
-        const onboard_status = await row.locator('[data-column-id="status"]').textContent()
-        const onboard_status_locator = row.locator('[data-column-id="status"]')
-        console.log(onboard_status?.trim())
-        
-        return onboard_status?.trim()
+        const onboardStatus = await row.locator('[data-column-id="status"]').textContent()
+
+        return onboardStatus?.trim()
     }
 
 
-    async getOnboardingStatusBySerialNumber(switch_serial_number : string) {
+    async getOnboardingStatusBySerialNumber(switchSerialNumber : string) {
 
-        const row = await this.getRowContentBySerialNumber(switch_serial_number)
+        const row = await this.getRowContentBySerialNumber(switchSerialNumber)
         // console.log(await row.textContent())
-        const onboard_status = await row.locator('[data-column-id="status"]').textContent()
-        console.log(onboard_status?.trim())
+        const onboardStatus = await row.locator('[data-column-id="status"]').textContent()
+        console.log(onboardStatus?.trim())
         
-        return onboard_status?.trim()
+        return onboardStatus?.trim()
     }
 
     // Using functions without async. Are doing the same thing as the async ones
 
-    private getRowContentByserialNumber = (switch_serial_number: string) =>{
+    private getRowContentByserialNumber = (switchSerialNumber: string) =>{
 
-        const row = this.page.locator("[role='row']", {hasText: `${switch_serial_number}`})
+        const row = this.page.locator("[role='row']", {hasText: `${switchSerialNumber}`})
         
         return row
     }
 
-    private getOnboardingStatusLocator = (serial_number : string) => {
+    private getOnboardingStatusLocator = (serialNumber : string) => {
 
-        const row =  this.getRowContentByserialNumber(serial_number)
-        const onboard_status_locator = row.locator('[data-column-id="status"]')
+        const row =  this.getRowContentByserialNumber(serialNumber)
+        const onboardStatusLocator = row.locator('[data-column-id="status"]')
         
-        return onboard_status_locator
+        return onboardStatusLocator
     }
 
-    async getOnboardingstatusLocator (serial_number : string) : Promise <Locator>  {
+    async getOnboardingstatusLocator (serialNumber : string) : Promise <Locator>  {
 
-        const row = await this.getRowContentBySerialNumber(serial_number)
-        const onboard_status_locator = row.locator('[data-column-id="status"]')
+        const row = await this.getRowContentBySerialNumber(serialNumber)
+        const onboardStatusLocator = row.locator('[data-column-id="status"]')
         
-        return onboard_status_locator
+        return onboardStatusLocator
     }
 
-    async approveDeviceBySerialNumber(switch_serial_number: string) {
+    async approveDeviceBySerialNumber(switchSerialNumber: string) {
 
-        const row = await this.getRowContentBySerialNumber(switch_serial_number)
+        const row = await this.getRowContentBySerialNumber(switchSerialNumber)
         await row.locator('[class=" dt-actions"]').hover()
 
         const status = await row.locator('[class=" dt-actions"]').locator('[title="Approve Device"]').isVisible()
-        // console.log(status)
 
         if (await row.locator('[class=" dt-actions"]').locator('[title="Approve Device"]').isVisible())
         {
@@ -160,30 +156,25 @@ export class OnBoardPage {
         return status
     }
 
-    async expectOnboardStatusDeviceToBe(serial_number: string, onboard_status_device: string) {
+    async expectOnboardStatusDeviceToBe(serialNumber: string, onboardStatusDevice: string) {
 
-        // console.log(onboard_status_device)
-        const onboard_status_locator = await this.getRowContentBySerialNumber(serial_number)
+        const onboardStatusLocator = await this.getRowContentBySerialNumber(serialNumber)
 
         console.log("############## Before expect ##############")
-        var onboard_status_text = await onboard_status_locator.locator('[data-column-id="status"]').textContent()
-        console.log(onboard_status_text?.trim())
+        var onboardStatusText = await onboardStatusLocator.locator('[data-column-id="status"]').textContent()
+        console.log(onboardStatusText)
         
-        // console.log("The test is + " + await this.status.locator('[class="inline ng-binding"]').textContent())
-        expect(await this.getOnboardingStatusLocator(serial_number)).toHaveText(onboard_status_device,
+        await expect(await this.getOnboardingStatusLocator(serialNumber)).toHaveText(onboardStatusDevice,
             {timeout: 300000})
 
         console.log("############## After expect ##############")
-        var onboard_status_text = await onboard_status_locator.locator('[data-column-id="status"]').textContent()
-        console.log(onboard_status_text?.trim())
-        // console.log("The test is + " + await this.status.locator('[class="inline ng-binding"]').textContent())
+        var onboardStatusText = await onboardStatusLocator.locator('[data-column-id="status"]').textContent()
+        console.log(onboardStatusText)
     }
 
-    async expectDeviceToBeAlreadyOnboarded(serial_number : string) {
+    async expectDeviceToBeAlreadyOnboarded(serialNumber : string) {
 
-        console.log(await this.claim_device_info.textContent())
-
-        await expect(this.claim_device_info)
+        await expect(this.claimDeviceInfo)
         .toHaveText("Info:  1 Serial Number(s) already claimed. Please  onboard  these devices,  if not onboarded yet.",
             {timeout: 3000})
 
