@@ -1,7 +1,7 @@
 import { test, expect} from "@playwright/test";
 import * as data from "../constants/constants.json"
 
-import { softwareUpdateFlow } from "../flows/softwareUpdateFlow";
+import { SoftwareUpdateFlow } from "../flows/softwareUpdateFlow";
 import { CloudObjects } from "../management/cloudObjects";
 import { DUTs, DUT1, DUT2, DUT3, DUT4, DUT5 } from "../constants/duts";
 
@@ -23,7 +23,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("1.Test to verify if you can upgrade to a new software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectDUT(DUT5[0].name)
         await softUpdateFlow.updateDUT(data.image_to_upgrade)
@@ -35,7 +35,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("2.Test to verify if you can downgrade to an older software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectDUT(DUT4[0].name)
         await softUpdateFlow.updateDUT(data.image_to_downgrade)
@@ -47,7 +47,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test.only ("3.Test to verify if you can not upgrade/downgrade to the same software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectDUT(DUT3[0].name)
         await softUpdateFlow.updateDUT(data.image_to_upgrade)
@@ -60,7 +60,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("4.Test to verify if you can upgrade to a new software - Switch Group - EX3028R-P", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_upgrade, 1)
@@ -72,7 +72,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("5.Test to verify if you can downgrade to an older software - Switch Group - EX3028R-P", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_downgrade, 1)
@@ -84,7 +84,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("6.Test to verify if you can not upgrade/downgrade to the same software - Switch Group - EX3028R-P", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_downgrade, 1)
@@ -96,7 +96,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("7.Test to verify if you can upgrade muliple switches to a new software - Switch Group - 2 DUTs", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateAllDUTsSwitchGroup(data.switchgroup, data.image_to_upgrade)
@@ -108,7 +108,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("8.Test to verify if you can upgrade muliple switches to an older software - Switch Group - 2 DUTs", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateAllDUTsSwitchGroup(data.switchgroup, data.image_to_downgrade)
@@ -120,7 +120,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("9.Test to verify if you can can not upgrade/downgrade to the same software if all DUTs have the same software - Switch Group - 2 DUTs", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateAllDUTsSwitchGroup(data.switchgroup, data.image_to_upgrade)
@@ -133,7 +133,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("10.Test to verify if you can upgrade to a new software - Particular Switch - FA", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectDUT(DUT5[0].name)
         await softUpdateFlow.updateDUT(data.image_to_upgrade_FA)
@@ -145,7 +145,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("11.Test to verify if you can downgrade to an older software - Particular Switch - FA", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectDUT(DUT5[0].name)
         await softUpdateFlow.updateDUT(data.image_to_downgrade_FA)
@@ -157,7 +157,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("12.Test to verify if you can not upgrade/downgrade to the same software - Particular Switch - FA", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectDUT(DUT5[0].name)
         await softUpdateFlow.updateDUT(data.image_to_upgrade_FA)
@@ -169,7 +169,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("13.Test to verify if you can upgrade to a new software - Switch Group - FA", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_upgrade, 1)
@@ -181,7 +181,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("14.Test to verify if you can downgrade to an older software - Switch Group - FA", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_downgrade, 1)
@@ -193,7 +193,7 @@ test.describe("SoftwareUpdate ->", async() => {
     test ("15.Test to verify if you can not upgrade/downgrade to the same software - Switch Group - FA", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const softUpdateFlow = new softwareUpdateFlow(page)
+        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT4[0].name, data.image_to_downgrade, 1)

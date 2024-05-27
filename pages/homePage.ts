@@ -2,7 +2,7 @@ import { Locator, Page } from "@playwright/test"
 
 // This is the home page of cnMaestro
 
-export default class homePage {
+export default class HomePage {
 
     private readonly devicePanel: Locator = this.page.locator('[id="devicesCount"]').nth(1)
     private readonly alarmPanel: Locator = this.page.locator('[id="alarmGraph"]').nth(1)

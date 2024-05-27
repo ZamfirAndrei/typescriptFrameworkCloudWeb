@@ -2,7 +2,7 @@ import { Page, Locator } from "@playwright/test"
 
 // This is the login page of cnMaestro. We enter on the main browser, login and choose the user
 
-export default class loginPage {
+export default class LoginPage {
 
     private readonly signIn : Locator = this.page.locator('[class="signin"]').locator('[role="button"]').nth(0)
     private readonly email : Locator = this.page.locator('[id="cs-email"]')
@@ -15,7 +15,7 @@ export default class loginPage {
 
     }
 
-    async login(user:string, password:string) {
+    async login(user: string, password: string) {
 
         await this.signIn.click()
         await this.email.fill(user),
@@ -26,21 +26,10 @@ export default class loginPage {
 
     }
 
-    async selectAccount(account:string){
+    async selectAccount(account: string){
 
         await this.menu.click()
         await this.page.locator(`[title="${account}"]`).nth(0).click()
-
-        // if (account == "LUXOFT301SRV4") {
-        //     await this.page.locator('[title="LUXOFT301SRV4"]').nth(0).click()
-        // }
-        
-        // else if (account == "QA_USSRV3_LUXOFT") {
-        //     await this.page.locator('[title="QA_USSRV3_LUXOFT"]').nth(0).click()
-        // }
-        // else {
-        //     console.log("Choose one of this accounts!")
-        // }
     }
 
     async introduceUser(user: string) {
@@ -48,7 +37,7 @@ export default class loginPage {
         await this.email.fill(user)
     }
 
-    async introducePassword(password:string) {
+    async introducePassword(password: string) {
 
         await this.password.fill(password)   
     }

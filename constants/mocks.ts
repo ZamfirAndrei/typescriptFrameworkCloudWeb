@@ -29,7 +29,7 @@ const mock2: mocks[] = [
 const mock3: mocks[] = [
 
     { 
-        switch_group_name : "test1234", 
+        switch_group_name : "test12345", 
         admin_password : "Admin124!", 
         guest_password : "Guest124!",
         check_message : "Delete Successful"

@@ -2,7 +2,7 @@ import { Page, Locator } from "@playwright/test"
 import loginPage from "./loginPage"
 import { isNumberObject } from "util/types"
 import { log } from "console"
-import { NetworkPage, addswitchgroupPage } from "./addswitchgroupPage"
+import { NetworkPage, AddSwitchgroupPage } from "./addswitchgroupPage"
 
 // This is the page of cnMaestro particular Switch Group Page
 
@@ -385,7 +385,7 @@ export class NetworkPortPage {
 
     }
 
-    async changeTypePort(type:string) {
+    async changeTypePort(type: string) {
 
         await this.port_type_menu.click()
 
@@ -418,7 +418,7 @@ export class NetworkPortPage {
         return vlanList?.split(",")
     }
     
-    async insertVlan(vlan:string) {
+    async insertVlan(vlan: string) {
 
         if (await this.vlanId.isDisabled()) {
 
@@ -432,7 +432,7 @@ export class NetworkPortPage {
         }
     }
 
-    async insertNativeVlans(vlanNative:string) {
+    async insertNativeVlans(vlanNative: string) {
 
         if (await this.nativeVlan.isDisabled()){
 
@@ -446,7 +446,7 @@ export class NetworkPortPage {
         }
     }
 
-    async checkTagged(answer:string) {
+    async checkTagged(answer: string) {
 
         if (answer == "Yes") {
 
@@ -463,7 +463,7 @@ export class NetworkPortPage {
         }
     }
 
-    async selectStatusSTP(status:string){
+    async selectStatusSTP(status: string){
 
         if (status == "Enable" || status == "Disable"){
                 
@@ -477,7 +477,7 @@ export class NetworkPortPage {
         }
     }
 
-    async selectStatusBPDUGuard(status:string){
+    async selectStatusBPDUGuard(status: string){
         
         if (status == "Enable" || status == "Disable"){
 
@@ -492,7 +492,7 @@ export class NetworkPortPage {
 
     }
 
-    async selectStatusPortFast(status:string){
+    async selectStatusPortFast(status: string){
         
         if (status == "Enable" || status == "Disable"){
 
@@ -592,14 +592,14 @@ export class StatisticsPage {
 
     }
 
-    async getRow(index:number) {
+    async getRow(index: number) {
 
         const row = this.page.getByRole('row').nth(index)
 
         return row
     }
 
-    async getPortId(index:number) {
+    async getPortId(index: number) {
 
         const row = await this.getRow(index)
         const portId = await row.locator('[data-column-id="port"]').textContent()
@@ -770,7 +770,7 @@ export class SoftwareUpgrade {
         return switchGroup?.trim()
     }
 }
-export class ConfigurationPageSwitchGroup extends addswitchgroupPage {
+export class ConfigurationPageSwitchGroup extends AddSwitchgroupPage {
 
     constructor(public page:Page){
 

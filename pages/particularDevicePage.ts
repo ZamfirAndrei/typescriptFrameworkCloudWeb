@@ -88,12 +88,11 @@ export class ConfigurationPage{
         await this.editPortsButton.click()
     }
 
-    async selectSwitchGroup(switch_group: string) {
+    async selectSwitchGroup(switchGroup: string) {
 
         await this.switchGroupMenu.click()
-        // await this.page.waitForTimeout(1000)
-        await this.switchGroupSearchBar.fill(switch_group)
-        await this.page.locator(`[title="${switch_group}"]`).click()
+        await this.switchGroupSearchBar.fill(switchGroup)
+        await this.page.locator(`[title="${switchGroup}"]`).click()
         
     }
 

@@ -1,10 +1,14 @@
 import { CloudObjects } from "../management/cloudObjects";
 import { Page } from "@playwright/test";
-import { test, expect} from "@playwright/test";
+import { test, expect, Locator} from "@playwright/test";
 
 export class LoginFlow {
 
     private readonly cloud = new CloudObjects(this.page)
+    private readonly alertInstruction : Locator = this.page.locator('[class="alert cs-instructions"]')
+    private readonly alertDanger : Locator = this.page.locator('[class="alert alert-danger"]')
+    private readonly alert : Locator = this.page.locator('[class="text-danger"]')
+    private readonly checkBox : Locator = this.page.locator('[type="checkbox"]')
 
     constructor(public page: Page) {
 
@@ -28,19 +32,15 @@ export class LoginFlow {
 
     async confirmLoginEmail() {
 
-        const message : string | null = await this.cloud.page.locator('[class="alert cs-instructions"]').textContent()
-        // console.log(message?.trim())
+        const message : string | null = await this.alertInstruction.textContent()
 
         expect(message).toContain("Please enter your email address")
     }
 
     async confirmLoginWithWrongCredentials() {
 
-        const message : string | null = await this.cloud.page.locator('[class="alert alert-danger"]').textContent()
-        // console.log(message?.trim())
-
+        const message : string | null = await this.alertDanger.textContent()
         const pageTitle = await this.cloud.page.title()
-        // console.log(pageTitle)
 
         expect(message?.trim()).toBe("Invalid email address or password")
         expect(pageTitle).toBe("Log In / Cambium Networks Support")
@@ -50,14 +50,9 @@ export class LoginFlow {
 
     async confirmLoginWithoutPassword() {
 
-        const message : string | null = await this.cloud.page.locator('[class="alert cs-instructions"]').textContent()
-        // console.log(message?.trim())
-
-        const alert : string  | null = await this.cloud.page.locator('[class="text-danger"]').textContent()
-        // console.log(alert?.trim())
-
+        const message : string | null = await this.alertInstruction.textContent()
+        const alert : string  | null = await this.alert.textContent()
         const pageTitle = await this.cloud.page.title()
-        // console.log(pageTitle)
 
         expect(message?.trim()).toBe("Please enter your password.")
         expect(alert?.trim()).toBe("Required")
@@ -69,8 +64,6 @@ export class LoginFlow {
     async confirmLoginWithProperCredentials() {
 
         const pageTitle = await this.cloud.page.title()
-        // console.log(pageTitle)
-
         expect(pageTitle).toBe("cnMaestro™")
 
         await this.cloud.page.waitForTimeout(2000)
@@ -78,24 +71,19 @@ export class LoginFlow {
 
     async confirmCheckBox() {
     
-        const checkboxBefore : boolean = await this.cloud.page.locator('[type="checkbox"]').isChecked()
-        // console.log(checkboxBefore)
-    
+        const checkboxBefore : boolean = await this.checkBox.isChecked()
         expect(checkboxBefore).not.toBe(true)
     
         await this.cloud.loginObj.checkRememberMe()
         await this.cloud.page.waitForTimeout(1000)
     
-        const checkboxAfter : boolean = await this.cloud.page.locator('[type="checkbox"]').isChecked()
-        // console.log(checkboxAfter)
-    
+        const checkboxAfter : boolean = await this.checkBox.isChecked()
         expect(checkboxAfter).toBe(true)
     }
 
     async expectPageTitle(expectedPageTitle : string) {
 
         const pageTitle = await this.cloud.page.title()
-        // console.log(pageTitle)
 
         expect(pageTitle).toBe(expectedPageTitle)
 

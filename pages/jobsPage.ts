@@ -66,7 +66,7 @@ export class ConfigurationUpdatePage{
         return statusLocator
     }
 
-    async getId(index:number) {
+    async getId(index: number) {
 
         const row = await this.getRowContent(index)
         const id = await row.locator('[data-column-id="displayId"]').textContent()
@@ -74,7 +74,7 @@ export class ConfigurationUpdatePage{
         return id?.trim()
     }
 
-    async getTarget(index:number) {
+    async getTarget(index: number) {
 
         const row = await this.getRowContent(index)
         const target = await row.locator('[data-column-id="target"]').textContent()
@@ -82,7 +82,7 @@ export class ConfigurationUpdatePage{
         return target?.trim()
     }
 
-    async getCreatedBy(index:number) {
+    async getCreatedBy(index: number) {
 
         const row = await this.getRowContent(index)
         const createdBy = await row.locator('[data-column-id="Created_By"]').textContent()
@@ -90,7 +90,7 @@ export class ConfigurationUpdatePage{
         return createdBy?.trim()
     }
 
-    async getCreatedOn(index:number) {
+    async getCreatedOn(index: number) {
 
         const row = await this.getRowContent(index)
         const createdOn = await row.locator('[data-column-id="Created_On"]').textContent()
@@ -98,7 +98,7 @@ export class ConfigurationUpdatePage{
         return createdOn?.trim()
     }
 
-    async getCompletedOn(index:number) {
+    async getCompletedOn(index: number) {
 
         const row = await this.getRowContent(index)
         const completedOn = await row.locator('[data-column-id="completedOn"]').textContent()
@@ -106,7 +106,7 @@ export class ConfigurationUpdatePage{
         return completedOn?.trim()
     }
 
-    async getStatus(index:number) {
+    async getStatus(index: number) {
 
         const row = await this.getRowContent(index)
         const stat = await row.locator('[data-column-id="state"]').textContent()
@@ -115,7 +115,7 @@ export class ConfigurationUpdatePage{
         return status?.trim()
     }
 
-    async getDetails(index:number) {
+    async getDetails(index: number) {
 
         const row = await this.getRowContent(index)
         const details = await row.locator('[data-column-id="details"]').textContent()
@@ -123,7 +123,7 @@ export class ConfigurationUpdatePage{
         return details?.trim()
     }
 
-    async clickShowMore(index:number) {
+    async clickShowMore(index: number) {
 
         const row = await this.getRowContent(index)
         await row.locator('[data-column-id="state"]').hover()
@@ -168,7 +168,7 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
         super(page) // Calling the constructor of the Parent Class
     }
 
-    async getDetails(index:number) {
+    async getDetails(index: number) {
 
         const row = await this.getRowContent(index)
         const details = await row.locator('[data-column-id="eType"]').textContent()
@@ -176,7 +176,7 @@ export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
         return details?.trim()
     }
 
-    async getImageType(index:number) {
+    async getImageType(index: number) {
 
         const row = await this.getRowContent(index)
         const imageType = await row.locator('[data-column-id="imageType"]').textContent()

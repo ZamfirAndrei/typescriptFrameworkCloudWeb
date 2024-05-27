@@ -1,9 +1,9 @@
-import { Page, Locator } from "@playwright/test"
+import { Page, Locator, expect } from "@playwright/test"
 
 // This is the page of cnMaestro Add Switch Group
 
 
-export class addswitchgroupPage {
+export class AddSwitchgroupPage {
     
     public readonly basic: Locator = this.page.locator('[title="Basic"]')
     public readonly management: Locator = this.page.locator('[title="Management"]')
@@ -78,13 +78,20 @@ export class addswitchgroupPage {
         return message?.trim()
     }
 
-    async searchForSwithGroupOnTheMainPage(switchgroup: string) {
+    async searchForSwithGroupOnTheMainPage(switchGroup: string) {
 
-        const nameSwitchGroup = await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switchgroup}`}).textContent()
+        // const nameSwitchGroup = await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switchGroup}`}).textContent()
+        const nameSwitchGroup = await this.page.locator('[class="cn-link ng-binding"]').getByText(`${switchGroup}`, {exact:true}).textContent()
 
         return nameSwitchGroup?.trim()
     }
 
+    async expectSwitchGroupToBeCreated(switchGroup: string) {
+
+        const nameSwitchGroup = this.page.locator('[class="cn-link ng-binding"]').getByText(`${switchGroup}`, {exact:true})
+
+        await expect(nameSwitchGroup).toHaveText(switchGroup, {timeout: 20000})
+    }
 
 }
 
@@ -138,22 +145,22 @@ export class ManagementPage {
     }
 
 
-    async addPasswordAdmin(password:string){
+    async addPasswordAdmin(password: string){
 
         await this.addPassword.fill(password)
     }
 
-    async confirmPasswordAdmin(password:string){
+    async confirmPasswordAdmin(password: string){
 
         await this.confirmPassword.fill(password)
     }
 
-    async addPasswordGuest(password:string){
+    async addPasswordGuest(password: string){
 
         await this.addPassword.fill(password)
     }
 
-    async confirmPasswordGuest(password:string){
+    async confirmPasswordGuest(password: string){
 
         await this.confirmPassword.fill(password)
     }
@@ -163,7 +170,7 @@ export class ManagementPage {
         await this.updatePassword.click()
     }
 
-    async checkTelnet(answer:string){
+    async checkTelnet(answer: string){
 
         if (answer=="Yes"){
             await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(0).check()
@@ -173,7 +180,7 @@ export class ManagementPage {
         }
     }
 
-    async checkHTTP(answer:string){
+    async checkHTTP(answer: string){
 
         if (answer=="Yes"){
             await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(1).check()

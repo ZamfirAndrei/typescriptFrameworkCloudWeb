@@ -1,16 +1,18 @@
-import { Page, Locator } from "@playwright/test"
+import { Page, Locator, expect } from "@playwright/test"
 import { escape } from "querystring"
 
 // This is the page of cnMaestro Switch Group Page
 
-export default class switchgroupPage {
+export default class SwitchgroupPage {
 
     private readonly searchbar: Locator = this.page.locator('[type="search"]').nth(1)
     private readonly switchGroupsTable: Locator = this.page.locator('[class="table-wrapper"]')
     private readonly addSwitchGroup: Locator = this.page.locator('[title="Add New Switch Group"]')
     private readonly editswitchGroupButton : Locator = this.page.locator('[title="Edit"]')
     private readonly deleteMessage: Locator = this.page.locator('[id="cns-toaster-msg"]')
-    
+    private readonly deleteButton : Locator = this.page.locator('[title="Delete"]')
+    private readonly yesDelete : Locator = this.page.locator('[class="btn btn-primary w-xs"]')
+    private readonly nrOfSwitchGroups : Locator = this.page.locator('[class="dataTables_info"]')
 
     constructor (public page: Page) {
 
@@ -42,6 +44,14 @@ export default class switchgroupPage {
         
     }
 
+    async expectSwitchGroupToBeCreated(switchGroupName: string) {
+
+        await this.searchSwitchGroup(switchGroupName)
+        const nameSwitchGroup = this.page.locator('[class="cn-link ng-binding"]').getByText(`${switchGroupName}`, {exact:true})
+
+        await expect(nameSwitchGroup).toHaveText(switchGroupName, {timeout: 20000})
+    }
+
     async clickSwitchGroup(switchGroupName:string){
 
         await this.searchbar.fill(switchGroupName)
@@ -54,7 +64,7 @@ export default class switchgroupPage {
     async getNrOfSwitchGroups(){
 
         await this.page.waitForTimeout(1500)
-        const nrOfSwitchGroupsText = await this.page.locator('[class="dataTables_info"]').textContent()
+        const nrOfSwitchGroupsText = await this.nrOfSwitchGroups.textContent()
         const nrOfSwitchGroups = nrOfSwitchGroupsText?.split(":")[1].trim()
         console.log("The nr of switch groups is: " + nrOfSwitchGroups);
         
@@ -137,8 +147,7 @@ export default class switchgroupPage {
 
         const row = await this.getRowContent(index)
         await row.locator('[title="Delete"]').click()
-
-        await this.page.locator('[class="btn btn-primary w-xs"]').click()
+        await this.yesDelete.click()
         console.log(`The Switch Group from Row ${index} has been deleted`)
 
         const message = await this.deleteMessage.textContent()
@@ -152,10 +161,9 @@ export default class switchgroupPage {
         
         if (switchGroup == switchGroupName && switchGroup != undefined) {
 
-            await this.page.locator('[title="Delete"]').click()
-
-            await this.page.locator('[class="btn btn-primary w-xs"]').click()
-            console.log(`The Switch Group${switchGroupName} has been deleted`)
+            await this.deleteButton.click()
+            await this.yesDelete.click()
+            console.log(`The Switch Group ${switchGroupName} has been deleted`)
 
             const message = await this.deleteMessage.textContent()
 

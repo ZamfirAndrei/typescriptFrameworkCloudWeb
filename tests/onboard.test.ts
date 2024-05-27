@@ -25,7 +25,6 @@ test.describe("OnBoard ->", async() => {
 
     test ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
     
-        const cloud = new CloudObjects(page)
         const onboardFlow = new OnBoardFlow(page)
 
         await onboardFlow.onboardDevice(DUT3[0].serial_number)
@@ -36,7 +35,6 @@ test.describe("OnBoard ->", async() => {
 
     test.only ("2.Test to verify if a DUT is already onboarded", async({page,baseURL}) => {
     
-        const cloud = new CloudObjects(page)
         const onboardFlow = new OnBoardFlow(page)
 
         await onboardFlow.onboardDevice(DUT3[0].serial_number)
@@ -47,7 +45,6 @@ test.describe("OnBoard ->", async() => {
 
     test ("3.Test to verify if a DUT can be deleted from cloud", async({page,baseURL}) => {
     
-        const cloud = new CloudObjects(page)
         const onboardFlow = new OnBoardFlow(page)
 
         await onboardFlow.goToSwitchesList()

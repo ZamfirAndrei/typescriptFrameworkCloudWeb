@@ -3,7 +3,7 @@ import loginPage from "../pages/loginPage";
 import homePage from "../pages/homePage";
 import devicePage from "../pages/devicesPage";
 import toolbarPage from "../pages/toolbarPage";
-import switchgroupPage from "../pages/SwitchGroupPage";
+import switchgroupPage from "../pages/switchGroupPage";
 // import addswitchgroupPage from "../pages/addswitchgroupPage";
 import {  addswitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
 import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";

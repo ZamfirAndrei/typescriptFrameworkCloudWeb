@@ -105,7 +105,6 @@ export class OnBoardPage {
     async getOnboardingStatusBySerialNumber(switchSerialNumber : string) {
 
         const row = await this.getRowContentBySerialNumber(switchSerialNumber)
-        // console.log(await row.textContent())
         const onboardStatus = await row.locator('[data-column-id="status"]').textContent()
         console.log(onboardStatus?.trim())
         
@@ -179,6 +178,5 @@ export class OnBoardPage {
             {timeout: 3000})
 
     }
-
 
 }

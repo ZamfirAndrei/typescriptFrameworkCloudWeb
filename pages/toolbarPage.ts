@@ -2,7 +2,7 @@ import { Page, Locator } from "@playwright/test"
 
 // This is the toolbar page of cnMaestro
 
-export default class toolbarPage {
+export default class ToolbarPage {
 
     private readonly devicesPg: Locator = this.page.locator('[title="Devices"]');
     private readonly homePg: Locator = this.page.locator('[title="Home"]')

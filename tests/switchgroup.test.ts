@@ -1,7 +1,7 @@
 import { test, expect} from "@playwright/test";
 import * as data from "../constants/constants.json"
 
-import { switchGroupFlow } from "../flows/switchgroupFlow";
+import { SwitchGroupFlow } from "../flows/switchgroupFlow";
 import { CloudObjects } from "../management/cloudObjects";
 import { DUTs, DUT1, DUT2, DUT3, DUT4 } from "../constants/duts";
 import {mock1, mock2, mock3, result_update, message_update, job_message, sync_status_device} from "../constants/mocks"
@@ -24,28 +24,28 @@ test.describe("SwitchGroup ->", async() => {
     test("1.Test to verify if you can create a Switch Group", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const switchgroupFlow = new switchGroupFlow(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
 
-        await switchgroupFlow.createSwitchGroup(mock1[0].switch_group_name, mock1[0].admin_password, mock1[0].guest_password)
+        await switchgroupFlow.createSwitchGroup(mock3[0].switch_group_name, mock1[0].admin_password, mock1[0].guest_password)
         await switchgroupFlow.confirmSwithGroupCreation(mock1[0].check_message)
-        await switchgroupFlow.checkTheSwitchGroupHasBeenCreated(mock1[0].switch_group_name)
+        await switchgroupFlow.checkIfTheSwitchGroupHasBeenCreated(mock3[0].switch_group_name)
 
     })
 
     test("2.Test to verify that you can not create a Switch Group if is already created", async({page,baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const switchgroupFlow = new switchGroupFlow(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.createSwitchGroup(mock2[0].switch_group_name, mock2[0].admin_password, mock2[0].guest_password)
         await switchgroupFlow.confirmSwithGroupCreation(mock2[0].check_message)
-        await switchgroupFlow.checkTheSwitchGroupHasBeenCreated(mock2[0].switch_group_name)
+        await switchgroupFlow.checkIfTheSwitchGroupHasBeenCreated(mock2[0].switch_group_name)
     })
 
     test("3.Test to verify you can delete a switch group", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const switchgroupFlow = new switchGroupFlow(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.checkIfTheSwitchGroupExists(mock3[0].switch_group_name)
         await switchgroupFlow.checkDeleteSwitchGroup(mock3[0].switch_group_name, mock3[0].check_message)
@@ -55,10 +55,9 @@ test.describe("SwitchGroup ->", async() => {
     test("4.Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const switchgroupFlow = new switchGroupFlow(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
 
-        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, job_message[0].JobStartedSuccessfully, 
-            sync_status_device[0].InSync)
+        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, sync_status_device[0].InSync)
 
 
     })
@@ -66,10 +65,9 @@ test.describe("SwitchGroup ->", async() => {
     test("5.Test to verify you can remove a DUT from a switch group", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const switchgroupFlow = new switchGroupFlow(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
 
-        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, "None ", job_message[0].DeviceDetailsAreSavedSuccessfully, 
-            sync_status_device[0].NA)
+        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, "None ", sync_status_device[0].NA)
 
 
     })
@@ -77,42 +75,51 @@ test.describe("SwitchGroup ->", async() => {
     test("6.Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const switchgroupFlow = new switchGroupFlow(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
 
-        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, job_message[0].JobStartedSuccessfully, 
-            sync_status_device[0].InSync)
-
-
-    })
-
-    test.only("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
-
-        const cloud = new CloudObjects(page)
-        const switchgroupFlow = new switchGroupFlow(page)
-
-        await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
-        await switchgroupFlow.changeSTPofTheSwitchGroup("RSTP")
-        await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
-        await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
-            sync_status_device[0].InSync)
-        
+        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, sync_status_device[0].InSync)
 
 
     })
 
-    test("8.Test to verify you can modify the Priority of a Instance in PVRST", async({page, baseURL}) => {
+    test("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
-        const switchgroupFlow = new switchGroupFlow(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
         await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")
-        // await cloud.networkSwitchgroupObj.configureStpPriorityPVRST("1"")
-        // await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
-        // await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
-        //     sync_status_device[0].InSync)
-        
+        await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
+        await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
+            sync_status_device[0].InSync)
 
+    })
+
+    test("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
+
+        await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
+        await switchgroupFlow.changeSTPofTheSwitchGroup("RSTP")
+        await switchgroupFlow.changePriorityRSTP("8192")
+        await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
+        await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
+            sync_status_device[0].InSync)
+
+    })
+
+    test("9.Test to verify you can modify the Priority of a Instance in PVRST", async({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
+
+        await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
+        await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")
+        await switchgroupFlow.changeInstancePriorityPVRST("10", "8192")
+        await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
+        await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
+            sync_status_device[0].InSync)
 
     })
 

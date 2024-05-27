@@ -3,7 +3,7 @@ import { CloudObjects } from "../management/cloudObjects";
 import { expect } from "@playwright/test";
 
 
-export class softwareUpdateFlow {
+export class SoftwareUpdateFlow {
 
     private readonly cloud : CloudObjects
 

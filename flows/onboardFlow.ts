@@ -14,8 +14,6 @@ export class OnBoardFlow {
     async expectPageTitle(expectedPageTitle : string) {
 
         const pageTitle = await this.cloud.page.title()
-        // console.log(pageTitle)
-
         expect(pageTitle).toBe(expectedPageTitle)
     }
 
@@ -45,7 +43,6 @@ export class OnBoardFlow {
         await this.cloud.page.reload()
         await this.cloud.page.waitForTimeout(2000)
         const status = await this.cloud.onboardObj.approveDevice(index)
-        console.log(status)
 
         return status
     }
@@ -55,7 +52,6 @@ export class OnBoardFlow {
         await this.cloud.page.reload()
         await this.cloud.page.waitForTimeout(2000)
         const status = await this.cloud.onboardObj.approveDeviceBySerialNumber(switchSerialNumber)
-        console.log(status)
 
         return status
     }
@@ -104,14 +100,12 @@ export class OnBoardFlow {
 
     async confirmDeviceisAvailableInTheCloud(switchName : string) {
 
-        // Checking the Device is added in the Cloud
-
         await this.cloud.toolbarObj.clickDevicePage()
         await this.cloud.deviceObj.clickSwitches()
         await this.cloud.page.waitForTimeout(2000)
         await this.cloud.deviceObj.searchToolbar(switchName)
 
-        const nrOfDevices = await this.cloud.deviceObj.numberOfDevicesFound()
+        // const nrOfDevices = await this.cloud.deviceObj.numberOfDevicesFound()
         // console.log(nrOfDevices)
 
         // const deviceName = await this.cloud.deviceObj.getDeviceName(index)

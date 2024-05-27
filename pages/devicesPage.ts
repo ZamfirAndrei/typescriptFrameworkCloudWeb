@@ -4,7 +4,7 @@ import { test, expect} from "@playwright/test";
 
 // This is the devices page of cnMaestro
 
-export default class devicePage {
+export default class DevicePage {
 
     private readonly deviceTable: Locator = this.page.locator('[class="row wrapper-sm ng-scope"]');
     private readonly devices: Locator = this.page.locator('[id="content-wrapper"]');
@@ -56,8 +56,6 @@ export default class devicePage {
     }
 
     async numberOfDevicesFound() {
-
-        // Getting the number of devices found in the Search Tool Bar
         
         await this.page.waitForTimeout(1500)
         const text = await this.page.locator('[class="dataTables_info"]').textContent()
