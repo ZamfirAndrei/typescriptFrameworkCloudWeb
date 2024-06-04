@@ -23,7 +23,6 @@ test.describe("SwitchGroup ->", async() => {
 
     test("1.Test to verify if you can create a Switch Group", async({page,baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.createSwitchGroup(mock3[0].switch_group_name, mock1[0].admin_password, mock1[0].guest_password)
@@ -34,7 +33,6 @@ test.describe("SwitchGroup ->", async() => {
 
     test("2.Test to verify that you can not create a Switch Group if is already created", async({page,baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.createSwitchGroup(mock2[0].switch_group_name, mock2[0].admin_password, mock2[0].guest_password)
@@ -44,7 +42,6 @@ test.describe("SwitchGroup ->", async() => {
 
     test("3.Test to verify you can delete a switch group", async({page, baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.checkIfTheSwitchGroupExists(mock3[0].switch_group_name)
@@ -54,7 +51,6 @@ test.describe("SwitchGroup ->", async() => {
 
     test("4.Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, sync_status_device[0].InSync)
@@ -64,7 +60,6 @@ test.describe("SwitchGroup ->", async() => {
 
     test("5.Test to verify you can remove a DUT from a switch group", async({page, baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, "None ", sync_status_device[0].NA)
@@ -74,7 +69,6 @@ test.describe("SwitchGroup ->", async() => {
     // Added again the test to run test 7
     test("6.Test to verify you can add a DUT to a switch group", async({page, baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switch_group_name, sync_status_device[0].InSync)
@@ -84,7 +78,6 @@ test.describe("SwitchGroup ->", async() => {
 
     test("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
@@ -97,7 +90,6 @@ test.describe("SwitchGroup ->", async() => {
 
     test("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
@@ -111,7 +103,6 @@ test.describe("SwitchGroup ->", async() => {
 
     test("9.Test to verify you can modify the Priority of a Instance in PVRST", async({page, baseURL}) => {
 
-        const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
@@ -120,6 +111,29 @@ test.describe("SwitchGroup ->", async() => {
         await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
             sync_status_device[0].InSync)
+
+    })
+
+    test.only("10.Testing", async({page, baseURL}) => {
+
+        const cloud = new CloudObjects(page)
+        const switchgroupFlow = new SwitchGroupFlow(page)
+
+        await switchgroupFlow.checkIfTheSwitchGroupHasBeenCreated(mock2[0].switch_group_name)
+        // await switchgroupFlow.checkIfTheSwitchGroupExists(mock2[0].switch_group_name)
+        await cloud.toolbarObj.clickSwitchGroupsPage()
+        await page.waitForTimeout(3000)
+        // await cloud.switchgroupObj.editSwitchGroupByName(mock2[0].switch_group_name)
+        await cloud.switchgroupObj.getNrOfPoEPorts(mock2[0].switch_group_name)
+        await cloud.switchgroupObj.editSwitchGroupByName(mock2[0].switch_group_name)
+        // await cloud.switchgroupObj.edit(mock2[0].switch_group_name)
+        await page.waitForTimeout(3000)
+
+        // await cloud.toolbarObj.clickDevicePage()
+        // await cloud.deviceObj.clickSwitches()
+        // await page.waitForTimeout(3000)
+        // await cloud.deviceObj.getDeviceMacByName(mock2[0].switch_group_name)
+        // await page.waitForTimeout(3000)
 
     })
 

@@ -14,7 +14,7 @@ export class LoginFlow {
 
     }
 
-    async introduceUser(user: string) {
+    async introduceUser(user: string) : Promise <void> {
 
         await this.cloud.loginObj.introduceUser(user)
         await this.cloud.loginObj.clickSubmit()
@@ -22,7 +22,7 @@ export class LoginFlow {
 
     }
 
-    async introduceUserAndPassword(user: string, password: string) {
+    async introduceUserAndPassword(user: string, password: string) : Promise <void> {
 
         await this.cloud.loginObj.introduceUser(user)
         await this.cloud.loginObj.clickSubmit()
@@ -30,14 +30,14 @@ export class LoginFlow {
         await this.cloud.loginObj.clickSubmit()
     }
 
-    async confirmLoginEmail() {
+    async confirmLoginEmail() : Promise <void> {
 
         const message : string | null = await this.alertInstruction.textContent()
 
         expect(message).toContain("Please enter your email address")
     }
 
-    async confirmLoginWithWrongCredentials() {
+    async confirmLoginWithWrongCredentials() : Promise <void> {
 
         const message : string | null = await this.alertDanger.textContent()
         const pageTitle = await this.cloud.page.title()
@@ -48,7 +48,7 @@ export class LoginFlow {
         await this.cloud.page.waitForTimeout(2000)
     }
 
-    async confirmLoginWithoutPassword() {
+    async confirmLoginWithoutPassword() : Promise <void> {
 
         const message : string | null = await this.alertInstruction.textContent()
         const alert : string  | null = await this.alert.textContent()
@@ -61,7 +61,7 @@ export class LoginFlow {
         await this.cloud.page.waitForTimeout(2000)
     }
 
-    async confirmLoginWithProperCredentials() {
+    async confirmLoginWithProperCredentials() : Promise <void> {
 
         const pageTitle = await this.cloud.page.title()
         expect(pageTitle).toBe("cnMaestro™")
@@ -69,7 +69,7 @@ export class LoginFlow {
         await this.cloud.page.waitForTimeout(2000)
     }
 
-    async confirmCheckBox() {
+    async confirmCheckBox() : Promise <void> {
     
         const checkboxBefore : boolean = await this.checkBox.isChecked()
         expect(checkboxBefore).not.toBe(true)
@@ -81,7 +81,7 @@ export class LoginFlow {
         expect(checkboxAfter).toBe(true)
     }
 
-    async expectPageTitle(expectedPageTitle : string) {
+    async expectPageTitle(expectedPageTitle : string) : Promise <void> {
 
         const pageTitle = await this.cloud.page.title()
 

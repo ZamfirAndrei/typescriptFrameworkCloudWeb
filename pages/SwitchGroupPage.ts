@@ -14,13 +14,20 @@ export default class SwitchgroupPage {
     private readonly yesDelete : Locator = this.page.locator('[class="btn btn-primary w-xs"]')
     private readonly nrOfSwitchGroups : Locator = this.page.locator('[class="dataTables_info"]')
 
+    private getRowContentByName = (switchGroupName: string) => this.page.getByRole('row', {name: `${switchGroupName}`})
+    private getSwitchGroupEditLocator = () => this.page.getByTitle('Edit', { exact: true })
+    private getEditSwitchGroup = (switchGroupName: string) => this.getRowContentByName(switchGroupName).locator('[data-column-id="actions"]').locator('[title="Edit"]')
+    private getActivePoEPorts = (switchGroupName: string) => this.getRowContentByName(switchGroupName).locator('[data-column-id="poePortCount"]')
+    private getSwitchGroupToClickLocator = (switchGroupName: string) => this.getRowContentByName(switchGroupName).locator('[class="cn-link ng-binding"]')
+    
     constructor (public page: Page) {
 
     }
 
-    async searchSwitchGroup(switchGroupName: string) {
+    async searchSwitchGroup(switchGroupName: string) : Promise <void> {
 
         await this.searchbar.fill(switchGroupName)
+        await this.page.waitForLoadState()
         await this.searchbar.press("Enter")
     }
 
@@ -44,7 +51,7 @@ export default class SwitchgroupPage {
         
     }
 
-    async expectSwitchGroupToBeCreated(switchGroupName: string) {
+    async expectSwitchGroupToBeCreated(switchGroupName: string) : Promise <void> {
 
         await this.searchSwitchGroup(switchGroupName)
         const nameSwitchGroup = this.page.locator('[class="cn-link ng-binding"]').getByText(`${switchGroupName}`, {exact:true})
@@ -52,13 +59,14 @@ export default class SwitchgroupPage {
         await expect(nameSwitchGroup).toHaveText(switchGroupName, {timeout: 20000})
     }
 
-    async clickSwitchGroup(switchGroupName:string){
+    async clickSwitchGroup(switchGroupName: string) : Promise <void> {
 
         await this.searchbar.fill(switchGroupName)
         await this.searchbar.press("Enter")
         await this.page.waitForTimeout(2000)
-        const switchGroup = this.page.locator('[class="cn-link ng-binding"]').getByText(switchGroupName)
-        await switchGroup.click()
+        // const switchGroup = this.page.locator('[class="cn-link ng-binding"]').getByText(switchGroupName)
+        // await switchGroup.click()
+        await this.getSwitchGroupToClickLocator(switchGroupName).click()
     }
 
     async getNrOfSwitchGroups(){
@@ -134,7 +142,7 @@ export default class SwitchgroupPage {
         return nrOfVlans
     }
 
-    async getAutoSync(index:number) {
+    async getAutoSync(index: number) {
 
         const row = await this.getRowContent(index)
         const autoSync = await row.locator('[data-column-id="autoSync"]').textContent()
@@ -143,7 +151,20 @@ export default class SwitchgroupPage {
         return autoSync
     }
 
-    async deleteSwitchGroup(index:number) {
+    async getRowContentByNameFunc(switchName: string) {
+
+        const row = this.page.locator("[role='row']", {hasText: `${switchName}`})
+
+        return row
+    }  
+
+    async getNrOfPoEPorts(switchGroupName: string) {
+
+        console.log(await this.getActivePoEPorts(switchGroupName).textContent())
+        return await this.getActivePoEPorts(switchGroupName).textContent()
+    }
+
+    async deleteSwitchGroup(index: number) {
 
         const row = await this.getRowContent(index)
         await row.locator('[title="Delete"]').click()
@@ -177,12 +198,17 @@ export default class SwitchgroupPage {
 
     } 
 
-    async editSwitchGroup(switchGroupName:string) {
+    async editSwitchGroup(switchGroupName: string) : Promise <void> {
 
         await this.searchSwitchGroup(switchGroupName)
         await this.page.waitForLoadState()
         await this.page.waitForTimeout(2000)
         await this.editswitchGroupButton.click()
+    }
+
+    async editSwitchGroupByName(switchGroupName: string) : Promise <void> {
+
+        await this.getEditSwitchGroup(switchGroupName).click()
     }
 
 }

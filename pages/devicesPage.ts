@@ -51,7 +51,7 @@ export default class DevicePage {
         await this.searchMenu.nth(1).fill(deviceName)
         await this.searchMenu.nth(1).press("Enter")
         await this.page.waitForLoadState()
-        await this.page.waitForTimeout(2000)
+        await this.page.waitForTimeout(3000)
         await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${deviceName}`}).click()
     }
 
@@ -65,7 +65,7 @@ export default class DevicePage {
         return nrOfDevicesFound
     }
 
-    async deleteDevice(deviceName:string) {
+    async deleteDevice(deviceName: string) {
         
         await this.searchToolbar(deviceName)
         await this.page.waitForTimeout(2000)
@@ -121,6 +121,15 @@ export default class DevicePage {
 
         const row = await this.getRowContent(index)
         const deviceMACText = await row.locator('[data-column-id="mac"]').textContent()
+        
+        return (deviceMACText as string).trim()
+    }
+
+    async getDeviceMacByName(switchName: string): Promise <string> {
+
+        const row = await this.getRowContentByName(switchName)
+        const deviceMACText = await row.locator('[data-column-id="mac"]').textContent()
+        console.log(deviceMACText)
         
         return (deviceMACText as string).trim()
     }

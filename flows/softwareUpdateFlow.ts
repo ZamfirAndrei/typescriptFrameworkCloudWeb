@@ -12,7 +12,7 @@ export class SoftwareUpdateFlow {
         this.cloud = new CloudObjects(this.page)
     }
 
-    async searchAndSelectDUT(name: string) {
+    async searchAndSelectDUT(name: string) : Promise <void> {
 
         // Searching and selecting the device which you want to upgrade
 
@@ -25,7 +25,7 @@ export class SoftwareUpdateFlow {
 
     }
 
-    async updateDUT(imageVersion: string) {
+    async updateDUT(imageVersion: string, index: number) : Promise <void> {
 
         // Updating the Switch 
 
@@ -33,13 +33,13 @@ export class SoftwareUpdateFlow {
         await this.cloud.softUpdate.selectImgForUpdate(imageVersion)
         await this.cloud.softUpdate.addSoftwareJob()
         
-        // Waiting for the Job Update
+        // Waiting for the Job Software Update to be completed
 
         // await this.page.waitForTimeout(15000)
-        await this.confirmUpdateIsCompleted(1)
+        await this.confirmUpdateIsCompleted(index)
     }
 
-    async searchAndSelectSwitchGroup(switchGroup: string) {
+    async searchAndSelectSwitchGroup(switchGroup: string) : Promise <void> {
 
           // Selecting the Switch Group which you want to upgrade
 
@@ -52,15 +52,13 @@ export class SoftwareUpdateFlow {
 
     }
 
-    async updateDUTSwitchGroup(name: string, imageVersion: string, id: number) {
+    async updateDUTSwitchGroup(switchName: string, imageVersion: string, index: number) : Promise <void> {
 
         // Choose the Switch which you want to update
 
         await this.page.waitForLoadState()
         await this.page.waitForTimeout(2000)
-        await this.cloud.switchGroupSoftupdate.clickCheckSwitch(name, id)
-        await this.cloud.switchGroupSoftupdate.getSoftwareVersion(id)
-        await this.cloud.switchGroupSoftupdate.getSwitchGroup(id)
+        await this.cloud.switchGroupSoftupdate.clickCheckSwitch(switchName)
 
         // Update the Switch selected
 
@@ -79,14 +77,16 @@ export class SoftwareUpdateFlow {
         await this.cloud.toolbarObj.clickJobsPage()
         await this.cloud.jobsObj.clickSoftwareUpdate()
 
-        // Waiting for the Job Update
+        // Waiting for the Job Software Update to be completed
 
-        await this.page.waitForTimeout(13000)
+        await this.confirmUpdateIsCompleted(index)
+
+        // await this.page.waitForTimeout(13000)
     }
 
-    async updateAllDUTsSwitchGroup(name: string, imageVersion: string) {
+    async updateAllDUTsSwitchGroup(index: number, imageVersion: string) : Promise <void> {
 
-        // Choose the Switch which you want to update
+        // Check all the Switches 
 
         await this.cloud.switchGroupSoftupdate.clickCheckAll()
 
@@ -107,98 +107,59 @@ export class SoftwareUpdateFlow {
         await this.cloud.toolbarObj.clickJobsPage()
         await this.cloud.jobsObj.clickSoftwareUpdate()
 
-        // Waiting for the Job Update
+        // Waiting for the Job Software Update to be completed
 
-        await this.page.waitForTimeout(13000)
+        await this.confirmUpdateIsCompleted(index)
+        // await this.page.waitForTimeout(13000)
     }
 
-    async confirmTargetAndClickShowMore(id: number, imageVersion: string) {
+    async confirmTargetAndClickShowMore(index: number, imageVersion: string) : Promise <void> {
 
-        const target = await this.cloud.jobsSoftupdateObj.getTarget(id)
-        await this.cloud.jobsSoftupdateObj.clickShowMore(id)
+        await this.cloud.jobsSoftupdateObj.expectTargetToBe(index, imageVersion)
+        // await this.cloud.jobsSoftupdateObj.clickShowMore(index)
+        await this.cloud.jobsSoftupdateObj.clickShowMoree(index)
 
-        expect(target).toBe(imageVersion)
-
-        console.log(`### The target is ${target} ###`)
+        console.log(`### The target is ${imageVersion} ###`)
         
     }
 
-    async getDetailsDUT(index: number) {
+    async confirmDetails(switchName: string, nameExpected: string, resultMessageExpected: string, updateMessageExpected: string) : Promise <void> {
 
-        const device = await this.cloud.jobsSoftupdateObj.getDevice(index)
-        const result = await this.cloud.jobsSoftupdateObj.getResult(index)
-        const updateMessage = await this.cloud.jobsSoftupdateObj.getMessageUpdate(index)
-        // await cloud.jobsSoftupdateObj.getLastUpdate(index)
-        const originalVersion = await this.cloud.jobsSoftupdateObj.getOriginalVersion(index)
+        await this.cloud.jobsSoftupdateObj.expectDeviceToBe(switchName, nameExpected)
+        await this.cloud.jobsSoftupdateObj.expectResultToBe(switchName, resultMessageExpected)
+        await this.cloud.jobsSoftupdateObj.expectMessageUpdateToBe(switchName, updateMessageExpected)
+    }
 
-        return {
-            device, result, updateMessage, originalVersion
+    async confirmDetailsForMoreSwitches(switches: string[], namesExpected: string[], resultsMessageExpected: string[], updatesMessageExpected: string[]) : Promise <void> {
+
+        for (let dut in switches) {
+
+            this.confirmDetails(switches[dut], namesExpected[dut], resultsMessageExpected[dut], updatesMessageExpected[dut])
+            console.log(`### The details of the upgrade/downgrade of switch ${switches[dut]} have been confirmed...`)
         }
     }
 
-    async confirmDetails(name: string, resultMessageExpected: string, updateMessageExpected: string, index: number) {
+    async confirmUpgradeDowngrade(switchName: string, imageVersion: string) : Promise <void> {
 
-        const details = await this.getDetailsDUT(index)
-
-        // Fetching and asserting the Results
-
-        expect(details.device).toBe(name)
-        expect(details.result).toBe(resultMessageExpected)
-        expect(details.updateMessage).toBe(updateMessageExpected)
-        // expect(details.originalVersion).toBe(data.image_to_downgrade)
-        console.log(`The device is: ${details.device}`)
-        console.log(`The result of the update/downgrade is: ${details.result}`)
-        console.log(`The message of the update/downgrade is: ${details.updateMessage}`)
-        console.log(`The original version of the DUT: ${details.originalVersion}`)
+        await this.confirmDetails(switchName, switchName, "Completed", `Successfully updated the device version to ${imageVersion}`)
+        console.log(`### The details of the upgrade/downgrade of switch ${switchName} have been confirmed...`)
     }
 
-    async confirmUpgradeDowngrade(name: string, imageVersion: string, index: number, waitingTime: number) {
-
-        console.log("######## Getting the information before the update is completed ########")
+    async confirmAllUpgradeDowngrade(name1: string, name2: string, imageVersion: string) : Promise <void> {
 
         // Fetching and asserting the Results
 
-        this.confirmDetails(name, "Initiated", "Initiated software update operation", index)
+        await this.confirmDetails(name1, name1, "Completed", `Successfully updated the device version to ${imageVersion}`)
+        await this.confirmDetails(name2, name2, "Completed", `Successfully updated the device version to ${imageVersion}`)
 
-        // Waiting for the Software Update to be complete
-
-        await this.page.waitForTimeout(waitingTime)
-
-        console.log("######## Getting the information after the update is completed ########")
-
-        // Fetching and asserting the Results
-
-        this.confirmDetails(name, "Completed", `Successfully updated the device version to ${imageVersion}`, index)
-
+        console.log(`### The details of the upgrade/downgrade of switch ${name1} have been confirmed...`)
+        console.log(`### The details of the upgrade/downgrade of switch ${name2} have been confirmed...`)
         await this.page.waitForTimeout(2000)
     }
 
-    async confirmAllUpgradeDowngrade(name1: string, name2: string, imageVersion: string, index1: number, index2: number, waitingTime: number) {
+    async confirmUpdateIsCompleted(index: number) : Promise <void>  {
 
-        console.log("######## Getting the information before the update is completed ########")
-
-        // Fetching and asserting the Results
-
-        this.confirmDetails(name1, "Initiated", "Initiated software update operation", index1)
-        this.confirmDetails(name2, "Initiated", "Initiated software update operation", index2)
-
-        // Waiting for the Software Update to be complete
-
-        await this.page.waitForTimeout(waitingTime)
-
-        console.log("######## Getting the information after the update is completed ########")
-
-        // Fetching and asserting the Results
-
-        this.confirmDetails(name1, "Completed", `Successfully updated the device version to ${imageVersion}`, index1)
-        this.confirmDetails(name2, "Completed", `Successfully updated the device version to ${imageVersion}`, index2)
-
-        await this.page.waitForTimeout(2000)
-    }
-
-    async confirmUpdateIsCompleted(index: number) {
-
-        await this.cloud.configObj.expectJobStatusToBeCompleted(index)
+        await this.cloud.configUpdateObj.expectJobStatusToBeCompleted(index)
         console.log("The update is completed")
     }
 }

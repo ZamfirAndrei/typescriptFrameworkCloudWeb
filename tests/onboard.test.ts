@@ -48,7 +48,7 @@ test.describe("OnBoard ->", async() => {
         const onboardFlow = new OnBoardFlow(page)
 
         await onboardFlow.goToSwitchesList()
-        await onboardFlow.confirmDeleteDeviceFromCloud(DUT3[0].name)
+        await onboardFlow.confirmDeviceDeletedFromCloud(DUT3[0].name)
     
     })
 })

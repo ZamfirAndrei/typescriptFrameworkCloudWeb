@@ -358,7 +358,7 @@ export class PhysicalPortPage {
         console.log(`The port has been ${state}d`)
     }
 
-    async changeSpeedPort(speed:string) {
+    async changeSpeedPort(speed: string) {
 
         await this.speedMenu.click()
         await this.page.click(`[title="${speed}"]`)
@@ -687,11 +687,16 @@ export class SoftwareUpgrade {
     private readonly dropdownImageMenu : Locator = this.page.locator('[class="dropdown-menu h-down"]')
     private readonly switchGroupName : Locator = this.page.locator('[data-column-id="swGroup"]')
 
+    private getRowContent = (switchGroupName: string) => this.page.getByRole('row', {name: `${switchGroupName}`})
+    private checkBoxOfSwitch = (switchGroupName: string) => this.getRowContent(switchGroupName).locator('[type="checkbox"]')
+    private getSoftwareVersionSwitchLocator = (switchGroupName: string) => this.getRowContent(switchGroupName).locator('[data-column-id="actSw"]')
+    private getSwitchGroupNameOfSwitchLocator = (switchGroupName: string) => this.getRowContent(switchGroupName).locator('[data-column-id="swGroup"]')
+
     constructor(public page:Page) {
 
     }
 
-    async clickActions() {
+    async clickActions() : Promise <void> {
 
         if (await this.actionsMenu.isEnabled()) {
 
@@ -703,71 +708,78 @@ export class SoftwareUpgrade {
         }
         
     }
-    async searchSwitch(switchName: string) {
+    async searchSwitch(switchName: string) : Promise <void> {
 
         await this.searchBar.fill(switchName)
         await this.searchBar.press("Enter")
     }
 
-    async clickCheckSwitch(switchName: string, id: number){
+    async clickCheckSwitch(switchName: string) : Promise <void> {
 
         await this.searchBar.fill(switchName)
         await this.searchBar.press("Enter")
-        await this.page.waitForTimeout(2000)
-        await this.checkbox.nth(id).click()
+        // await this.page.waitForTimeout(2000)
+        // await this.checkbox.nth(id).click()
+        // console.log(await this.getRowContent(switchName).textContent())
+        await this.checkBoxOfSwitch(switchName).click({timeout: 10000})
+        
     }
 
-    async clickCheckAll() {
+    async clickCheckAll() : Promise <void> {
 
-        await this.page.waitForTimeout(2000)
-        await this.checkbox.nth(0).click()
+        // await this.page.waitForTimeout(2000)
+        // await this.checkbox.nth(0).click()
+        await this.checkbox.first().click({timeout: 10000})
     }
 
 
-    async clickConfiguration() {
+    async clickConfiguration() : Promise <void> {
 
         await this.configurationButton.click()
     }
 
-    async clickSoftUpdate() {
+    async clickSoftUpdate() : Promise <void> {
 
         await this.softupgradeButton.click()
     }
 
-    async chooseSoftwareImageForUpdate(image:string) {
+    async chooseSoftwareImageForUpdate(image:string) : Promise <void> {
 
-        await this.softwareImageDropdown.click()
-        await this.page.waitForTimeout(1000)
-        await this.dropdownImageMenu.locator(`[title="${image}"]`).click()
+        await this.softwareImageDropdown.click({timeout: 10000})
+        // await this.page.waitForTimeout(1000)
+        await this.dropdownImageMenu.locator(`[title="${image}"]`).click({timeout: 10000})
     }
 
-    async clickAddSoftwareUpdate() {
+    async clickAddSoftwareUpdate() : Promise <void> {
 
         await this.addSoftwareJobToDeviceButton.click()
     }
 
-    async clickViewJobs() {
+    async clickViewJobs() : Promise <void> {
 
         await this.viewJobs.click()
     }
 
-    async checkDisableAutoReboot() {
+    async checkDisableAutoReboot()  : Promise <void> {
 
         await this.disableAutoReboot_checkbox.check()
     }
 
-    async getSoftwareVersion(id: number) {
+    async getSoftwareVersion(switchName: string) {
 
-        const softVersion = await this.softwareVersion.nth(id).textContent()
+        // const softVersion = await this.softwareVersion.nth(id).textContent()
 
-        return softVersion?.trim()
+        // return softVersion?.trim()
+        return await this.getSoftwareVersionSwitchLocator(switchName).textContent()
     }
 
-    async getSwitchGroup(id: number) {
+    async getSwitchGroup(switchName: string) {
 
-        const switchGroup = await this.switchGroupName.nth(id).textContent()
+        // const switchGroup = await this.switchGroupName.nth(id).textContent()
 
-        return switchGroup?.trim()
+        // return switchGroup?.trim()
+
+        return await this.getSwitchGroupNameOfSwitchLocator(switchName).textContent()
     }
 }
 export class ConfigurationPageSwitchGroup extends AddSwitchgroupPage {

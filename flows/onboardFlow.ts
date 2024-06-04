@@ -11,13 +11,13 @@ export class OnBoardFlow {
         this.cloud = new CloudObjects(this.page)
     }
 
-    async expectPageTitle(expectedPageTitle : string) {
+    async expectPageTitle(expectedPageTitle : string) : Promise <void> {
 
         const pageTitle = await this.cloud.page.title()
         expect(pageTitle).toBe(expectedPageTitle)
     }
 
-    async goToSwitchesList() {
+    async goToSwitchesList() : Promise <void> {
 
         await this.cloud.toolbarObj.clickDevicePage()
         await this.cloud.deviceObj.clickSwitches()
@@ -30,7 +30,7 @@ export class OnBoardFlow {
         // Onboarded
     }
 
-    async onboardDevice(deviceSerialNumber : string) {
+    async onboardDevice(deviceSerialNumber : string)  : Promise <void> {
 
         await this.cloud.toolbarObj.clickOnBoardPage()
         await this.cloud.onboardObj.claimDevice(deviceSerialNumber)
@@ -56,7 +56,7 @@ export class OnBoardFlow {
         return status
     }
 
-    async confirmDeviceAlreadyOnboarded(switchSerialNumber : string) {
+    async confirmDeviceAlreadyOnboarded(switchSerialNumber : string) : Promise <void> {
         
         // Checking the device Onboarding status before approve
 
@@ -81,7 +81,7 @@ export class OnBoardFlow {
         
     }
 
-    async confirmDeviceOnboarded(switchSerialNumber : string, onboardStatus: string) {
+    async confirmDeviceOnboarded(switchSerialNumber : string, onboardStatus: string) : Promise <void> {
         
         // Checking the device Onboarding status before approve
 
@@ -93,12 +93,11 @@ export class OnBoardFlow {
         expect(status).toBe(true)
 
         await this.cloud.onboardObj.expectOnboardStatusDeviceToBe(switchSerialNumber, onboardStatus)
-
         await this.cloud.page.waitForTimeout(2000)
         
     }
 
-    async confirmDeviceisAvailableInTheCloud(switchName : string) {
+    async confirmDeviceisAvailableInTheCloud(switchName : string) : Promise <void> {
 
         await this.cloud.toolbarObj.clickDevicePage()
         await this.cloud.deviceObj.clickSwitches()
@@ -118,7 +117,7 @@ export class OnBoardFlow {
         
     }
 
-    async confirmDeleteDUTfromCloud(switchName : string) {
+    async confirmDeleteDUTfromCloud(switchName : string) : Promise <void> {
 
         await this.cloud.deviceObj.deleteDevice(switchName)
         await this.cloud.page.waitForTimeout(3500)
@@ -144,14 +143,14 @@ export class OnBoardFlow {
         await this.cloud.page.waitForTimeout(2000)
     }
 
-    async confirmDeleteDeviceFromCloud(switchName : string) {
+    async confirmDeviceDeletedFromCloud(switchName : string) : Promise <void> {
 
         await this.cloud.deviceObj.deleteDevice(switchName)
         await this.cloud.deviceObj.expectDeleteMessage1ToBe("Success")
-        await this.cloud.deviceObj.expectDeleteMessage2ToBe("The device deletion operation completed.")
+        await this.cloud.deviceObj.expectDeleteMessage2ToBe(`The device ${switchName} deletion operation completed.`)
     }
 
-    async confirmDeviceIsOnboarded(serialNumber : string) {
+    async confirmDeviceIsOnboarded(serialNumber : string) : Promise <void> {
 
         await this.cloud.onboardObj.expectDeviceToBeAlreadyOnboarded(serialNumber)
         

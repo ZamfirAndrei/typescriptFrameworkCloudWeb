@@ -22,27 +22,27 @@ export default class ToolbarPage {
 
     }
 
-    async clickDevicePage()
-    {
+    async clickDevicePage() : Promise <void> {
+
         await this.devicesPg.click()
     }
 
-    async clickSwitchGroupsPage()
-    {
+    async clickSwitchGroupsPage() : Promise <void> {
+
         await this.switchgroupsPg.click()
     }
 
-    async clickHomePage()
-    {
+    async clickHomePage() : Promise <void> {
+
         await this.homePg.click()
     }
 
-    async clickOnBoardPage()
-    {
+    async clickOnBoardPage() : Promise <void> {
+        
         await this.onboardPg.click()
     }
 
-    async clickJobsPage() {
+    async clickJobsPage() : Promise <void> {
 
         await this.administrationPg.hover()
         await this.page.locator('[cns-auto="Nav-Jobs"]').click()

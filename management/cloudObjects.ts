@@ -35,7 +35,7 @@ export class CloudObjects {
     public readonly networkPortObj : NetworkPortPage
     public readonly statisticsObj : StatisticsPage
     public readonly jobsObj : JobsPage
-    public readonly configObj : ConfigurationUpdatePage
+    public readonly configUpdateObj : ConfigurationUpdatePage
     public readonly jobsSoftupdateObj : JobsSoftwareUpdatePage
     public readonly onboardObj : OnBoardPage
     public readonly switchGroupSoftupdate : SoftwareUpgrade
@@ -67,7 +67,7 @@ export class CloudObjects {
         this.networkPortObj = new NetworkPortPage(this.page)
         this.statisticsObj = new StatisticsPage(this.page)
         this.jobsObj = new JobsPage(this.page)
-        this.configObj = new ConfigurationUpdatePage(this.page)
+        this.configUpdateObj = new ConfigurationUpdatePage(this.page)
         this.jobsSoftupdateObj = new JobsSoftwareUpdatePage(this.page)
         this.onboardObj = new OnBoardPage(this.page)
         this.switchGroupSoftupdate = new SoftwareUpgrade(this.page)
