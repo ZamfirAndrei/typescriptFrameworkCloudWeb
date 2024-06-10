@@ -24,7 +24,7 @@ export default class ToolbarPage {
 
     async clickDevicePage() : Promise <void> {
 
-        await this.devicesPg.click()
+        await this.devicesPg.click({timeout:25000})
     }
 
     async clickSwitchGroupsPage() : Promise <void> {

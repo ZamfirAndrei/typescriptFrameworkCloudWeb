@@ -177,7 +177,7 @@ export class SwitchGroupFlow {
     async verifyIfSwitchGroupSaveButtonIsEnabled() : Promise <void> {
 
         const check = await this.cloud.addSwitchgroupObj.checkIfSaveButtonIsEnabled()
-        console.log(check)
+        // console.log(check)
         await this.cloud.page.waitForTimeout(2000)
 
         if (check == true) {
@@ -261,16 +261,7 @@ export class SwitchGroupFlow {
 
         await this.cloud.page.waitForTimeout(2000)
         await this.applySwitchConfiguration()
-
-        console.log("####### Getting the sync message of the Switch Group Configuration #######")
-
-        const message = await this.cloud.confObj.getMessageApplyConfiguration()
-        console.log(message)
-        expect(message).toBe(jobMessages)
-
-        console.log("####### Getting the Details of the Switch AFTER applying the configuration and syncing #######")
-
-        
+        expect(await this.cloud.confObj.getMessageApplyConfiguration()).toBe(jobMessages)
         await this.cloud.confObj.expectSyncStatusDeviceToBe(syncStatusMessage)
     }
 

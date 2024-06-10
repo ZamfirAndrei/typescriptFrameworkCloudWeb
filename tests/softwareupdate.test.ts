@@ -21,7 +21,7 @@ test.describe("SoftwareUpdate ->", async() => {
         await cloud.page.waitForTimeout(2000)
     })
 
-    test ("1.Test to verify if you can upgrade to a new software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
+    test ("1.Test to verify if you can upgrade to a new software - Particular Switch", async({page,baseURL}) => {
 
         const softUpdateFlow = new SoftwareUpdateFlow(page)
 
@@ -32,7 +32,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test ("2.Test to verify if you can downgrade to an older software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
+    test ("2.Test to verify if you can downgrade to an older software - Particular Switch", async({page,baseURL}) => {
 
         const softUpdateFlow = new SoftwareUpdateFlow(page)
 
@@ -43,7 +43,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test ("3.Test to verify if you can not upgrade/downgrade to the same software - Particular Switch - EX3028R-P", async({page,baseURL}) => {
+    test ("3.Test to verify if you can not upgrade/downgrade to the same software - Particular Switch", async({page,baseURL}) => {
 
         const softUpdateFlow = new SoftwareUpdateFlow(page)
 
@@ -54,7 +54,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test ("4.Test to verify if you can upgrade to a new software - Switch Group - EX3028R-P", async({page,baseURL}) => {
+    test ("4.Test to verify if you can upgrade to a new software - Switch Group", async({page,baseURL}) => {
 
         const softUpdateFlow = new SoftwareUpdateFlow(page)
 
@@ -65,7 +65,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test ("5.Test to verify if you can downgrade to an older software - Switch Group - EX3028R-P", async({page,baseURL}) => {
+    test ("5.Test to verify if you can downgrade to an older software - Switch Group", async({page,baseURL}) => {
 
         const softUpdateFlow = new SoftwareUpdateFlow(page)
 
@@ -76,7 +76,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test ("6.Test to verify if you can not upgrade/downgrade to the same software - Switch Group - EX3028R-P", async({page,baseURL}) => {
+    test ("6.Test to verify if you can not upgrade/downgrade to the same software - Switch Group", async({page,baseURL}) => {
 
         const softUpdateFlow = new SoftwareUpdateFlow(page)
 
@@ -109,7 +109,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test.only ("9.Test to verify if you can can not upgrade/downgrade to the same software if all DUTs have the same software - Switch Group - 2 DUTs", async({page,baseURL}) => {
+    test ("9.Test to verify if you can can not upgrade/downgrade to the same software if all DUTs have the same software - Switch Group - 2 DUTs", async({page,baseURL}) => {
 
         const softUpdateFlow = new SoftwareUpdateFlow(page)
 

@@ -1,6 +1,8 @@
 import { Page } from "@playwright/test";
 import { CloudObjects } from "../management/cloudObjects";
 import { expect } from "@playwright/test";
+import { time } from "console";
+import { TIMEOUT } from "dns";
 
 
 export class SoftwareUpdateFlow {
@@ -35,7 +37,6 @@ export class SoftwareUpdateFlow {
         
         // Waiting for the Job Software Update to be completed
 
-        // await this.page.waitForTimeout(15000)
         await this.confirmUpdateIsCompleted(index)
     }
 

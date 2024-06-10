@@ -1,17 +1,34 @@
 import { test, expect, Page} from "@playwright/test";
-import LoginPage from "../pages/loginPage";
-import HomePage from "../pages/homePage";
-import DevicePage from "../pages/devicesPage";
-import ToolbarPage from "../pages/toolbarPage";
-import SwitchgroupPage from "../pages/switchGroupPage";
+import LoginPage from "../pages/loginPage/loginPage";
+import HomePage from "../pages/homePage/homePage";
+import DevicePage from "../pages/devicesPage/devicesPage";
+import ToolbarPage from "../pages/toolbarPage/toolbarPage";
+import SwitchgroupPage from "../pages/switchGroupPage/switchGroupPage";
 // import addswitchgroupPage from "../pages/addswitchgroupPage";
-import {  AddSwitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
-import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
-import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage, SoftwareUpgrade, SwitchesPage, ConfigurationPageSwitchGroup, NetworkPageSwitchGroup} from "../pages/particularSwitchGroupPage";
+import {  AddSwitchgroupPage } from "../pages/addSwitchGroupPage/addswitchgroupPage";
+import { NetworkPage } from "../pages/addSwitchGroupPage/networkPage" 
+import { BasicPage, } from "../pages/addSwitchGroupPage/basicPage" 
+import { ManagementPage } from "../pages/addSwitchGroupPage/managementPage" 
+import { ParticularDevicePage } from "../pages/particularDevicePage/particularDevicePage";
+import { ConfigurationPage } from "../pages/particularDevicePage/configurationPage";
+import { SoftwareUpdatePage } from "../pages/particularDevicePage/softwareUpdatePage";
+import { ToolsPage } from "../pages/particularDevicePage/toolsPage";
+import { ParticularSwitchGroupPage} from "../pages/particularSwitchGroupPage/particularSwitchGroupPage";
+import { SwitchPortsPage } from "../pages/particularSwitchGroupPage/switchPortsPage";
+import { PortPage } from "../pages/particularSwitchGroupPage/portPage";
+import { PhysicalPortPage } from "../pages/particularSwitchGroupPage/physicalPortPage";
+import { NetworkPortPage } from "../pages/particularSwitchGroupPage/networkPortPage";
+import { StatisticsPage } from "../pages/particularSwitchGroupPage/statisticsPage";
+import { SoftwareUpgrade } from "../pages/particularSwitchGroupPage/softwareUpgrade";
+import { SwitchesPage } from "../pages/particularSwitchGroupPage/switchesPage";
+import { ConfigurationPageSwitchGroup } from "../pages/particularSwitchGroupPage/configurationPageSwitchGroup.ts";
+import { NetworkPageSwitchGroup } from "../pages/particularSwitchGroupPage/networkPageSwitchGroup";
 
 import * as data from "../constants/constants.json"
-import { JobsPage, ConfigurationUpdatePage, JobsSoftwareUpdatePage } from "../pages/jobsPage";
-import { OnBoardPage } from "../pages/onboardPage";
+import { JobsPage} from "../pages/jobsPage/jobsPage";
+import { ConfigurationUpdatePage } from "../pages/jobsPage/configurationUpdatePage";
+import { JobsSoftwareUpdatePage } from "../pages/jobsPage/jobsSoftwareUpdatePage";
+import { OnBoardPage } from "../pages/onboardPage/onboardPage";
 
 export class CloudObjects {
 

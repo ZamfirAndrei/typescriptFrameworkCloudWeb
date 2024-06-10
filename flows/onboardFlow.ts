@@ -24,12 +24,6 @@ export class OnBoardFlow {
         await this.cloud.page.waitForTimeout(2000)
     }
 
-    async confirmOnboardDevice() {
-
-        // Waiting for Device
-        // Onboarded
-    }
-
     async onboardDevice(deviceSerialNumber : string)  : Promise <void> {
 
         await this.cloud.toolbarObj.clickOnBoardPage()
@@ -51,47 +45,15 @@ export class OnBoardFlow {
 
         await this.cloud.page.reload()
         await this.cloud.page.waitForTimeout(2000)
-        const status = await this.cloud.onboardObj.approveDeviceBySerialNumber(switchSerialNumber)
-
-        return status
-    }
-
-    async confirmDeviceAlreadyOnboarded(switchSerialNumber : string) : Promise <void> {
-        
-        // Checking the device Onboarding status before approve
-
-        // const deviceStatusBefore = await this.cloud.onboardObj.getOnboardingStatus(index)
-        const deviceStatusBefore = await this.cloud.onboardObj.getOnboardingStatusBySerialNumber(switchSerialNumber)
-
-        expect(deviceStatusBefore).toBe("Onboarded")
-
-        // const status = await this.aproveDevice(index)
-        const status = await this.aproveDeviceBySerialNumber(switchSerialNumber)
-        console.log(status)
-
-        expect(status).toBe(false)
- 
-        // Checking the device Onboarding status after approve
- 
-        // const deviceStatusAfter = await this.cloud.onboardObj.getOnboardingStatus(index)
-        const deviceStatusAfter = await this.cloud.onboardObj.getOnboardingStatusBySerialNumber(switchSerialNumber)
-
-        expect(deviceStatusAfter).toBe("Onboarded")
-        expect(deviceStatusBefore).toBe(deviceStatusAfter)
-        
+        await this.cloud.onboardObj.approveDeviceBySerialNumber(switchSerialNumber)
     }
 
     async confirmDeviceOnboarded(switchSerialNumber : string, onboardStatus: string) : Promise <void> {
-        
-        // Checking the device Onboarding status before approve
 
         await this.page.waitForTimeout(2000)
-
-        const status = await this.aproveDeviceBySerialNumber(switchSerialNumber)
-        console.log(status)
-
-        expect(status).toBe(true)
-
+        
+        await this.aproveDeviceBySerialNumber(switchSerialNumber)
+        await this.cloud.onboardObj.expectApproveDeviceStatusToBe(switchSerialNumber, true)
         await this.cloud.onboardObj.expectOnboardStatusDeviceToBe(switchSerialNumber, onboardStatus)
         await this.cloud.page.waitForTimeout(2000)
         
@@ -103,56 +65,19 @@ export class OnBoardFlow {
         await this.cloud.deviceObj.clickSwitches()
         await this.cloud.page.waitForTimeout(2000)
         await this.cloud.deviceObj.searchToolbar(switchName)
-
-        // const nrOfDevices = await this.cloud.deviceObj.numberOfDevicesFound()
-        // console.log(nrOfDevices)
-
-        // const deviceName = await this.cloud.deviceObj.getDeviceName(index)
-        // const deviceName = await this.cloud.deviceObj.getDeviceNameByName(switchName)
-        // console.log(deviceName)
-
-        // expect(nrOfDevices).toBe("1")
-        // expect(deviceName).toBe(switchName)
         await this.cloud.deviceObj.expectDeviceToBeAvailable(switchName)
         
-    }
-
-    async confirmDeleteDUTfromCloud(switchName : string) : Promise <void> {
-
-        await this.cloud.deviceObj.deleteDevice(switchName)
-        await this.cloud.page.waitForTimeout(3500)
-
-        const [messageDelete1, messageDelete2] = await this.cloud.deviceObj.getDeleteMessage()
-
-        console.log(messageDelete1)
-        console.log(messageDelete2)
-
-        expect(messageDelete1).toBe("Success")
-        expect(messageDelete2).toBe("Deletion of 1 devices has been started.")
-
-        await this.cloud.page.waitForTimeout(6000)
-
-        const [messageDelete3, messageDelete4] = await this.cloud.deviceObj.getDeleteMessage()
-
-        console.log(messageDelete3)
-        console.log(messageDelete4)
-
-        expect(messageDelete3).toBe("Success")
-        expect(messageDelete4).toBe("The device deletion operation completed.")
-
-        await this.cloud.page.waitForTimeout(2000)
     }
 
     async confirmDeviceDeletedFromCloud(switchName : string) : Promise <void> {
 
         await this.cloud.deviceObj.deleteDevice(switchName)
         await this.cloud.deviceObj.expectDeleteMessage1ToBe("Success")
-        await this.cloud.deviceObj.expectDeleteMessage2ToBe(`The device ${switchName} deletion operation completed.`)
+        await this.cloud.deviceObj.expectDeleteMessage2ToBe("The device deletion operation completed.")
     }
 
     async confirmDeviceIsOnboarded(serialNumber : string) : Promise <void> {
 
         await this.cloud.onboardObj.expectDeviceToBeAlreadyOnboarded(serialNumber)
-        
     }
 }

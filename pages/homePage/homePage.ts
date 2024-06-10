@@ -15,7 +15,7 @@ export default class HomePage {
     async getNumberOfDevices() {
 
         var nrOfDevices = await this.devicePanel.locator('[class="text-center text-ellipsis"]').nth(0).textContent()
-        var tete = await this.devicePanel.locator('[class="text-center text-ellipsis"]').nth(0).getAttribute("title")
+        // var tete = await this.devicePanel.locator('[class="text-center text-ellipsis"]').nth(0).getAttribute("title")
         // same thing as above
         // var tete2 = await devicesPanel.locator('[class="text-center text-ellipsis"]').nth(0) 
         

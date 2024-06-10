@@ -19,6 +19,7 @@ export default class SwitchgroupPage {
     private getEditSwitchGroup = (switchGroupName: string) => this.getRowContentByName(switchGroupName).locator('[data-column-id="actions"]').locator('[title="Edit"]')
     private getActivePoEPorts = (switchGroupName: string) => this.getRowContentByName(switchGroupName).locator('[data-column-id="poePortCount"]')
     private getSwitchGroupToClickLocator = (switchGroupName: string) => this.getRowContentByName(switchGroupName).locator('[class="cn-link ng-binding"]')
+    private getSwitchGroupNameLocator = (switchGroupName: string) => {return this.page.locator('[class="cn-link ng-binding"]').getByText(`${switchGroupName}`, {exact:true})}
     
     constructor (public page: Page) {
 
@@ -54,9 +55,7 @@ export default class SwitchgroupPage {
     async expectSwitchGroupToBeCreated(switchGroupName: string) : Promise <void> {
 
         await this.searchSwitchGroup(switchGroupName)
-        const nameSwitchGroup = this.page.locator('[class="cn-link ng-binding"]').getByText(`${switchGroupName}`, {exact:true})
-
-        await expect(nameSwitchGroup).toHaveText(switchGroupName, {timeout: 20000})
+        await expect(this.getSwitchGroupNameLocator(switchGroupName)).toHaveText(switchGroupName, {timeout: 20000})
     }
 
     async clickSwitchGroup(switchGroupName: string) : Promise <void> {
@@ -64,8 +63,6 @@ export default class SwitchgroupPage {
         await this.searchbar.fill(switchGroupName)
         await this.searchbar.press("Enter")
         await this.page.waitForTimeout(2000)
-        // const switchGroup = this.page.locator('[class="cn-link ng-binding"]').getByText(switchGroupName)
-        // await switchGroup.click()
         await this.getSwitchGroupToClickLocator(switchGroupName).click()
     }
 
@@ -160,7 +157,6 @@ export default class SwitchgroupPage {
 
     async getNrOfPoEPorts(switchGroupName: string) {
 
-        console.log(await this.getActivePoEPorts(switchGroupName).textContent())
         return await this.getActivePoEPorts(switchGroupName).textContent()
     }
 

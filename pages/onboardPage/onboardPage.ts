@@ -2,6 +2,8 @@ import { Page, Locator } from "@playwright/test"
 import { waitForDebugger } from "inspector"
 import path from "path"
 import { test, expect} from "@playwright/test";
+import { TIMEOUT } from "dns";
+import { setTimeout } from "timers";
 
 export class OnBoardPage {
 
@@ -12,7 +14,11 @@ export class OnBoardPage {
     private readonly backClaimDeviceButton : Locator = this.page.locator('[cns-auto="backBtn"]')
     private readonly actions : Locator = this.page.locator('[class=" dt-actions"]')
     private readonly claimDeviceInfo : Locator = this.page.locator('[class="inline m-t-sm ng-scope"]')
-    
+
+    private getRowContentByserialNumber = (switchSerialNumber: string) =>{return this.page.locator("[role='row']", {hasText: `${switchSerialNumber}`})}
+    private getOnboardingStatusLocator = (serialNumber : string) => {return this.getRowContentByserialNumber(serialNumber).locator('[data-column-id="status"]')}
+    private getActionsLocator = (serialNumber : string) => {return this.getRowContentByserialNumber(serialNumber).locator('[class=" dt-actions"]')}
+    private getApproveStatusLocator = (serialNumber : string) => {return this.getRowContentByserialNumber(serialNumber).locator('[class=" dt-actions"]').locator('[title="Approve Device"]')}
 
     constructor(public page:Page) {
 
@@ -111,23 +117,6 @@ export class OnBoardPage {
         return onboardStatus?.trim()
     }
 
-    // Using functions without async. Are doing the same thing as the async ones
-
-    private getRowContentByserialNumber = (switchSerialNumber: string) =>{
-
-        const row = this.page.locator("[role='row']", {hasText: `${switchSerialNumber}`})
-        
-        return row
-    }
-
-    private getOnboardingStatusLocator = (serialNumber : string) => {
-
-        const row =  this.getRowContentByserialNumber(serialNumber)
-        const onboardStatusLocator = row.locator('[data-column-id="status"]')
-        
-        return onboardStatusLocator
-    }
-
     async getOnboardingstatusLocator (serialNumber : string) : Promise <Locator>  {
 
         const row = await this.getRowContentBySerialNumber(serialNumber)
@@ -138,37 +127,40 @@ export class OnBoardPage {
 
     async approveDeviceBySerialNumber(switchSerialNumber: string) {
 
-        const row = await this.getRowContentBySerialNumber(switchSerialNumber)
-        await row.locator('[class=" dt-actions"]').hover()
+        await this.getActionsLocator(switchSerialNumber).hover()
 
-        const status = await row.locator('[class=" dt-actions"]').locator('[title="Approve Device"]').isVisible()
+        if (await this.getApproveStatusLocator(switchSerialNumber).isVisible()) {
 
-        if (await row.locator('[class=" dt-actions"]').locator('[title="Approve Device"]').isVisible())
-        {
-            await row.locator('[class=" dt-actions"]').locator('[title="Approve Device"]').click()
+            await this.getApproveStatusLocator(switchSerialNumber).click()
+            return true
         }
+
         else {
 
             console.log("The device is already approved")
+            return false
         }
-
-        return status
     }
+    async expectApproveDeviceStatusToBe(switchSerialNumber: string, expectedResult: Boolean) {
+
+        expect(await this.getApproveStatusLocator(switchSerialNumber).isVisible()).toBe(expectedResult)
+    }
+
 
     async expectOnboardStatusDeviceToBe(serialNumber: string, onboardStatusDevice: string) {
 
-        const onboardStatusLocator = await this.getRowContentBySerialNumber(serialNumber)
+        // const onboardStatusLocator = await this.getRowContentBySerialNumber(serialNumber)
 
-        console.log("############## Before expect ##############")
-        var onboardStatusText = await onboardStatusLocator.locator('[data-column-id="status"]').textContent()
-        console.log(onboardStatusText)
+        // console.log("############## Before expect ##############")
+        // var onboardStatusText = await onboardStatusLocator.locator('[data-column-id="status"]').textContent()
+        // console.log(onboardStatusText)
         
         await expect(await this.getOnboardingStatusLocator(serialNumber)).toHaveText(onboardStatusDevice,
             {timeout: 300000})
 
-        console.log("############## After expect ##############")
-        var onboardStatusText = await onboardStatusLocator.locator('[data-column-id="status"]').textContent()
-        console.log(onboardStatusText)
+        // console.log("############## After expect ##############")
+        // var onboardStatusText = await onboardStatusLocator.locator('[data-column-id="status"]').textContent()
+        // console.log(onboardStatusText)
     }
 
     async expectDeviceToBeAlreadyOnboarded(serialNumber : string) {

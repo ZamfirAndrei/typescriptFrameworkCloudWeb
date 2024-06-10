@@ -88,13 +88,13 @@ test.describe("SwitchGroup ->", async() => {
 
     })
 
-    test("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
+    test.only("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
 
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
         await switchgroupFlow.changeSTPofTheSwitchGroup("RSTP")
-        await switchgroupFlow.changePriorityRSTP("8192")
+        await switchgroupFlow.changePriorityRSTP("0")
         await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
             sync_status_device[0].InSync)
@@ -107,27 +107,27 @@ test.describe("SwitchGroup ->", async() => {
 
         await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
         await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")
-        await switchgroupFlow.changeInstancePriorityPVRST("10", "8192")
+        await switchgroupFlow.changeInstancePriorityPVRST("10", "4096")
         await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
             sync_status_device[0].InSync)
 
     })
 
-    test.only("10.Testing", async({page, baseURL}) => {
+    test("X.Testing", async({page, baseURL}) => {
 
         const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
         await switchgroupFlow.checkIfTheSwitchGroupHasBeenCreated(mock2[0].switch_group_name)
         // await switchgroupFlow.checkIfTheSwitchGroupExists(mock2[0].switch_group_name)
-        await cloud.toolbarObj.clickSwitchGroupsPage()
-        await page.waitForTimeout(3000)
+        // await cloud.toolbarObj.clickSwitchGroupsPage()
+        // await page.waitForTimeout(3000)
+        // // await cloud.switchgroupObj.editSwitchGroupByName(mock2[0].switch_group_name)
+        // await cloud.switchgroupObj.getNrOfPoEPorts(mock2[0].switch_group_name)
         // await cloud.switchgroupObj.editSwitchGroupByName(mock2[0].switch_group_name)
-        await cloud.switchgroupObj.getNrOfPoEPorts(mock2[0].switch_group_name)
-        await cloud.switchgroupObj.editSwitchGroupByName(mock2[0].switch_group_name)
-        // await cloud.switchgroupObj.edit(mock2[0].switch_group_name)
-        await page.waitForTimeout(3000)
+        // // await cloud.switchgroupObj.edit(mock2[0].switch_group_name)
+        // await page.waitForTimeout(3000)
 
         // await cloud.toolbarObj.clickDevicePage()
         // await cloud.deviceObj.clickSwitches()

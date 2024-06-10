@@ -23,7 +23,7 @@ test.describe("OnBoard ->", async() => {
         await cloud.page.waitForLoadState()
     })
 
-    test ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
+    test.only ("1.Test to verify the onboarding of a DUT", async({page,baseURL}) => {
     
         const onboardFlow = new OnBoardFlow(page)
 
@@ -33,7 +33,7 @@ test.describe("OnBoard ->", async() => {
 
     })
 
-    test.only ("2.Test to verify if a DUT is already onboarded", async({page,baseURL}) => {
+    test ("2.Test to verify if a DUT is already onboarded", async({page,baseURL}) => {
     
         const onboardFlow = new OnBoardFlow(page)
 
