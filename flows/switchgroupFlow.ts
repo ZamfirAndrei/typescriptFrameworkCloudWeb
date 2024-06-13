@@ -221,6 +221,16 @@ export class SwitchGroupFlow {
 
     }
 
+    async changeInstancePriorityMSTP(regionName: string, instanceID: number, vlans: string, priority: string) : Promise <void> {
+
+        await this.cloud.networkSwitchgroupObj.configureMSTPRegion(regionName)
+        await this.cloud.networkSwitchgroupObj.clickEditMSTPInstance(instanceID)
+        await this.cloud.networkSwitchgroupObj.selectVlansForInstanceMSTP(vlans)
+        await this.cloud.networkSwitchgroupObj.selectPriorityMSTP(priority)
+        await this.cloud.networkSwitchgroupObj.clickUpdate()
+
+    }
+
     async changePriorityRSTP(priority: string) : Promise <void> {
 
         await this.cloud.networkSwitchgroupObj.configureStpPriorityRSTP(priority)

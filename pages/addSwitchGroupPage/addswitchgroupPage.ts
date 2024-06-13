@@ -18,39 +18,39 @@ export class AddSwitchgroupPage {
 
     }
 
-    async clickBasic() {
+    async clickBasic(): Promise <void> {
 
         await this.basic.click()
     }
 
-    async clickManagement() {
+    async clickManagement(): Promise <void> {
 
         await this.management.click()
     }
 
-    async clickNetwork() {
+    async clickNetwork(): Promise <void> {
 
         await this.network.click()
     }
 
-    async clickSecurity() {
+    async clickSecurity(): Promise <void> {
 
         await this.security.click()
     }
 
-    async checkShowAdvancedButton() {
+    async checkShowAdvancedButton(): Promise <void> {
 
        await this.showAdvanced.check()
         
     }
 
-    async unCheckShowAdvancedButton() {
+    async unCheckShowAdvancedButton(): Promise <void> {
 
         await this.showAdvanced.uncheck()
          
      }
 
-    async clickSave() {
+    async clickSave(): Promise <void> {
 
         await this.saveButton.click()
             

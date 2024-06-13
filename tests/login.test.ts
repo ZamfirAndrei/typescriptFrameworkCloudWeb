@@ -1,14 +1,4 @@
 import { test, expect} from "@playwright/test";
-import loginPage from "../pages/loginPage";
-import homePage from "../pages/homePage";
-import devicePage from "../pages/devicesPage";
-import toolbarPage from "../pages/toolbarPage";
-import SwitchgroupPage from "../pages/switchGroupPage";
-// import addswitchgroupPage from "../pages/addswitchgroupPage";
-import {  AddSwitchgroupPage, BasicPage, ManagementPage, NetworkPage } from "../pages/addswitchgroupPage";
-import { ParticularDevicePage, ConfigurationPage, SoftwareUpdatePage,ToolsPage } from "../pages/particularDevicePage";
-import { ParticularSwitchGroupPage, SwitchPortsPage, PortPage, PhysicalPortPage, NetworkPortPage, StatisticsPage} from "../pages/particularSwitchGroupPage";
-
 import * as data from "../constants/constants.json"
 import { url } from "inspector";
 import { CloudObjects } from "../management/cloudObjects";

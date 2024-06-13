@@ -7,6 +7,11 @@ export class NetworkPage {
     private readonly stpDropdown : Locator = this.page.locator('[id="stpMode"]')
     private readonly rstpPriorityMenu : Locator = this.page.locator('[id="stpPriority"]')
     private readonly rstpPriorityDropDown : Locator = this.page.locator('[class="dropdown-menu h-down"]').nth(2)
+    private readonly stpCheckBox : Locator = this.page.locator('[class="form-group checkbox m-b-none"]').locator('[class="i-checks i-checks-sm"]').locator('[translate="common.Enable"]')
+    private readonly pathcost : Locator = this.page.locator('[class="col-md-12 no-padder radio"]')
+
+    private rstpPriorityLocator = (priority: string) => {return this.rstpPriorityDropDown.locator(`[title="${priority}"]`).last()}
+    private rstpPatchCostLocator = (pathCostMethod: string) => {return this.pathcost.locator(`[translate="switchGroup.labels.${pathCostMethod}"]`)}
 
     constructor(public page:Page){
 
@@ -34,28 +39,26 @@ export class NetworkPage {
 
     async enableSTP(answer: string) {
 
-        const checkbox = this.page.locator('[class="form-group checkbox m-b-none"]').locator('[class="i-checks i-checks-sm"]').locator('[translate="common.Enable"]')
         if (answer == "Yes"){
-            await checkbox.check()
+            await this.stpCheckBox.check()
             console.log("The STP has been enabled")
         }
         else if (answer == "No"){
-            await checkbox.uncheck()
+            await this.stpCheckBox.uncheck()
             console.log("The STP has been disabled")
         }
     }
 
     async choosePathCost(pathCostMethod: string){
 
-        const pathcost = this.page.locator('[class="col-md-12 no-padder radio"]')
-        await pathcost.locator(`[translate="switchGroup.labels.${pathCostMethod}"]`).click({timeout:3000})
+        await this.rstpPatchCostLocator(pathCostMethod).click({timeout:3000})
         console.log(`The pathcost has been choosen to be: ${pathCostMethod}`)
     }
 
     async configureStpPriorityRSTP(priority: string){
 
         await this.rstpPriorityMenu.click({timeout:3000})
-        await this.rstpPriorityDropDown.locator(`[title="${priority}"]`).last().click({timeout:3000})
+        await this.rstpPriorityLocator(priority).click({timeout:3000})
         console.log(`The STP priority has been configured to : ${priority}`);
         
     }

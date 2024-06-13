@@ -5,6 +5,7 @@ import { SwitchGroupFlow } from "../flows/switchgroupFlow";
 import { CloudObjects } from "../management/cloudObjects";
 import { DUTs, DUT1, DUT2, DUT3, DUT4 } from "../constants/duts";
 import {mock1, mock2, mock3, result_update, message_update, job_message, sync_status_device} from "../constants/mocks"
+import { NetworkPageSwitchGroup } from "../pages/particularSwitchGroupPage/networkPageSwitchGroup";
 
 
 
@@ -88,7 +89,7 @@ test.describe("SwitchGroup ->", async() => {
 
     })
 
-    test.only("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
+    test("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
 
         const switchgroupFlow = new SwitchGroupFlow(page)
 
@@ -107,11 +108,25 @@ test.describe("SwitchGroup ->", async() => {
 
         await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
         await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")
-        await switchgroupFlow.changeInstancePriorityPVRST("10", "4096")
+        await switchgroupFlow.changeInstancePriorityPVRST("10", "8192")
         await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
             sync_status_device[0].InSync)
 
+    })
+
+    test.only("10.Test to verify you can modify the Priority in MSTP", async({page, baseURL}) => {
+
+        const switchgroupFlow = new SwitchGroupFlow(page)
+        const cloud = new CloudObjects(page)
+
+        await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
+        await switchgroupFlow.changeSTPofTheSwitchGroup("MSTP")
+        await switchgroupFlow.changeInstancePriorityMSTP("Reg1", 1, "100", "8192")
+        await switchgroupFlow.goToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
+        await switchgroupFlow.confirmApplyConfigurationSyncing(job_message[0].JobStartedSuccessfully, 
+            sync_status_device[0].InSync)
+        
     })
 
     test("X.Testing", async({page, baseURL}) => {
@@ -119,7 +134,7 @@ test.describe("SwitchGroup ->", async() => {
         const cloud = new CloudObjects(page)
         const switchgroupFlow = new SwitchGroupFlow(page)
 
-        await switchgroupFlow.checkIfTheSwitchGroupHasBeenCreated(mock2[0].switch_group_name)
+        // await switchgroupFlow.checkIfTheSwitchGroupHasBeenCreated(mock2[0].switch_group_name)
         // await switchgroupFlow.checkIfTheSwitchGroupExists(mock2[0].switch_group_name)
         // await cloud.toolbarObj.clickSwitchGroupsPage()
         // await page.waitForTimeout(3000)
@@ -135,7 +150,13 @@ test.describe("SwitchGroup ->", async() => {
         // await cloud.deviceObj.getDeviceMacByName(mock2[0].switch_group_name)
         // await page.waitForTimeout(3000)
 
+        // await switchgroupFlow.goToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
+        // await switchgroupFlow.changeSTPofTheSwitchGroup("RSTP")
+        // await cloud.networkObj.choosePathCost("short")
+        // await page.waitForTimeout(4000)
+        // await cloud.networkObj.choosePathCost("long")
+        // await switchgroupFlow.changePriorityRSTP("12288")
+        // await page.waitForTimeout(4000)
+
     })
-
-
 })
