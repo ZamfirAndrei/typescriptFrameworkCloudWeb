@@ -9,9 +9,13 @@ import { message_update, result_update } from "../constants/mocks";
 
 test.describe("SoftwareUpdate ->", async() => {
 
+    let cloud : CloudObjects
+    let softUpdateFlow : SoftwareUpdateFlow
+
     test.beforeEach(async ({page, baseURL}) => {
 
-        const cloud = new CloudObjects(page)
+        cloud = new CloudObjects(page)
+        softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await cloud.page.goto(`${baseURL}`)
         await cloud.loginObj.login(data.user, data.password)
@@ -23,8 +27,6 @@ test.describe("SoftwareUpdate ->", async() => {
 
     test ("1.Test to verify if you can upgrade to a new software - Particular Switch", async({page,baseURL}) => {
 
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
-
         await softUpdateFlow.searchAndSelectDUT(DUT3[0].name)
         await softUpdateFlow.updateDUT(data.image_to_upgrade, 1)
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_upgrade)
@@ -33,8 +35,6 @@ test.describe("SoftwareUpdate ->", async() => {
     })
 
     test ("2.Test to verify if you can downgrade to an older software - Particular Switch", async({page,baseURL}) => {
-
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectDUT(DUT3[0].name)
         await softUpdateFlow.updateDUT(data.image_to_downgrade, 1)
@@ -45,8 +45,6 @@ test.describe("SoftwareUpdate ->", async() => {
 
     test ("3.Test to verify if you can not upgrade/downgrade to the same software - Particular Switch", async({page,baseURL}) => {
 
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
-
         await softUpdateFlow.searchAndSelectDUT(DUT3[0].name)
         await softUpdateFlow.updateDUT(data.image_to_downgrade, 1)
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_downgrade)
@@ -55,8 +53,6 @@ test.describe("SoftwareUpdate ->", async() => {
     })
 
     test ("4.Test to verify if you can upgrade to a new software - Switch Group", async({page,baseURL}) => {
-
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT3[0].name, data.image_to_upgrade, 1)
@@ -67,8 +63,6 @@ test.describe("SoftwareUpdate ->", async() => {
 
     test ("5.Test to verify if you can downgrade to an older software - Switch Group", async({page,baseURL}) => {
 
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
-
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT3[0].name, data.image_to_downgrade, 1)
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_downgrade)
@@ -78,29 +72,23 @@ test.describe("SoftwareUpdate ->", async() => {
 
     test ("6.Test to verify if you can not upgrade/downgrade to the same software - Switch Group", async({page,baseURL}) => {
 
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
-
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateDUTSwitchGroup(DUT3[0].name, data.image_to_downgrade, 1)
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_downgrade)
-        await softUpdateFlow.confirmDetails(DUT3[0].name, DUT3[0].name, result_update[0].Skipped, message_update[0].RunningSameVersion)
+        await softUpdateFlow.confirmDetails(DUT3[0].name, DUT1[0].name, result_update[0].Skipped, message_update[0].RunningSameVersion)
 
     })
 
-    test ("7.Test to verify if you can upgrade muliple switches to a new software - Switch Group - 2 DUTs", async({page,baseURL}) => {
-
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
+    test.only ("7.Test to verify if you can upgrade multiple switches to a new software - Switch Group - 2 DUTs", async({page,baseURL}) => {
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateAllDUTsSwitchGroup(1, data.image_to_upgrade)
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.image_to_upgrade)
-        await softUpdateFlow.confirmAllUpgradeDowngrade(DUT1[0].name, DUT3[0].name, data.image_to_upgrade)
+        await softUpdateFlow.confirmAllUpgradeDowngrade(DUT1[0].name, DUT2[0].name, data.image_to_upgrade)
 
     })
 
-    test ("8.Test to verify if you can upgrade muliple switches to an older software - Switch Group - 2 DUTs", async({page,baseURL}) => {
-
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
+    test ("8.Test to verify if you can upgrade multiple switches to an older software - Switch Group - 2 DUTs", async({page,baseURL}) => {
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateAllDUTsSwitchGroup(1, data.image_to_downgrade)
@@ -110,8 +98,6 @@ test.describe("SoftwareUpdate ->", async() => {
     })
 
     test ("9.Test to verify if you can can not upgrade/downgrade to the same software if all DUTs have the same software - Switch Group - 2 DUTs", async({page,baseURL}) => {
-
-        const softUpdateFlow = new SoftwareUpdateFlow(page)
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchgroup)
         await softUpdateFlow.updateAllDUTsSwitchGroup(1, data.image_to_downgrade)

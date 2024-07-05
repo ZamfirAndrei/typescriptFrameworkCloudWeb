@@ -17,7 +17,7 @@ const DUT1 : DUT [] = [
 
 const DUT2 : DUT [] = [
 
-    {name : "Andrei-2010", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: ""},
+    {name : "Andrei-2010", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: "SN0A0101014901"},
     
 ]
 

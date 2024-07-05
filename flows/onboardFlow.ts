@@ -11,17 +11,15 @@ export class OnBoardFlow {
         this.cloud = new CloudObjects(this.page)
     }
 
-    async expectPageTitle(expectedPageTitle : string) : Promise <void> {
+    async confirmPageTitle(expectedPageTitle : string) : Promise <void> {
 
-        const pageTitle = await this.cloud.page.title()
-        expect(pageTitle).toBe(expectedPageTitle)
+        expect(await this.cloud.page.title()).toBe(expectedPageTitle)
     }
 
     async goToSwitchesList() : Promise <void> {
 
         await this.cloud.toolbarObj.clickDevicePage()
         await this.cloud.deviceObj.clickSwitches()
-        await this.cloud.page.waitForTimeout(2000)
     }
 
     async onboardDevice(deviceSerialNumber : string)  : Promise <void> {
@@ -41,7 +39,7 @@ export class OnBoardFlow {
         return status
     }
 
-    async aproveDeviceBySerialNumber(switchSerialNumber: string) {
+    async aproveDeviceBySerialNumber(switchSerialNumber: string) : Promise <void> {
 
         await this.cloud.page.reload()
         await this.cloud.page.waitForTimeout(2000)
@@ -50,12 +48,9 @@ export class OnBoardFlow {
 
     async confirmDeviceOnboarded(switchSerialNumber : string, onboardStatus: string) : Promise <void> {
 
-        await this.page.waitForTimeout(2000)
-        
         await this.aproveDeviceBySerialNumber(switchSerialNumber)
         await this.cloud.onboardObj.expectApproveDeviceStatusToBe(switchSerialNumber, true)
         await this.cloud.onboardObj.expectOnboardStatusDeviceToBe(switchSerialNumber, onboardStatus)
-        await this.cloud.page.waitForTimeout(2000)
         
     }
 
@@ -63,7 +58,6 @@ export class OnBoardFlow {
 
         await this.cloud.toolbarObj.clickDevicePage()
         await this.cloud.deviceObj.clickSwitches()
-        await this.cloud.page.waitForTimeout(2000)
         await this.cloud.deviceObj.searchToolbar(switchName)
         await this.cloud.deviceObj.expectDeviceToBeAvailable(switchName)
         

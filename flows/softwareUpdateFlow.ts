@@ -11,7 +11,7 @@ export class SoftwareUpdateFlow {
 
     constructor(public page:Page) {
 
-        this.cloud = new CloudObjects(this.page)
+        this.cloud = new CloudObjects(page)
     }
 
     async searchAndSelectDUT(name: string) : Promise <void> {
@@ -59,7 +59,7 @@ export class SoftwareUpdateFlow {
 
         await this.page.waitForLoadState()
         await this.page.waitForTimeout(2000)
-        await this.cloud.switchGroupSoftupdate.clickCheckSwitch(switchName)
+        await this.cloud.switchGroupSoftupdate.clickCheckBoxSwitch(switchName)
 
         // Update the Switch selected
 

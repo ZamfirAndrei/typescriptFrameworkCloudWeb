@@ -3,7 +3,7 @@ import { test, expect} from "@playwright/test";
 
 export class NetworkPortPage {
 
-    private readonly port_type_menu : Locator = this.page.locator('[id="accessMode"]')
+    private readonly portTypeMenu : Locator = this.page.locator('[id="accessMode"]')
     private readonly stpStatus : Locator = this.page.locator('[id="stpStatus"]')
     private readonly bpduGuardStatus : Locator = this.page.locator('[id="bpduGuard"]')
     private readonly portfast_status : Locator = this.page.locator('[id="portFast"]')
@@ -11,36 +11,23 @@ export class NetworkPortPage {
     private readonly availableVlans : Locator = this.page.locator('[class="inline m-t-xs m-l-xs"]')
     private readonly nativeVlan : Locator = this.page.locator('[name="nativeVlan"]')
     private readonly taggedCheck : Locator = this.page.locator('[class="i-checks i-checks-sm"]')
-    private readonly vlanPriorityMenu : Locator = this.page.locator('[class="col-md-2 no-padder table-responsive table-lg"]')
+    private readonly vlanPriorityMenu : Locator = this.page.locator('[class="table b m-b-none table-striped"]')
     private readonly vlanStpPriorityMenu: Locator = this.page.locator('[id="stpPriority"]')
 
+    public checkVlanIdButton = () => {return this.vlanId.isVisible()}
+    public checkNativeVlanButton = () => {return this.nativeVlan.isDisabled()}
+    private getPVRSTVlanRowContent = (vlanId: string) => this.page.locator('[class="table b m-b-none table-striped"]').locator('[class="ng-scope"]', {hasText: `${vlanId}`}).first()
+    
+
+        
     constructor(public page:Page) {
 
     }
 
-    async changeTypePort(type: string) {
+    async changeTypePort(type: string) : Promise<void> {
 
-        await this.port_type_menu.click()
-
-        if (type == "Access") {
-
-            await this.page.locator(`[title="${type}"]`).nth(0).click()
-        }
-
-        else if (type == "Hybrid") {
-
-            await this.page.locator(`[title="${type}"]`).nth(2).click()
-        }
-
-        else if (type == "Trunk") {
-
-            await this.page.locator(`[title="${type}"]`).nth(0).click()
-        }
-
-        else {
-
-            console.log("The type for the port is not VALID")
-        }
+        await this.portTypeMenu.click()
+        await this.page.locator(`[title="${type}"]`).last().click()
     }
 
     async checkAvailableVlans() {
@@ -50,171 +37,56 @@ export class NetworkPortPage {
 
         return vlanList?.split(",")
     }
-    
-    async insertVlan(vlan: string) {
 
-        if (await this.vlanId.isDisabled()) {
+    async insertVlan(vlan: string) : Promise<void> {
 
-            console.log("The button VLAN ID is disabled")
-        }
+        await this.vlanId.fill(vlan)
+    }
+
+    async insertNativeVlan(vlanNative: string) : Promise<void> {
+
+        await this.nativeVlan.fill(vlanNative)
+    }
+
+    async checkTagged(): Promise<void> {
+
+        await this.taggedCheck.check()
+    }
+
+    async selectStatusSTP(status: string) : Promise<void> {
+
+        await this.stpStatus.first().click({timeout: 2000})
+        await this.stpStatus.nth(0).locator(`[title="${status}"]`).click()
+    }
+
+    async selectStatusBPDUGuard(status: string) : Promise<void> {
+
+        await this.bpduGuardStatus.click({timeout: 2000})
+        await this.bpduGuardStatus.locator('[role="menu"]').locator(`[title="${status}"]`).click()
+    }
+
+    async selectStatusPortFast(status: string) : Promise<void> {
         
-        else {
-
-            await this.vlanId.fill(vlan)
-            console.log(`The VLAN ${vlan} has been configured`)
-        }
+        await this.portfast_status.click({timeout: 2000})
+        await this.portfast_status.locator('[role="menu"]').locator(`[title="${status}"]`).click()   
     }
 
-    async insertNativeVlans(vlanNative: string) {
+    async configureSTPPortPriority(priority: string) : Promise<void>  {
 
-        if (await this.nativeVlan.isDisabled()){
-
-            console.log("The button Native VLAN is disabled")
-        }
-
-        else {
-
-            await this.nativeVlan.fill(vlanNative)
-            console.log(`The Native VLAN ${vlanNative} has been configured`)
-        }
+        await this.vlanStpPriorityMenu.first().click()
+        await this.vlanStpPriorityMenu.last().locator('[role="menu"]').locator(`[title="${priority}"]`).click()
     }
 
-    async checkTagged(answer: string) {
+    async configurePVRSTPortPriority(vlanId: string, priority: string) : Promise<void> {
 
-        if (answer == "Yes") {
 
-            if (await this.taggedCheck.isVisible()) {
-
-                await this.taggedCheck.check()
-                console.log("The Tagged has been checked")
-            }
-
-            else {
-
-                console.log("The buttong tagged_check is not visible")
-            }
-        }
+        await this.getPVRSTVlanRowContent(vlanId).locator(`[id="stpPriority"]`).click()
+        await this.getPVRSTVlanRowContent(vlanId).locator(`[id="stpPriority"]`).locator(`[title="${priority}"]`).click()
     }
 
-    async selectStatusSTP(status: string){
+    async configurePVRSTStatusSTPVlan(vlanId: string, status: string) : Promise<void> {
 
-        if (status == "Enable" || status == "Disable"){
-                
-            await this.stpStatus.nth(0).click()
-            await this.stpStatus.nth(0).locator(`[title="${status}"]`).click()
-            console.log(`The status ${status} has been selected succesfully`)
-        }
-        else {
-
-            console.log("The status received can not be processed. Choose a valid Status!")
-        }
-    }
-
-    async selectStatusBPDUGuard(status: string){
-        
-        if (status == "Enable" || status == "Disable"){
-
-            await this.bpduGuardStatus.click()
-            await this.bpduGuardStatus.locator('[role="menu"]').locator(`[title="${status}"]`).click()
-            console.log(`The status ${status} has been selected succesfully`)
-        }
-        else {
-
-            console.log("The status received can not be processed. Choose a valid Status!")
-        }
-
-    }
-
-    async selectStatusPortFast(status: string){
-        
-        if (status == "Enable" || status == "Disable"){
-
-            await this.portfast_status.click()
-            await this.portfast_status.locator('[role="menu"]').locator(`[title="${status}"]`).click()
-            console.log(`The status ${status} has been selected succesfully`)
-        }
-
-        else {
-
-            console.log("The status received can not be processed. Choose a valid Status!")
-        }
-    }
-
-    async configurePriorityVLAN(vlan: string, priority: string) {
-
-        if (Number(vlan)) {
-        
-            if (parseInt(priority) % 16 == 0) {
-
-                
-                const vlanId = this.page.locator('[class="p-t-xs ng-binding"]')
-                let i = 0
-
-                while(await vlanId.nth(i).textContent() != vlan) {
-
-                    console.log(await vlanId.nth(i).textContent())
-                    i += 1
-                    
-                }
-
-                console.log(await vlanId.nth(i).textContent())
-                console.log("The index is: " + i)
-
-                if (await vlanId.nth(i).textContent() == vlan) {
-
-                    await this.vlanStpPriorityMenu.nth(i).click()
-                    await this.vlanStpPriorityMenu.nth(i).locator('[role="menu"]').locator(`[title="${priority}"]`).click()
-
-                }
-            }
-            
-            else{
-                
-                console.log("Select a valid priority. The priority must be multiple of 16")
-            }
-        }
-
-        else {
-
-            console.log("Select a valid VLAN");
-            
-        }
-    }
-
-    async configureStatusSTPVLAN(vlan: string, status: string) {
-
-        if (Number(vlan)) {
-
-            if (status == "Enable" || status == "Disable") {
-
-                const vlanId = this.page.locator('[class="p-t-xs ng-binding"]')
-                let i = 0
-
-                while(await vlanId.nth(i).textContent() != vlan) {
-
-                    console.log(await vlanId.nth(i).textContent())
-                    i += 1
-                    
-                }
-
-                console.log(await vlanId.nth(i).textContent())
-                console.log("The index is: " + i)
-
-                if (await vlanId.nth(i).textContent() == vlan) {
-
-                    await this.stpStatus.nth(i+1).click()
-                    await this.stpStatus.nth(i+1).locator('[role="menu"]').locator(`[title="${status}"]`).click()
-
-                }
-            }
-
-            else {
-
-                console.log("The status received can not be processed. Choose a valid Status")
-            }
-        }
-        else {
-            console.log("Select a valid VLAN")
-        }
+        await this.getPVRSTVlanRowContent(vlanId).locator(`[id="stpStatus"]`).click()
+        await this.getPVRSTVlanRowContent(vlanId).locator(`[id="stpStatus"]`).locator(`[title="${status}"]`).click()  
     }
 }

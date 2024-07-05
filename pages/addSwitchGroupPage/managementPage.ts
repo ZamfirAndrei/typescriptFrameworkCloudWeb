@@ -14,73 +14,73 @@ export class ManagementPage {
 
     }
 
-    async clickAdminEdit(){
+    async clickAdminEdit(): Promise <void> {
 
         await this.adminEdit.click()
     }
 
-    async clickGuestEdit(){
+    async clickGuestEdit(): Promise <void> {
 
         await this.guestEdit.click()
     }
 
 
-    async addPasswordAdmin(password: string){
+    async addPasswordAdmin(password: string): Promise <void> {
 
         await this.addPassword.fill(password)
     }
 
-    async confirmPasswordAdmin(password: string){
+    async confirmPasswordAdmin(password: string): Promise <void> {
 
         await this.confirmPassword.fill(password)
     }
 
-    async addPasswordGuest(password: string){
+    async addPasswordGuest(password: string): Promise <void> {
 
         await this.addPassword.fill(password)
     }
 
-    async confirmPasswordGuest(password: string){
+    async confirmPasswordGuest(password: string): Promise <void> {
 
         await this.confirmPassword.fill(password)
     }
 
-    async clickUpdatePassword() {
+    async clickUpdatePassword(): Promise <void> {
 
         await this.updatePassword.click()
     }
 
-    async checkTelnet(answer: string){
+    async checkTelnet(): Promise <void> {
 
-        if (answer=="Yes"){
-            await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(0).check()
-        }
-        else if (answer=="No"){
-            await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(0).uncheck()
-        }
+        await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(0).check()
     }
 
-    async checkHTTP(answer: string){
+    async unCheckTelnet(): Promise <void> {
 
-        if (answer=="Yes"){
-            await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(1).check()
-        }
-        else if (answer=="No"){
-            await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(1).uncheck()
-        }
+        await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(0).uncheck()
     }
 
-    async checkSSH(answer:string){
+    async checkHTTP(): Promise <void> {
 
-        if (answer=="Yes"){
-            await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(2).check()
-        }
-        else if (answer=="No"){
-            await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(2).uncheck()
-        }
+        await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(1).check()
     }
 
-    async createPasswordAdmin(password: string) {
+    async unCheckHTTP(): Promise <void> {
+
+        await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(1).uncheck()
+    }
+
+    async checkSSH(): Promise <void> {
+
+        await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(2).check() 
+    }
+
+    async unCheckSSH(): Promise <void> {
+
+        await this.administratoraccess.locator('[class="i-checks i-checks-sm"]').nth(2).uncheck() 
+    }
+
+    async createPasswordAdmin(password: string): Promise <void> {
 
         await this.clickAdminEdit()
         await this.addPasswordAdmin(password)
@@ -89,7 +89,7 @@ export class ManagementPage {
 
     }
 
-    async createPasswordGuest(password: string) {
+    async createPasswordGuest(password: string): Promise <void> {
     
         await this.clickGuestEdit()
         await this.addPasswordGuest(password)

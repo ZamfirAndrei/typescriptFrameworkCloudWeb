@@ -8,7 +8,7 @@ import { setTimeout } from "timers";
 export class OnBoardPage {
 
     private readonly claimDeviceButton : Locator = this.page.locator('[title="Claim device from cnMaestro"]')
-    private readonly claim_device_box : Locator = this.page.locator('[id="sns"]')
+    private readonly claimDeviceBox : Locator = this.page.locator('[id="sns"]')
     private readonly claimDeviceButtonFinal : Locator = this.page.locator('[cns-auto="claimDeviceBtn"]')
     private readonly closeClaimDeviceButton : Locator = this.page.locator('[cns-auto="closeBtn"]')
     private readonly backClaimDeviceButton : Locator = this.page.locator('[cns-auto="backBtn"]')
@@ -26,20 +26,19 @@ export class OnBoardPage {
 
     async claimDevice(serialNumber:string) {
 
-        await this.claimDeviceButton.click()
-        // await this.page.waitForTimeout(1500)
-        await this.claim_device_box.fill(serialNumber)
-        await this.claimDeviceButtonFinal.click()
+        await this.claimDeviceButton.click({timeout: 4000})
+        await this.claimDeviceBox.fill(serialNumber, {timeout: 4000})
+        await this.claimDeviceButtonFinal.click({timeout: 4000})
     }
 
     async closeClaimDevice() {
 
-        await this.closeClaimDeviceButton.click()
+        await this.closeClaimDeviceButton.click({timeout: 2000})
     }  
     
     async backClaimDevice() {
 
-        await this.backClaimDeviceButton.click()
+        await this.backClaimDeviceButton.click({timeout: 2000})
     }   
 
     async getRowContent(index: number) {

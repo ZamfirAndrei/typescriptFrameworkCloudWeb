@@ -11,7 +11,7 @@ export class SoftwareUpgrade {
     private readonly softwareImageDropdown : Locator = this.page.locator('[name="dropDownButton"]')
     private readonly addSoftwareJobToDeviceButton : Locator = this.page.locator('[type="button"]', {hasText: "Add Software Job to  device(s)"})
     private readonly viewJobs : Locator = this.page.locator('[class="cn-link"]', {hasText: "View Update Jobs"})
-    private readonly disableAutoReboot_checkbox : Locator = this.page.locator('[class="i-checks i-checks-sm"]', {hasText: "Disable Auto Reboot"})
+    private readonly disableAutoRebootCheckbox : Locator = this.page.locator('[class="i-checks i-checks-sm"]', {hasText: "Disable Auto Reboot"})
     private readonly softwareVersion : Locator = this.page.locator('[data-column-id="actSw"]')
     private readonly dropdownImageMenu : Locator = this.page.locator('[class="dropdown-menu h-down"]')
     private readonly switchGroupName : Locator = this.page.locator('[data-column-id="swGroup"]')
@@ -37,16 +37,16 @@ export class SoftwareUpgrade {
         }
         
     }
+    
     async searchSwitch(switchName: string) : Promise <void> {
 
         await this.searchBar.fill(switchName)
         await this.searchBar.press("Enter")
     }
 
-    async clickCheckSwitch(switchName: string) : Promise <void> {
+    async clickCheckBoxSwitch(switchName: string) : Promise <void> {
 
-        await this.searchBar.fill(switchName)
-        await this.searchBar.press("Enter")
+        await this.searchSwitch(switchName)
         await this.checkBoxOfSwitch(switchName).click({timeout: 10000})
         
     }
@@ -83,9 +83,9 @@ export class SoftwareUpgrade {
         await this.viewJobs.click()
     }
 
-    async checkDisableAutoReboot()  : Promise <void> {
+    async disableAutoRebootCheckBox()  : Promise <void> {
 
-        await this.disableAutoReboot_checkbox.check()
+        await this.disableAutoRebootCheckbox.check()
     }
 
     async getSoftwareVersion(switchName: string) {

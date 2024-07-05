@@ -1,7 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test"
 import { escape } from "querystring"
 
-// This is the page of cnMaestro Switch Group Page
 
 export default class SwitchgroupPage {
 

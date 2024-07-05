@@ -1,7 +1,5 @@
 import { Page, Locator } from "@playwright/test"
 
-// This is the login page of cnMaestro. We enter on the main browser, login and choose the user
-
 export default class LoginPage {
 
     private readonly signIn : Locator = this.page.locator('[class="signin"]').locator('[role="button"]').nth(0)

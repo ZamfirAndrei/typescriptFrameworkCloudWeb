@@ -10,7 +10,18 @@ export class SwitchPortsPage {
     private readonly physicalButton : Locator = this.page.locator('[title="Physical"]')
     private readonly networkButton : Locator = this.page.locator('[title="Network"]')
     private readonly securityButton : Locator = this.page.locator('[title="Security"]')
-    private readonly searchPlaceholder : Locator = this.page.locator('[placeholder="Search"]')
+    public searchPlaceholder : Locator = this.page.locator('[placeholder="Search"]')
+
+    private getRowContent = (port: string) => this.page.getByRole('row', {name: `${port}`})
+    private getAdministrativeStateLocator = (port: string) => this.getRowContent(port).locator('[data-column-id="adminState"]')
+    private getOperationalStateLocator = (port: string) => this.getRowContent(port).locator('[data-column-id="operState"]')
+    private portLocatorBySwitchName = (switchName: string) => this.page.locator('[role="row"]', {hasText: `${switchName}`})
+    private getAdministrativeStateLocatorByName = (switchName: string) => this.portLocatorBySwitchName(switchName).locator('[data-column-id="adminState"]')
+    private getOperationalStateLocatorByName = (switchName: string) => this.portLocatorBySwitchName(switchName).locator('[data-column-id="operState"]')
+    private getTypeLocatorByName = (switchName: string) => this.portLocatorBySwitchName(switchName).locator('[data-column-id="type"]')
+    private getVlansLocatorByName = (switchName: string) => this.portLocatorBySwitchName(switchName).locator('[data-column-id="vlans"]')
+    private getNativeVlansLocatorByName = (switchName: string) => this.portLocatorBySwitchName(switchName).locator('[data-column-id="nativeVlan"]')
+
 
     constructor(public page:Page) {
 
@@ -24,40 +35,6 @@ export class SwitchPortsPage {
     async clickConfiguration() {
 
         await this.configurationMenu.click()
-    }
-
-    async searchForPort(port: string, switchName: string){
-
-        await this.searchPlaceholder.nth(1).fill(port)
-        await this.searchPlaceholder.nth(1).press("Enter")
-        await this.page.waitForTimeout(2000)
-        
-        let i = 0
-        let switchText : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-        let portToClick : Locator = this.page.locator('[class="t-black ng-binding"]')
-
-        while(await switchText.textContent() != switchName){
-
-            switchText = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            // console.log(await switchText.textContent());
-            // console.log(i)
-            i = i + 1
-            
-        }
-        
-        // console.log("After exiting the loop " + i)
-
-        // if (await switchText.textContent() == switchName){
-            
-        if (i > 0){
-
-            i = i - 1
-        }
-
-        // console.log(`i is ${i} and switchText is ${await switchText.textContent()}`)
-        await portToClick.nth(i).click()
-            
-        // }
     }
 
     async clickGeneral() {
@@ -80,167 +57,47 @@ export class SwitchPortsPage {
         await this.securityButton.click()
     }
 
-    async getAdministrativeState(port: string, switchName: string){
+    async searchPort(port: string) {
 
         await this.searchPlaceholder.nth(1).fill(port)
-        await this.searchPlaceholder.nth(1).press("Enter")
-        await this.clickGeneral()
         await this.page.waitForTimeout(2000)
-        
-        let i = 0
-        let switchText : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-        let adminsStateText : Locator = this.page.locator('[data-column-id="adminState"]')
-
-        while(await switchText.textContent() != switchName){
-
-            switchText = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            // console.log(await switchText.textContent());
-            // console.log(i)
-            i = i + 1
-            
-        }
-
-        if (i == 0){
-
-            i = i + 1
-        }
-        
-        // console.log(`i is ${i} and switchText is ${await switchText.textContent()}`)
-        // console.log(await adminsStateTest.nth(i).textContent());
-        // console.log("###################")
-        const adminsState = await adminsStateText.nth(i).textContent()
-        // console.log(adminsState?.trim()) 
-
-        return adminsState?.trim()
-
+        await this.searchPlaceholder.nth(1).press("Enter", {timeout: 2000})
     }
 
-    async getOperationalState(port: string, switchName: string){
 
-        await this.searchPlaceholder.nth(1).fill(port)
-        await this.searchPlaceholder.nth(1).press("Enter")
-        await this.clickGeneral()
-        await this.page.waitForTimeout(2000)
-        
-        let i = 0
-        let switchText : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-        let operationalStateText : Locator = this.page.locator('[data-column-id="operState"]')
+    async getAdministrativeStateByName(switchName: string){
 
-        while(await switchText.textContent() != switchName){
-
-            switchText = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            // console.log(await switchText.textContent());
-            // console.log(i)
-            i = i + 1
-            
-        }
-
-        if (i == 0){
-
-            i = i + 1
-        }
-        
-        // console.log(`i is ${i} and switchText is ${await switchText.textContent()}`)
-        const operationalState= await operationalStateText.nth(i).textContent()
-        // console.log(operationalState?.trim()) 
-        
-        return operationalState?.trim()
+        return this.getAdministrativeStateLocatorByName(switchName).textContent({timeout:2000})
     }
 
-    async getType(port: string, switchName: string) {
-        
-        await this.searchPlaceholder.nth(1).fill(port)
-        await this.searchPlaceholder.nth(1).press("Enter")
-        await this.clickNetwork()
-        await this.page.waitForTimeout(2000)
-        
-        let i = 0
-        let switchText : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-        let typeText : Locator = this.page.locator('[data-column-id="type"]')
+    async getAdministrativeState(port: string){
 
-        while(await switchText.textContent() != switchName){
-
-            switchText = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            // console.log(await switchText.textContent());
-            // console.log(i)
-            i = i + 1
-            
-        }
-
-        if (i == 0){
-
-            i = i + 1
-        }
-        
-        const type = await typeText.nth(i).textContent()
-        // console.log(type?.trim())
-
-        return type?.trim()
+        return this.getAdministrativeStateLocator(port).textContent({timeout:2000})
     }
 
-    async getVLANs(port: string, switchName: string) {
-        
-        await this.searchPlaceholder.nth(1).fill(port)
-        await this.searchPlaceholder.nth(1).press("Enter")
-        await this.clickNetwork()
-        await this.page.waitForTimeout(2000)
-        
-        let i = 0
-        let switchText : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-        let vlansText : Locator = this.page.locator('[data-column-id="vlans"]')
+    async getOperationalStateByName(switchName: string){
 
-        while(await switchText.textContent() != switchName){
-
-            switchText = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            // console.log(await switchText.textContent());
-            // console.log(i)
-            i = i + 1
-            
-        }
-
-        if (i == 0){
-
-            i = i + 1
-        }
-        
-        const vlans = await vlansText.nth(i).textContent()
-        // console.log(vlans)
-
-        const vlansList = vlans?.split(',')
-        // console.log(vlansList)
-        
-        return vlansList
+        return this.getOperationalStateLocatorByName(switchName).textContent({timeout:2000})
     }
 
-    async getNativeVlan(port: string, switchName: string) {
-        
-        await this.searchPlaceholder.nth(1).fill(port)
-        await this.searchPlaceholder.nth(1).press("Enter")
-        await this.clickNetwork()
-        await this.page.waitForTimeout(2000)
-        
-        let i = 0
-        let switchText : Locator = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-        let nativeVlanText : Locator = this.page.locator('[data-column-id="nativeVlan"]')
+    async getOperationalState(port: string){
 
-        while(await switchText.textContent() != switchName){
+        return this.getOperationalStateLocator(port).textContent({timeout:2000})
+    }
 
-            switchText = this.page.locator('[title="View Switch Dashboard"]').nth(i)
-            // console.log(await switchText.textContent());
-            // console.log(i)
-            i = i + 1
-            
-        }
-
-        if (i == 0){
-
-            i = i + 1
-        }
+    async getTypeByName(switchName: string) {
         
-        const nativeVlan = await nativeVlanText.nth(i).textContent()
-        console.log(nativeVlan)
+        return this.getTypeLocatorByName(switchName).textContent({timeout:2000})
+    }
+
+    async getVlansByName(switchName: string) {
         
-        return nativeVlan?.trim()
+        return this.getVlansLocatorByName(switchName).textContent({timeout:2000})
+    }
+
+    async getNativeVlansByName(switchName: string) {
+        
+        return this.getNativeVlansLocatorByName(switchName).textContent({timeout:2000})
     }
 
 }

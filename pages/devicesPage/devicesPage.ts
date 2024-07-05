@@ -2,8 +2,6 @@ import { Page,Locator } from "@playwright/test"
 import { test, expect} from "@playwright/test";
 
 
-// This is the devices page of cnMaestro
-
 export default class DevicePage {
 
     private readonly deviceTable: Locator = this.page.locator('[class="row wrapper-sm ng-scope"]');
@@ -28,7 +26,7 @@ export default class DevicePage {
 
     async clickSwitches() {
 
-        await this.Switches.click()
+        await this.Switches.click({timeout: 20000})
     }
 
     async clickNSEs() {
@@ -39,26 +37,25 @@ export default class DevicePage {
 
     async searchToolbar(deviceName:string) {
 
-        await this.searchMenu.nth(1).fill(deviceName)
-        // await this.page.waitForTimeout(1000)
-        await this.searchMenu.nth(1).press("Enter")
+        await this.searchMenu.nth(1).fill(deviceName, {timeout:2000})
+        await this.searchMenu.nth(1).press("Enter",{timeout:2000})
         await this.page.waitForTimeout(2000)
         
     }
 
     async clickDevice(deviceName: string){
 
-        await this.searchMenu.nth(1).fill(deviceName)
-        await this.searchMenu.nth(1).press("Enter")
+        await this.searchMenu.nth(1).fill(deviceName, {timeout:2000})
+        await this.searchMenu.nth(1).press("Enter", {timeout:2000})
         await this.page.waitForLoadState()
-        await this.page.waitForTimeout(3000)
-        await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${deviceName}`}).click()
+        // await this.page.waitForTimeout(3000)
+        await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${deviceName}`}).click({timeout:3000})
     }
 
     async numberOfDevicesFound() {
         
-        await this.page.waitForTimeout(1500)
-        const text = await this.page.locator('[class="dataTables_info"]').textContent()
+        // await this.page.waitForTimeout(1500)
+        const text = await this.page.locator('[class="dataTables_info"]').textContent({timeout:2000})
         const listOfText = text?.split(":")
         const nrOfDevicesFound = listOfText[1]?.trim()
 
@@ -68,8 +65,8 @@ export default class DevicePage {
     async deleteDevice(deviceName: string) {
         
         await this.searchToolbar(deviceName)
-        await this.page.waitForTimeout(2000)
-        await this.checkBoxDevice.nth(1).check()
+        // await this.page.waitForTimeout(2000)
+        await this.checkBoxDevice.nth(1).check({timeout: 2000})
 
         if (await this.deleteButton.isDisabled()) {
 
@@ -78,8 +75,8 @@ export default class DevicePage {
 
         else {
 
-            await this.deleteButton.click()
-            await this.page.locator(`[ng-click="confirm('OK')"]`).click()
+            await this.deleteButton.click({timeout: 2000})
+            await this.page.locator(`[ng-click="confirm('OK')"]`).click({timeout: 2000})
             
         }
     }   

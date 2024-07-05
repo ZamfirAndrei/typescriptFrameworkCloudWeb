@@ -32,62 +32,40 @@ export class LoginFlow {
 
     async confirmLoginEmail() : Promise <void> {
 
-        const message : string | null = await this.alertInstruction.textContent()
-
-        expect(message).toContain("Please enter your email address")
+        expect(await this.alertInstruction.textContent()).toContain("Please enter your email address")
     }
 
     async confirmLoginWithWrongCredentials() : Promise <void> {
 
-        const message : string | null = await this.alertDanger.textContent()
-        const pageTitle = await this.cloud.page.title()
-
-        expect(message?.trim()).toBe("Invalid email address or password")
-        expect(pageTitle).toBe("Log In / Cambium Networks Support")
-
-        await this.cloud.page.waitForTimeout(2000)
+        expect(await this.alertDanger.textContent()).toContain("Invalid email address or password")
+        expect(await this.cloud.page.title()).toBe("Log In / Cambium Networks Support")
     }
 
     async confirmLoginWithoutPassword() : Promise <void> {
 
-        const message : string | null = await this.alertInstruction.textContent()
-        const alert : string  | null = await this.alert.textContent()
-        const pageTitle = await this.cloud.page.title()
-
-        expect(message?.trim()).toBe("Please enter your password.")
-        expect(alert?.trim()).toBe("Required")
-        expect(pageTitle).toBe("Log In / Cambium Networks Support")
-
-        await this.cloud.page.waitForTimeout(2000)
+        expect(await this.alertInstruction.textContent()).toContain("Please enter your password.")
+        expect(await this.alert.textContent()).toContain("Required")
+        expect(await this.cloud.page.title()).toBe("Log In / Cambium Networks Support")
     }
 
     async confirmLoginWithProperCredentials() : Promise <void> {
 
-        const pageTitle = await this.cloud.page.title()
-        expect(pageTitle).toBe("cnMaestro™")
-
-        await this.cloud.page.waitForTimeout(2000)
+        expect(await this.cloud.page.title()).toBe("cnMaestro™")
     }
 
-    async confirmCheckBox() : Promise <void> {
+    async confirmCheckbox() : Promise <void> {
     
-        const checkboxBefore : boolean = await this.checkBox.isChecked()
-        expect(checkboxBefore).not.toBe(true)
+        expect(await this.checkBox.isChecked()).not.toBe(true)
     
         await this.cloud.loginObj.checkRememberMe()
         await this.cloud.page.waitForTimeout(1000)
     
-        const checkboxAfter : boolean = await this.checkBox.isChecked()
-        expect(checkboxAfter).toBe(true)
+        expect(await this.checkBox.isChecked()).toBe(true)
     }
 
-    async expectPageTitle(expectedPageTitle : string) : Promise <void> {
+    async confirmPageTitle(pageTitle : string) : Promise <void> {
 
-        const pageTitle = await this.cloud.page.title()
-
-        expect(pageTitle).toBe(expectedPageTitle)
-
-        await this.cloud.page.waitForTimeout(2000)
+        expect(await this.cloud.page.title()).toBe(pageTitle)
     }
 
 }

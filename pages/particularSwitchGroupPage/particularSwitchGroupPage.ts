@@ -5,8 +5,6 @@ import { log } from "console"
 import { AddSwitchgroupPage } from "../addSwitchGroupPage/addswitchgroupPage"
 import { NetworkPage } from "../addSwitchGroupPage/networkPage" 
 
-// This is the page of cnMaestro particular Switch Group Page
-
 export class ParticularSwitchGroupPage {
 
     private readonly dashboardMenu : Locator = this.page.locator('[cns-auto="Dashboard"]')

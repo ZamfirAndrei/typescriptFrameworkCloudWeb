@@ -9,42 +9,42 @@ export class PortPage {
     private readonly networkMenu : Locator = this.page.locator('[title="Network"]').nth(0)
     private readonly securityMenu : Locator = this.page.locator('[title="Security"]').nth(0)
 
+    private saveButton = () => this.page.locator('[class="btn btn-primary w-xs ng-binding"]')
+    private checkSaveButtonIsDisabled = () => this.saveButton().isDisabled()
+
     constructor (public page: Page) {
 
     }
 
-    async clickBasic() {
+    async clickBasic() : Promise<void> {
 
         await this.basicMenu.click()
     }
 
-    async clickPhysical() {
+    async clickPhysical() : Promise<void> {
 
         await this.physicalMenu.click()
     }
 
-    async clickNetwork() {
+    async clickNetwork() : Promise<void> {
 
         await this.networkMenu.click()
     }
 
-    async clickSecurity() {
+    async clickSecurity() : Promise<void> {
 
         await this.securityMenu.click()
     }
 
-    async saveConfig() {
+    async clickSaveConfig() : Promise<void> {
 
-        const save = this.page.locator('[class="btn btn-primary w-xs ng-binding"]')
-        
-        if(await save.isDisabled()){
+        if(await this.checkSaveButtonIsDisabled()){
 
             console.log("The button is disabled")
         }
-        else{
-            
-            await save.click()
-            console.log("The configuration has been saved")
+        else {
+
+          await this.saveButton().click()
         }
     }
 }

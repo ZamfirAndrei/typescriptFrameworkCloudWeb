@@ -7,21 +7,22 @@ export class BasicPage {
 
     }
 
-    async addNameSwitchGroup(name:string) {
+    async addNameSwitchGroup(name: string): Promise <void> {
 
         await this.page.locator('[name="profileName"]').fill(name)
     }
 
-    async checkAutoSync(answer:string) {
+    async checkAutoSync(): Promise <void> {
 
-        if (answer == "No")
-            await this.page.locator('[class="i-checks i-checks-sm"]').nth(0).uncheck()
-        else{
-            await this.page.locator('[class="i-checks i-checks-sm"]').nth(0).check()
-        }
+        await this.page.locator('[class="i-checks i-checks-sm"]').nth(0).check()
     }
 
-    async addDescription(description:string) {
+    async unCheckAutoSync(): Promise <void> {
+
+        await this.page.locator('[class="i-checks i-checks-sm"]').nth(0).uncheck()
+    }
+
+    async addDescription(description: string): Promise <void> {
 
         await this.page.locator('[name="desc"]').fill(description)
     }

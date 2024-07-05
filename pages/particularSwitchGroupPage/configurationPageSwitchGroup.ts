@@ -8,9 +8,4 @@ export class ConfigurationPageSwitchGroup extends AddSwitchgroupPage {
 
         super(page)
     }
-
-    async tete () {
-
-        console.log("Tete")
-    }
-}
+} 

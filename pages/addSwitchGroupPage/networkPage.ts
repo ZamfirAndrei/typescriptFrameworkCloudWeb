@@ -17,7 +17,7 @@ export class NetworkPage {
 
     }
 
-    async addVlan(vlanId: string, vlanName: string|null = null) {
+    async addVlan(vlanId: string, vlanName: string|null = null): Promise <void> {
 
         await this.addvlan.click()
         await this.page.locator('[name="vlanId"]').fill(vlanId)
@@ -30,32 +30,32 @@ export class NetworkPage {
 
     }
 
-    async changeSpanningTree(mode: string) {
+    async changeSpanningTree(mode: string): Promise <void> {
 
         await this.stpDropdown.nth(1).click({timeout:3000})
         await this.page.click(`[title="${mode}"]`)
         console.log(`The mode ${mode} of STP has been choosen`)
     }
 
-    async enableSTP(answer: string) {
+    async enableSTP() : Promise <void> {
 
-        if (answer == "Yes"){
-            await this.stpCheckBox.check()
-            console.log("The STP has been enabled")
-        }
-        else if (answer == "No"){
-            await this.stpCheckBox.uncheck()
-            console.log("The STP has been disabled")
-        }
+        await this.stpCheckBox.check()
+        console.log("The STP has been enabled")
     }
 
-    async choosePathCost(pathCostMethod: string){
+    async disableSTP() : Promise <void> {
+
+        await this.stpCheckBox.uncheck()
+        console.log("The STP has been disabled")
+    }
+
+    async choosePathCost(pathCostMethod: string): Promise <void> {
 
         await this.rstpPatchCostLocator(pathCostMethod).click({timeout:3000})
         console.log(`The pathcost has been choosen to be: ${pathCostMethod}`)
     }
 
-    async configureStpPriorityRSTP(priority: string){
+    async configureStpPriorityRSTP(priority: string): Promise <void> {
 
         await this.rstpPriorityMenu.click({timeout:3000})
         await this.rstpPriorityLocator(priority).click({timeout:3000})

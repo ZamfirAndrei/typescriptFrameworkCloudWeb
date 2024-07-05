@@ -16,6 +16,7 @@ export default class ToolbarPage {
     private readonly networkservicesPg: Locator = this.page.locator('[title="Network Services"]')
     private readonly administrationPg: Locator = this.page.locator('[title="Administration"]')
     private readonly managesubscriptionsPg: Locator = this.page.locator('[title="Manage Subscriptions"]')
+    private readonly jobsPg: Locator = this.page.locator('[cns-auto="Nav-Jobs"]')
     
 
     constructor (public page: Page) {
@@ -24,27 +25,27 @@ export default class ToolbarPage {
 
     async clickDevicePage() : Promise <void> {
 
-        await this.devicesPg.click({timeout:30000})
+        await this.devicesPg.click({timeout: 30000})
     }
 
     async clickSwitchGroupsPage() : Promise <void> {
 
-        await this.switchgroupsPg.click()
+        await this.switchgroupsPg.click({timeout: 30000})
     }
 
     async clickHomePage() : Promise <void> {
 
-        await this.homePg.click()
+        await this.homePg.click({timeout: 30000})
     }
 
     async clickOnBoardPage() : Promise <void> {
         
-        await this.onboardPg.click()
+        await this.onboardPg.click({timeout: 30000})
     }
 
     async clickJobsPage() : Promise <void> {
 
         await this.administrationPg.hover()
-        await this.page.locator('[cns-auto="Nav-Jobs"]').click()
+        await this.jobsPg.click({timeout:2000})
     }
 }

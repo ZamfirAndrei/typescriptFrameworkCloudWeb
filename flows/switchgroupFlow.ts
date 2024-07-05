@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import { CloudObjects } from "../management/cloudObjects";
+import SwitchgroupPage from "../pages/switchGroupPage/switchGroupPage";
 import { expect } from "@playwright/test";
 import { job_message } from "../constants/mocks";
 import { TIMEOUT } from "dns";
@@ -9,11 +10,31 @@ export class SwitchGroupFlow {
 
     private readonly cloud : CloudObjects
 
-    applyConfigurationButton : Locator = this.page.locator('[class="ng-binding"]', {hasText: "Apply Configuration"})
+    private readonly applyConfigurationButton : Locator = this.page.locator('[class="ng-binding"]', {hasText: "Apply Configuration"})
 
     constructor(public page: Page){
 
-        this.cloud = new CloudObjects(this.page)
+        this.cloud = new CloudObjects(page)
+    }
+
+    async searchingSwitchGroup(switchGroupName: string) {
+
+        await this.cloud.switchgroupObj.searchSwitchGroup(switchGroupName)
+        await this.page.waitForTimeout(2000)
+
+        if(await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switchGroupName}`}).isVisible()) {
+
+            console.log(`The Switch Group ${switchGroupName} exists`)
+            const switchGroup = await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${switchGroupName}`}).textContent()
+            return switchGroup?.trim()
+        }
+
+        else {
+            
+            console.log(`The Switch Group ${switchGroupName} does not exist`)
+            return undefined
+        }
+        
     }
 
     async searchAndSelectSwitch(switchName: string) : Promise <void> {
@@ -56,7 +77,7 @@ export class SwitchGroupFlow {
 
         if (message == "The specified profile name already exists.") {
 
-            // Leaving the configuraion page without saving
+            // Leaving the configuration page without saving
 
             await this.cloud.toolbarObj.clickSwitchGroupsPage()
             await this.cloud.page.locator('[class="btn btn-primary w-xs"]', {hasText: "Yes"}).click()
@@ -102,8 +123,6 @@ export class SwitchGroupFlow {
 
     async selectConfigurationPageOfTheSwitch(switchName: string) : Promise <void> {
 
-        // Selecting the Switch and going to the configuration page of the Switch
-
         await this.searchAndSelectSwitch(switchName)
         await this.cloud.partDeviceObj.clickConfiguration()
         await this.cloud.page.waitForTimeout(3000)
@@ -111,8 +130,6 @@ export class SwitchGroupFlow {
     }
 
     async gettingDetailsOfTheSwitch() {
-
-        // Getting the Sync Status of the device and the Value of Switch Group BEFORE syncing
 
         const syncStatusDevice = await this.cloud.confObj.getSyncStatusDevice()
         const valueSwitchGroup = await this.cloud.confObj.getValueSwitchGroup()
@@ -122,8 +139,6 @@ export class SwitchGroupFlow {
     }
 
     async selectSwitchGroupToSync(switchGroupName: string) : Promise <void> {
-
-        // Selecting the Switch Group to sync
 
         await this.cloud.confObj.selectSwitchGroup(switchGroupName)
         await this.cloud.page.waitForTimeout(2000)
@@ -157,17 +172,15 @@ export class SwitchGroupFlow {
 
     async confirmDetailsSwitch(syncStatusMessage: string) : Promise <void> {
 
-        // Getting the Details of the Switch 
-
         var [syncStatusDevice, valueSwitchGroup] = await this.gettingDetailsOfTheSwitch()
         console.log("The sync status of the device is : " + syncStatusDevice)
         console.log("The value of the switch group of the device is : " + valueSwitchGroup)
 
-        // expect(syncStatusDevice).toBe(syncStatusMessage)
+        expect(syncStatusDevice).toBe(syncStatusMessage)
         
     }
 
-    async goToSwitchGroupConfigurationPageOfASwitch(switchName : string) : Promise <void> {
+    async navigateToSwitchGroupConfigurationPageOfASwitch(switchName : string) : Promise <void> {
 
         await this.selectConfigurationPageOfTheSwitch(switchName)
         await this.cloud.confObj.clickEdit()
@@ -197,17 +210,10 @@ export class SwitchGroupFlow {
 
     async changeSTPofTheSwitchGroup(stpMode: string) : Promise <void> {
 
-        // await this.cloud.addSwitchgroupObj.clickNetwork()
-        // await this.cloud.addSwitchgroupObj.checkShowAdvancedButton()
-        // await this.cloud.page.waitForTimeout(2000)
-        // await this.cloud.network_obj.changeSpanningTree(stpMode)
-        // await this.cloud.page.waitForTimeout(3000)
-
         await this.cloud.configSwitchgroupObj.clickNetwork()
         await this.cloud.configSwitchgroupObj.checkShowAdvancedButton()
         await this.cloud.page.waitForTimeout(2000)
         await this.cloud.networkSwitchgroupObj.changeSpanningTree(stpMode)
-        // await this.cloud.page.waitForTimeout(3000)
 
         // await this.verifyIfSwitchGroupSaveButtonIsEnabled()
     }
@@ -236,7 +242,7 @@ export class SwitchGroupFlow {
         await this.cloud.networkSwitchgroupObj.configureStpPriorityRSTP(priority)
     }
 
-    async goToConfigurationPageOfASwitchFromSwitchGroup(switchName: string) : Promise <void> {
+    async navigateToConfigurationPageOfASwitchFromSwitchGroup(switchName: string) : Promise <void> {
 
         await this.verifyIfSwitchGroupSaveButtonIsEnabled()
         await this.cloud.switchesObj.clickSwitch(switchName)
@@ -251,9 +257,9 @@ export class SwitchGroupFlow {
         await this.cloud.page.waitForTimeout(2000)
     }
 
-    async goToConfigurationPageOfASwitchFromSwitchGroupAndApplyConfiguration(switchName: string) : Promise <void> {
+    async navigateToConfigurationPageOfASwitchFromSwitchGroupAndApplyConfiguration(switchName: string) : Promise <void> {
 
-        await this.goToConfigurationPageOfASwitchFromSwitchGroup(switchName)
+        await this.navigateToConfigurationPageOfASwitchFromSwitchGroup(switchName)
         await this.applySwitchConfiguration()
     }
 
