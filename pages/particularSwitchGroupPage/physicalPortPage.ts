@@ -12,16 +12,16 @@ export class PhysicalPortPage {
 
     async changeAdministrativeStatePort(state: string) {
 
-        await this.administrativeStateMenu.click()
+        await this.page.waitForTimeout(1000)
+        await this.administrativeStateMenu.click({timeout: 2000})
         await this.page.click(`[title="${state}"]`)
-        console.log(`The port has been ${state}d`)
     }
 
     async changeSpeedPort(speed: string) {
 
-        await this.speedMenu.click()
+        await this.page.waitForTimeout(1000)
+        await this.speedMenu.click({timeout: 2000})
         await this.page.click(`[title="${speed}"]`)
-        console.log(`The port speed has been changed to ${speed}`)
     }
 
 }

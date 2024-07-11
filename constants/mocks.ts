@@ -1,17 +1,17 @@
-import { job_messages, mocks, message_soft_update, result_soft_update, sync_status_messages, onboard_status_messages } from "./mocks-interface";
+import { jobMessages, mocks, messageSoftUpdate, resultSoftUpdate, syncStatusMessages, onboardStatusMessages } from "../interfaces/mocksInterface";
 
-const result_messages_list = ["Initiated", "Completed", "Skipped"]
-const messages_update_list = ["Initiated software update operation", "Successfully updated the device version to ", "Device is already running same version!"]
-const job_messagess = ["Job started successfully"]
-const sync_status_messagess = ["N/A","In Sync", "Not In Sync"]
+const resultMessagesList = ["Initiated", "Completed", "Skipped"]
+const messagesUpdateList = ["Initiated software update operation", "Successfully updated the device version to ", "Device is already running same version!"]
+const jobMessagess = ["Job started successfully"]
+const syncStatusMessagess = ["N/A","In Sync", "Not In Sync"]
 
 const mock1: mocks[] = [
 
     { 
-        switch_group_name : "test1234", 
-        admin_password : "Admin124!", 
-        guest_password : "Guest124!",
-        check_message : "Switch Group is created successfully.",
+        switchGroupName : "test1234", 
+        adminPassword : "Admin124!", 
+        guestPassword : "Guest124!",
+        checkMessage : "Switch Group is created successfully.",
     
     }
 ]
@@ -19,23 +19,23 @@ const mock1: mocks[] = [
 const mock2: mocks[] = [
 
     { 
-        switch_group_name : "test1234", 
-        admin_password : "Admin124!", 
-        guest_password : "Guest124!",
-        check_message : "The specified profile name already exists."
+        switchGroupName : "test1234", 
+        adminPassword : "Admin124!", 
+        guestPassword : "Guest124!",
+        checkMessage : "The specified profile name already exists."
     }
 ]
 
 const mock3: mocks[] = [
 
     { 
-        switch_group_name : "test12345", 
-        admin_password : "Admin124!", 
-        guest_password : "Guest124!",
-        check_message : "Delete Successful"
+        switchGroupName : "test12345", 
+        adminPassword : "Admin124!", 
+        guestPassword : "Guest124!",
+        checkMessage : "Delete Successful"
     }
 ]
-const result_update : result_soft_update[] = [
+const resultUpdate : resultSoftUpdate[] = [
 
     {
         Initiated : "Initiated",
@@ -44,7 +44,7 @@ const result_update : result_soft_update[] = [
     }
 ]
 
-const message_update : message_soft_update[] = [
+const messageUpdate : messageSoftUpdate[] = [
 
     {
         Initiated : "Initiated software update operation",
@@ -54,7 +54,7 @@ const message_update : message_soft_update[] = [
 
 ]
 
-const job_message : job_messages[] = [
+const jobMessage : jobMessages[] = [
 
     {
         JobStartedSuccessfully: "Job started successfully",
@@ -62,7 +62,7 @@ const job_message : job_messages[] = [
     }
 ]
 
-const sync_status_device : sync_status_messages[] = [
+const syncStatusDevice : syncStatusMessages[] = [
 
     {
         NA : "N/A",
@@ -71,13 +71,13 @@ const sync_status_device : sync_status_messages[] = [
     }
 ]
 
-const onboard_status_device : onboard_status_messages[] = [
+const onboardStatusDevice : onboardStatusMessages[] = [
 
     {
         Onboarded : "Onboarded",
-        Waiting_for_Device : "Waitting for Device",
-        Waiting_for_Approval : "Waitting for Approval"
+        WaitingForDevice : "Waitting for Device",
+        WaitingForApproval : "Waitting for Approval"
     }
 ]
 
-export {mock1, mock2, mock3, result_update, message_update, job_message, sync_status_device, onboard_status_device}
+export {mock1, mock2, mock3, resultUpdate, messageUpdate, jobMessage, syncStatusDevice, onboardStatusDevice}

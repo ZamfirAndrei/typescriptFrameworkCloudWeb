@@ -1,41 +1,41 @@
-import DUT from "./dut-interface";
+import DUT from "../interfaces/dutInterface";
 
 const DUTs : DUT[] = [
 
-    {name : "Andrei-2028", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: ""},
-    {name : "Andrei-2010", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: ""},
-    {name : "Andrei-3052", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: ""},
-    {name : "EX3028-2", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: ""},
+    {name : "Andrei-2028", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: ""},
+    {name : "Andrei-2010", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: ""},
+    {name : "Andrei-3052", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: ""},
+    {name : "EX3028-2", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: ""},
 
 ];
 
 const DUT1 : DUT [] = [
 
-    {name : "Andrei-2028", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: "SN0A0101013901"},
+    {name : "Andrei-2028", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: "SN0A0101013901"},
 
 ]
 
 const DUT2 : DUT [] = [
 
-    {name : "Andrei-2010", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: "SN0A0101014901"},
+    {name : "Andrei-2010", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: "SN0A0101014901"},
     
 ]
 
 const DUT3 : DUT [] = [
 
-    {name : "Andrei-3052", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: "XLZB046BTR3B"},
+    {name : "Andrei-3052", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: "XLZB046BTR3B"},
     
 ]
 
 const DUT4 : DUT [] = [
 
-    {name : "EX3028-2", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: "XLZD04NPWQ47"},
+    {name : "EX3028-2", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: "XLZD04NPWQ47"},
     
 ]
 
 const DUT5 : DUT [] = [
 
-    {name : "FA2", base_mac_address: "",  switch_mac_address: "", software_version: "", switch_group: "", ip_address: "", serial_number: "XSZG001N36RK"},
+    {name : "FA2", baseMacAddress: "",  switchMacAddress: "", softwareVersion: "", switchGroup: "", ipAddress: "", serialNumber: "XSZG001N36RK"},
     
 ]
 

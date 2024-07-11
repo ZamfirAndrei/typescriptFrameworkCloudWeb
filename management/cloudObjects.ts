@@ -48,7 +48,7 @@ export class CloudObjects {
     public readonly partSwitchgroupObj : ParticularSwitchGroupPage
     public readonly switchportsObj : SwitchPortsPage
     public readonly portObj : PortPage
-    public readonly basicPortObj : PhysicalPortPage
+    public readonly physicalPortObj : PhysicalPortPage
     public readonly networkPortObj : NetworkPortPage
     public readonly statisticsObj : StatisticsPage
     public readonly jobsObj : JobsPage
@@ -80,7 +80,7 @@ export class CloudObjects {
         this.partSwitchgroupObj = new ParticularSwitchGroupPage(this.page)
         this.switchportsObj = new SwitchPortsPage(this.page) 
         this.portObj = new PortPage(this.page)
-        this.basicPortObj = new PhysicalPortPage(this.page)
+        this.physicalPortObj = new PhysicalPortPage(this.page)
         this.networkPortObj = new NetworkPortPage(this.page)
         this.statisticsObj = new StatisticsPage(this.page)
         this.jobsObj = new JobsPage(this.page)
