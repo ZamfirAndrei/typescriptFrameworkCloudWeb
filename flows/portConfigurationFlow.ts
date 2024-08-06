@@ -187,6 +187,4 @@ export class PortConfigurationFlow {
         expect(await this.cloud.confObj.getMessageApplyConfiguration()).toBe(jobMessages)
         await this.cloud.confObj.expectSyncStatusDeviceToBe(syncStatusMessage)
     }
-    
-
 }

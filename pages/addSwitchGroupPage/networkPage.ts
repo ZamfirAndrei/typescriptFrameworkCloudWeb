@@ -11,7 +11,7 @@ export class NetworkPage {
     private readonly pathcost : Locator = this.page.locator('[class="col-md-12 no-padder radio"]')
 
     private rstpPriorityLocator = (priority: string) => {return this.rstpPriorityDropDown.locator(`[title="${priority}"]`).last()}
-    private rstpPatchCostLocator = (pathCostMethod: string) => {return this.pathcost.locator(`[translate="switchGroup.labels.${pathCostMethod}"]`)}
+    private rstpPathCostLocator = (pathCostMethod: string) => {return this.pathcost.locator(`[translate="switchGroup.labels.${pathCostMethod}"]`)}
 
     constructor(public page:Page){
 
@@ -26,40 +26,32 @@ export class NetworkPage {
             await this.page.locator('[name="vlanName"]').fill(vlanName)
 
         await this.page.locator('[class="btn btn-primary w-xs ng-binding"]').click()
-        console.log(`The VLAN id ${vlanId} and name ${vlanName} have been configured`)
-
     }
 
     async changeSpanningTree(mode: string): Promise <void> {
 
         await this.stpDropdown.nth(1).click({timeout:3000})
         await this.page.click(`[title="${mode}"]`)
-        console.log(`The mode ${mode} of STP has been choosen`)
     }
 
     async enableSTP() : Promise <void> {
 
         await this.stpCheckBox.check()
-        console.log("The STP has been enabled")
     }
 
     async disableSTP() : Promise <void> {
 
         await this.stpCheckBox.uncheck()
-        console.log("The STP has been disabled")
     }
 
     async choosePathCost(pathCostMethod: string): Promise <void> {
 
-        await this.rstpPatchCostLocator(pathCostMethod).click({timeout:3000})
-        console.log(`The pathcost has been choosen to be: ${pathCostMethod}`)
+        await this.rstpPathCostLocator(pathCostMethod).click({timeout:3000})
     }
 
     async configureStpPriorityRSTP(priority: string): Promise <void> {
 
         await this.rstpPriorityMenu.click({timeout:3000})
-        await this.rstpPriorityLocator(priority).click({timeout:3000})
-        console.log(`The STP priority has been configured to : ${priority}`);
-        
+        await this.rstpPriorityLocator(priority).click({timeout:3000})  
     }
 }
