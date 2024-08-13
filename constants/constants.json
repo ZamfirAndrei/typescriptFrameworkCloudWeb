@@ -2,5 +2,13 @@
     "user" : "andreigabriel.zamfir@dxc.com",
     "password" : "Solotov1998.",
     "account1" : "LUXOFT301SRV4",
-    "account2" : "QA_USSRV3_LUXOFT"
+    "account2" : "QA_USSRV3_LUXOFT",
+    "imageToUpgrade" : "5.0.2-r4",
+    "imageToDowngrade" : "5.0.1-r3",
+    "switchGroup": "test1234",
+    "wrongUser": "gigi@gmail.com",
+    "wrongPassword": "Gigi",
+    "imageToUpgradeFA" : "6.0-r1",
+    "imageToDowngradeFA" : "5.0.1-r3" 
+
 }

@@ -2,7 +2,7 @@ import { Page, Locator } from "@playwright/test"
 
 // This is the toolbar page of cnMaestro
 
-export default class toolbarPage {
+export default class ToolbarPage {
 
     private readonly devicesPg: Locator = this.page.locator('[title="Devices"]');
     private readonly homePg: Locator = this.page.locator('[title="Home"]')
@@ -16,24 +16,36 @@ export default class toolbarPage {
     private readonly networkservicesPg: Locator = this.page.locator('[title="Network Services"]')
     private readonly administrationPg: Locator = this.page.locator('[title="Administration"]')
     private readonly managesubscriptionsPg: Locator = this.page.locator('[title="Manage Subscriptions"]')
+    private readonly jobsPg: Locator = this.page.locator('[cns-auto="Nav-Jobs"]')
+    
 
     constructor (public page: Page) {
 
     }
 
-    async clickDevicePage()
-    {
-        await this.devicesPg.click()
+    async clickDevicePage() : Promise <void> {
+
+        await this.devicesPg.click({timeout: 30000})
     }
 
-    async clickSwitchGroupsPage()
-    {
-        await this.switchgroupsPg.click()
+    async clickSwitchGroupsPage() : Promise <void> {
+
+        await this.switchgroupsPg.click({timeout: 30000})
     }
 
-    async clickHomePage()
-    {
-        await this.homePg.click()
+    async clickHomePage() : Promise <void> {
+
+        await this.homePg.click({timeout: 30000})
     }
 
+    async clickOnBoardPage() : Promise <void> {
+        
+        await this.onboardPg.click({timeout: 30000})
+    }
+
+    async clickJobsPage() : Promise <void> {
+
+        await this.administrationPg.hover()
+        await this.jobsPg.click({timeout:2000})
+    }
 }
