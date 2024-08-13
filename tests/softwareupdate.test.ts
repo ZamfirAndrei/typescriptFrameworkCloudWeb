@@ -79,7 +79,7 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test.only ("7.Test to verify if you can upgrade multiple switches to a new software - Switch Group - 2 DUTs", async({page,baseURL}) => {
+    test ("7.Test to verify if you can upgrade multiple switches to a new software - Switch Group - 2 DUTs", async({page,baseURL}) => {
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchGroup)
         await softUpdateFlow.updateAllDUTsSwitchGroup(1, data.imageToUpgrade)
@@ -88,12 +88,12 @@ test.describe("SoftwareUpdate ->", async() => {
 
     })
 
-    test ("8.Test to verify if you can upgrade multiple switches to an older software - Switch Group - 2 DUTs", async({page,baseURL}) => {
+    test.only ("8.Test to verify if you can upgrade multiple switches to an older software - Switch Group - 2 DUTs", async({page,baseURL}) => {
 
         await softUpdateFlow.searchAndSelectSwitchGroup(data.switchGroup)
         await softUpdateFlow.updateAllDUTsSwitchGroup(1, data.imageToDowngrade)
         await softUpdateFlow.confirmTargetAndClickShowMore(1, data.imageToDowngrade)
-        await softUpdateFlow.confirmAllUpgradeDowngrade(DUT1[0].name, DUT3[0].name, data.imageToDowngrade)
+        await softUpdateFlow.confirmAllUpgradeDowngrade(DUT1[0].name, DUT2[0].name, data.imageToDowngrade)
 
     })
 

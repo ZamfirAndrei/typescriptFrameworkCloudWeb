@@ -66,7 +66,7 @@ test.describe("SwitchGroup ->", async() => {
 
     })
 
-    test("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
+    test.only("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
 
         await switchgroupFlow.navigateToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
         await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")
@@ -76,7 +76,7 @@ test.describe("SwitchGroup ->", async() => {
 
     })
 
-    test("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
+    test.only("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
 
         await switchgroupFlow.navigateToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
         await switchgroupFlow.changeSTPofTheSwitchGroup("RSTP")
@@ -87,7 +87,7 @@ test.describe("SwitchGroup ->", async() => {
 
     })
 
-    test("9.Test to verify you can modify the Priority of a Instance in PVRST", async({page, baseURL}) => {
+    test.only("9.Test to verify you can modify the Priority of a Instance in PVRST", async({page, baseURL}) => {
 
         await switchgroupFlow.navigateToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
         await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")

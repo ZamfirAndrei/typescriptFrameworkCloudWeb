@@ -4,13 +4,11 @@ import { test, expect} from "@playwright/test";
 import { JobsPage } from "./jobsPage";
 import { ConfigurationUpdatePage } from "./configurationUpdatePage";
 
-// Using OOP inheritence to get the methods from ConfigurationUpdatePage Class
-
 export class JobsSoftwareUpdatePage extends ConfigurationUpdatePage{
 
     constructor(public page:Page) {
         
-        super(page) // Calling the constructor of the Parent Class
+        super(page)
         
     }
 

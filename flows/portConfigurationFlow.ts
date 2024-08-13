@@ -179,7 +179,6 @@ export class PortConfigurationFlow {
         await this.cloud.partDeviceObj.clickConfiguration()
     }
 
-    a
     async confirmApplyConfigurationSyncing(jobMessages: string, syncStatusMessage: string) : Promise <void> {
 
         await this.cloud.page.waitForTimeout(2000)

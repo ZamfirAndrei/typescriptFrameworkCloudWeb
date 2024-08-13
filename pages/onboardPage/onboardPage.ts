@@ -111,7 +111,6 @@ export class OnBoardPage {
 
         const row = await this.getRowContentBySerialNumber(switchSerialNumber)
         const onboardStatus = await row.locator('[data-column-id="status"]').textContent()
-        console.log(onboardStatus?.trim())
         
         return onboardStatus?.trim()
     }

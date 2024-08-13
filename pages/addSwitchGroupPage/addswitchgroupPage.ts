@@ -48,7 +48,7 @@ export class AddSwitchgroupPage {
 
         await this.showAdvanced.uncheck()
          
-     }
+    }
 
     async clickSave(): Promise <void> {
 
