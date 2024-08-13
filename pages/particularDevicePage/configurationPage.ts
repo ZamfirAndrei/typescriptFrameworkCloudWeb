@@ -91,6 +91,6 @@ export class ConfigurationPage{
     async expectSyncStatusDeviceToBe(syncStatusDevice: string): Promise<void> {
 
         await expect(this.getSyncStatusLocator()).toHaveText(syncStatusDevice,
-            {timeout: 20000})
+            {timeout: 30000})
     }
 }

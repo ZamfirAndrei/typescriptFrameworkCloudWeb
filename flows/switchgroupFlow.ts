@@ -2,7 +2,7 @@ import { Locator, Page } from "@playwright/test";
 import { CloudObjects } from "../management/cloudObjects";
 import SwitchgroupPage from "../pages/switchGroupPage/switchGroupPage";
 import { expect } from "@playwright/test";
-import { job_message } from "../constants/mocks";
+import { jobMessage } from "../constants/mocks";
 import { TIMEOUT } from "dns";
 
 

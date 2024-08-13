@@ -60,7 +60,8 @@ export default class SwitchgroupPage {
     async clickSwitchGroup(switchGroupName: string) : Promise <void> {
 
         await this.searchbar.fill(switchGroupName)
-        await this.searchbar.press("Enter")
+        await this.page.waitForTimeout(2000)
+        await this.searchbar.press("Enter", {timeout: 2000})
         await this.page.waitForTimeout(2000)
         await this.getSwitchGroupToClickLocator(switchGroupName).click()
     }

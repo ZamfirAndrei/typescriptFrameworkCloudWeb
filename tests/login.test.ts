@@ -30,14 +30,14 @@ test.describe("Login ->", async() => {
     
     test ("2.Verify that you can not login with un-registered email", async({page,baseURL}) => {
     
-        await loginFlow.introduceUserAndPassword(data.wrong_user, data.password)
+        await loginFlow.introduceUserAndPassword(data.wrongUser, data.password)
         await loginFlow.confirmLoginWithWrongCredentials()
     
     })
     
     test ("3.Verify that you can not login with a registered email and a wrong password", async({page,baseURL}) => {
     
-        await loginFlow.introduceUserAndPassword(data.user, data.wrong_password)
+        await loginFlow.introduceUserAndPassword(data.user, data.wrongPassword)
         await loginFlow.confirmLoginWithWrongCredentials()
         
     })

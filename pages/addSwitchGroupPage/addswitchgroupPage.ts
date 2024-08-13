@@ -48,7 +48,7 @@ export class AddSwitchgroupPage {
 
         await this.showAdvanced.uncheck()
          
-     }
+    }
 
     async clickSave(): Promise <void> {
 
@@ -83,7 +83,7 @@ export class AddSwitchgroupPage {
         return this.getSwitchGroupNameLocator(switchGroupName).textContent()
     }
 
-    async expectSwitchGroupToBeCreated(switchGroup: string) {
+    async expectSwitchGroupToBeCreated(switchGroup: string): Promise <void> {
 
         await expect(this.getSwitchGroupNameLocator(switchGroup)).toHaveText(switchGroup, {timeout: 20000})
     }

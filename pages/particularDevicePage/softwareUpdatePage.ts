@@ -22,9 +22,7 @@ export class SoftwareUpdatePage {
     }
 
     async expandJobOptions(): Promise<void> {
-
-        // console.log(await this.jobOption.isDisabled());
-        
+   
         if (await this.jobOption.isDisabled() == true){
 
             await this.jobOption.click()
@@ -38,7 +36,6 @@ export class SoftwareUpdatePage {
 
     async checkDisableAutoReboot(): Promise<void> {
 
-        // console.log(await this.disableAutoReboot.isChecked())
         await this.disableAutoReboot.check()
     }
 

@@ -3,12 +3,14 @@ import { NetworkPortPage } from "../pages/particularSwitchGroupPage/networkPortP
 import { SwitchPortsPage } from "../pages/particularSwitchGroupPage/switchPortsPage";
 import { Page } from "@playwright/test";
 import { test, expect, Locator} from "@playwright/test";
+import { SwitchGroupFlow } from "./switchgroupFlow";
 
 export class PortConfigurationFlow {
 
     private readonly cloud : CloudObjects
     private readonly networkportsObj : NetworkPortPage
     private readonly switchportsObj : SwitchPortsPage
+    private readonly switchGroupFlow: SwitchGroupFlow
 
     private getRowContent = (port: string) => this.page.getByRole('row', {name: `${port}`})
     private portLocatorBySwitchName = (switchName: string) => this.page.locator('[role="row"]', {hasText: `${switchName}`})
@@ -18,6 +20,7 @@ export class PortConfigurationFlow {
         this.cloud = new CloudObjects(page)
         this.networkportsObj = new NetworkPortPage(page)
         this.switchportsObj = new SwitchPortsPage(page)
+        this.switchGroupFlow = new SwitchGroupFlow(page)
     }
 
     async configureVlan(vlan: string): Promise<void> {
@@ -51,14 +54,16 @@ export class PortConfigurationFlow {
 
     async searchPort(port: string) : Promise<void> {
 
-        await this.switchportsObj.searchPlaceholder.nth(1).fill(port)
         await this.page.waitForTimeout(2000)
+        await this.switchportsObj.searchPlaceholder.nth(1).fill(port)
+        // await this.page.waitForTimeout(2000)
         await this.switchportsObj.searchPlaceholder.nth(1).press("Enter", {timeout: 2000})
     }
 
     async searchAndClickPort(port: string, switchName: string) : Promise<void> {
 
         await this.searchPort(port)
+        await this.page.waitForTimeout(2000)
         await this.portLocatorBySwitchName(switchName).locator('[data-column-id="port"]').click({timeout: 2000})
 
     }
@@ -104,7 +109,7 @@ export class PortConfigurationFlow {
         }
     }
 
-    async configureSTPPortPriority(priority: string) : Promise<void>  {
+    async configureSTPPortPriority(priority: string) : Promise<void> {
 
         if (!isNaN(Number(priority)) && parseInt(priority) % 16 == 0) {
         
@@ -119,7 +124,7 @@ export class PortConfigurationFlow {
         }
     }
 
-    async configurePVRSTPortPriority(vlanId: string, priority: string) : Promise<void>  {
+    async configurePVRSTPortPriority(vlanId: string, priority: string) : Promise<void> {
 
         if (!isNaN(Number(vlanId)) && !isNaN(Number(priority)) && parseInt(priority) % 16 == 0) {
         
@@ -134,7 +139,7 @@ export class PortConfigurationFlow {
         }
     }
 
-    async configurePVRSTStatusSTPVlan(vlanId: string, status: string) : Promise<void>  {
+    async configurePVRSTStatusSTPVlan(vlanId: string, status: string) : Promise<void> {
 
         if (!isNaN(Number(vlanId))) {
 
@@ -157,4 +162,28 @@ export class PortConfigurationFlow {
         }
     }
 
+    async navigatoToSwitchPortConfigurationOfSwitchGroup(switchGroup: string, port: string, device: string) : Promise<void> {
+
+        await this.cloud.toolbarObj.clickSwitchGroupsPage()
+        await this.cloud.switchgroupObj.clickSwitchGroup(switchGroup)
+        await this.cloud.partSwitchgroupObj.clickSwitchPorts()
+        await this.searchAndClickPort(port, device)
+    }
+
+    async navigateToDeviceConfigurationFromPortConfiguration(device: string) : Promise<void> {
+
+        await this.page.waitForTimeout(2000)
+        await this.cloud.toolbarObj.clickDevicePage()
+        await this.cloud.deviceObj.clickSwitches()
+        await this.cloud.deviceObj.clickDevice(device)
+        await this.cloud.partDeviceObj.clickConfiguration()
+    }
+
+    async confirmApplyConfigurationSyncing(jobMessages: string, syncStatusMessage: string) : Promise <void> {
+
+        await this.cloud.page.waitForTimeout(2000)
+        await this.switchGroupFlow.applySwitchConfiguration()
+        expect(await this.cloud.confObj.getMessageApplyConfiguration()).toBe(jobMessages)
+        await this.cloud.confObj.expectSyncStatusDeviceToBe(syncStatusMessage)
+    }
 }
