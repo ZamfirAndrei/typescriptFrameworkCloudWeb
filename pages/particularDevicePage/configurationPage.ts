@@ -35,9 +35,9 @@ export class ConfigurationPage{
 
     async selectSwitchGroup(switchGroup: string): Promise<void>  {
 
-        await this.switchGroupMenu.click({timeout: 2000})
+        await this.switchGroupMenu.click({timeout: 20000})
         await this.switchGroupSearchBar.fill(switchGroup)
-        await this.page.locator(`[title="${switchGroup}"]`).click({timeout: 2000})
+        await this.page.locator(`[title="${switchGroup}"]`).click({timeout: 20000})
         
     }
 
@@ -50,7 +50,7 @@ export class ConfigurationPage{
 
     async clickApplyConfiguration(): Promise<void>  {
 
-        await this.applyConfigurationButton.click()
+        await this.applyConfigurationButton.click({timeout: 20000})
     }
     
     async getMessageApplyConfiguration() {

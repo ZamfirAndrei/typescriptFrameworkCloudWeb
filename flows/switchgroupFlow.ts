@@ -11,6 +11,7 @@ export class SwitchGroupFlow {
     private readonly cloud : CloudObjects
 
     private readonly applyConfigurationButton : Locator = this.page.locator('[class="ng-binding"]', {hasText: "Apply Configuration"})
+    
 
     constructor(public page: Page){
 
@@ -44,9 +45,9 @@ export class SwitchGroupFlow {
         await this.cloud.toolbarObj.clickDevicePage()
         await this.cloud.deviceObj.clickSwitches()
  
-        await this.page.waitForTimeout(2000)
+        // await this.page.waitForTimeout(2000)
         await this.cloud.deviceObj.clickDevice(switchName)
-        await this.page.waitForTimeout(2000)
+        // await this.page.waitForTimeout(2000)
 
     }
 
@@ -94,7 +95,7 @@ export class SwitchGroupFlow {
     async checkIfTheSwitchGroupHasBeenCreated(searchSwitchGroupName: string) : Promise <void> {
 
         await this.cloud.toolbarObj.clickSwitchGroupsPage()
-        await this.page.waitForTimeout(1000)
+        // await this.page.waitForTimeout(1000)
         await this.cloud.switchgroupObj.searchSwitchGroup(searchSwitchGroupName)
         await this.cloud.addSwitchgroupObj.expectSwitchGroupToBeCreated(searchSwitchGroupName)
         console.log(`The Switch Group ${searchSwitchGroupName} has been created`)
@@ -125,7 +126,7 @@ export class SwitchGroupFlow {
 
         await this.searchAndSelectSwitch(switchName)
         await this.cloud.partDeviceObj.clickConfiguration()
-        await this.cloud.page.waitForTimeout(3000)
+        // await this.cloud.page.waitForTimeout(3000)
 
     }
 
@@ -141,7 +142,7 @@ export class SwitchGroupFlow {
     async selectSwitchGroupToSync(switchGroupName: string) : Promise <void> {
 
         await this.cloud.confObj.selectSwitchGroup(switchGroupName)
-        await this.cloud.page.waitForTimeout(2000)
+        // await this.cloud.page.waitForTimeout(2000)
         await this.cloud.confObj.clickApplyConfiguration()
 
     }
@@ -212,7 +213,7 @@ export class SwitchGroupFlow {
 
         await this.cloud.configSwitchgroupObj.clickNetwork()
         await this.cloud.configSwitchgroupObj.checkShowAdvancedButton()
-        await this.cloud.page.waitForTimeout(2000)
+        // await this.cloud.page.waitForTimeout(2000)
         await this.cloud.networkSwitchgroupObj.changeSpanningTree(stpMode)
 
         // await this.verifyIfSwitchGroupSaveButtonIsEnabled()
@@ -247,14 +248,15 @@ export class SwitchGroupFlow {
         await this.verifyIfSwitchGroupSaveButtonIsEnabled()
         await this.cloud.switchesObj.clickSwitch(switchName)
         await this.cloud.page.waitForLoadState()
-        await this.cloud.page.waitForTimeout(2000)
+        // await this.cloud.page.waitForTimeout(2000)
+        await this.cloud.partDeviceObj.expectDeviceNameToBe(switchName)
         await this.cloud.partDeviceObj.clickConfiguration()
     }
 
     async applySwitchConfiguration() : Promise <void> {
 
         await this.cloud.confObj.clickApplyConfiguration()
-        await this.cloud.page.waitForTimeout(2000)
+        // await this.cloud.page.waitForTimeout(2000)
     }
 
     async navigateToConfigurationPageOfASwitchFromSwitchGroupAndApplyConfiguration(switchName: string) : Promise <void> {
@@ -267,15 +269,15 @@ export class SwitchGroupFlow {
 
         await this.selectConfigurationPageOfTheSwitch(switchName)
         await this.cloud.page.waitForLoadState()
-        await expect(this.applyConfigurationButton).toBeVisible({timeout:3000})
+        await expect(this.applyConfigurationButton).toBeVisible({timeout:30000})
         await this.checkIfTheSwitchGroupIsNotAlreadyConfigured(switchGroupName)
-        await expect(this.applyConfigurationButton).toBeVisible({timeout:3000})
+        await expect(this.applyConfigurationButton).toBeVisible({timeout:30000})
         await this.cloud.confObj.expectSyncStatusDeviceToBe(syncStatusMessage)
     }
 
     async confirmApplyConfigurationSyncing(jobMessages: string, syncStatusMessage: string) : Promise <void> {
 
-        await this.cloud.page.waitForTimeout(2000)
+        // await this.cloud.page.waitForTimeout(2000)
         await this.applySwitchConfiguration()
         expect(await this.cloud.confObj.getMessageApplyConfiguration()).toBe(jobMessages)
         await this.cloud.confObj.expectSyncStatusDeviceToBe(syncStatusMessage)

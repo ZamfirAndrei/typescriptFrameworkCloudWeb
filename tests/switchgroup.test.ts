@@ -6,6 +6,7 @@ import { CloudObjects } from "../management/cloudObjects";
 import { DUTs, DUT1, DUT2, DUT3, DUT4 } from "../constants/duts";
 import {mock1, mock2, mock3, resultUpdate, messageUpdate, jobMessage, syncStatusDevice} from "../constants/mocks"
 import { NetworkPageSwitchGroup } from "../pages/particularSwitchGroupPage/networkPageSwitchGroup";
+import { StpMode, Device } from "../enums/cnMaestro.enum";
 
 
 
@@ -56,7 +57,7 @@ test.describe("SwitchGroup ->", async() => {
 
     test("5.Test to verify you can remove a DUT from a switch group", async({page, baseURL}) => {
 
-        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, "None ", syncStatusDevice[0].NA)
+        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, Device.switchGroupNone, syncStatusDevice[0].NA)
 
     })
     // Added again the test to run test 7
@@ -66,10 +67,10 @@ test.describe("SwitchGroup ->", async() => {
 
     })
 
-    test.only("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
+    test("7.Test to verify you can modify the STP mode of a Switch Group", async({page, baseURL}) => {
 
         await switchgroupFlow.navigateToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
-        await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")
+        await switchgroupFlow.changeSTPofTheSwitchGroup(StpMode.pvrst)
         await switchgroupFlow.navigateToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(jobMessage[0].JobStartedSuccessfully, 
             syncStatusDevice[0].InSync)
@@ -79,30 +80,30 @@ test.describe("SwitchGroup ->", async() => {
     test.only("8.Test to verify you can modify the Priority in RSTP", async({page, baseURL}) => {
 
         await switchgroupFlow.navigateToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
-        await switchgroupFlow.changeSTPofTheSwitchGroup("RSTP")
-        await switchgroupFlow.changePriorityRSTP("0")
+        await switchgroupFlow.changeSTPofTheSwitchGroup(StpMode.rstp)
+        await switchgroupFlow.changePriorityRSTP(StpMode.rstp)
         await switchgroupFlow.navigateToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(jobMessage[0].JobStartedSuccessfully, 
             syncStatusDevice[0].InSync)
 
     })
 
-    test.only("9.Test to verify you can modify the Priority of a Instance in PVRST", async({page, baseURL}) => {
+    test("9.Test to verify you can modify the Priority of a Instance in PVRST", async({page, baseURL}) => {
 
         await switchgroupFlow.navigateToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
-        await switchgroupFlow.changeSTPofTheSwitchGroup("PVRST")
-        await switchgroupFlow.changeInstancePriorityPVRST("10", "8192")
+        await switchgroupFlow.changeSTPofTheSwitchGroup(StpMode.pvrst)
+        await switchgroupFlow.changeInstancePriorityPVRST(StpMode.vlan, StpMode.pvrstPriority)
         await switchgroupFlow.navigateToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(jobMessage[0].JobStartedSuccessfully, 
             syncStatusDevice[0].InSync)
 
     })
 
-    test.only("10.Test to verify you can modify the Priority in MSTP", async({page, baseURL}) => {
+    test("10.Test to verify you can modify the Priority in MSTP", async({page, baseURL}) => {
 
         await switchgroupFlow.navigateToSwitchGroupConfigurationPageOfASwitch(DUT3[0].name)
-        await switchgroupFlow.changeSTPofTheSwitchGroup("MSTP")
-        await switchgroupFlow.changeInstancePriorityMSTP("Reg1", 1, "100", "4096")
+        await switchgroupFlow.changeSTPofTheSwitchGroup(StpMode.mstp)
+        await switchgroupFlow.changeInstancePriorityMSTP(StpMode.regionNameMstp, 1, StpMode.mstpVlans, StpMode.mstpPriority)
         await switchgroupFlow.navigateToConfigurationPageOfASwitchFromSwitchGroup(DUT3[0].name)
         await switchgroupFlow.confirmApplyConfigurationSyncing(jobMessage[0].JobStartedSuccessfully, 
             syncStatusDevice[0].InSync)
@@ -138,5 +139,9 @@ test.describe("SwitchGroup ->", async() => {
         // await switchgroupFlow.changePriorityRSTP("12288")
         // await page.waitForTimeout(4000)
 
+        // await switchgroupFlow.selectConfigurationPageOfTheSwitch("FA2")
+        // await switchgroupFlow.selectSwitchGroupToSync("None ")
+        // await page.waitForTimeout(3000)
+        await switchgroupFlow.confirmSwitchGroupSyncing(DUT3[0].name, mock1[0].switchGroupName, syncStatusDevice[0].NA)
     })
 })

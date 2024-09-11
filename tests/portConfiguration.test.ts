@@ -39,12 +39,13 @@ test.describe("Port Configuration ->", async() => {
     test.afterAll(async({baseURL}) => {
 
         await cloud.toolbarObj.clickHomePage()
+        await page.close()
         
     })
 
     test("1.Test to verify if you can disable a port", async() => {
 
-        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchgroup, Device.port1, Device.name)
+        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchGroup, Device.port1, Device.name)
         await cloud.portObj.clickPhysical()
         await cloud.physicalPortObj.changeAdministrativeStatePort(AdministrativeState.enable)
         await cloud.portObj.clickSaveConfig()
@@ -56,7 +57,7 @@ test.describe("Port Configuration ->", async() => {
 
     test("2.Test to verify if you can change a port type", async() => {
 
-        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchgroup, Device.port1, Device.name)
+        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchGroup, Device.port1, Device.name)
         await cloud.portObj.clickNetwork()
         await cloud.networkPortObj.changeTypePort(Device.portTypeAccess)
         await cloud.portObj.clickSaveConfig()
@@ -68,7 +69,7 @@ test.describe("Port Configuration ->", async() => {
 
     test("3.Test to verify if you can disable STP on a port", async() => {
 
-        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchgroup, Device.port1, Device.name)
+        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchGroup, Device.port1, Device.name)
         await cloud.portObj.clickNetwork()
         await cloud.networkPortObj.selectStatusSTP(AdministrativeState.disable)
         await cloud.portObj.clickSaveConfig()
@@ -80,7 +81,7 @@ test.describe("Port Configuration ->", async() => {
 
     test("4.Test to verify if you can enable BPDUguard on a port", async() => {
 
-        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchgroup, Device.port1, Device.name)
+        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchGroup, Device.port1, Device.name)
         await cloud.portObj.clickNetwork()
         await cloud.networkPortObj.selectStatusBPDUGuard(AdministrativeState.enable)
         await cloud.portObj.clickSaveConfig()
@@ -92,7 +93,7 @@ test.describe("Port Configuration ->", async() => {
 
     test("5.Test to verify if you can enable portfast on a port", async() => {
 
-        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchgroup, Device.port1, Device.name)
+        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchGroup, Device.port1, Device.name)
         await cloud.portObj.clickNetwork()
         await cloud.networkPortObj.selectStatusPortFast(AdministrativeState.enable)
         await cloud.portObj.clickSaveConfig()
@@ -104,7 +105,7 @@ test.describe("Port Configuration ->", async() => {
 
     test("6.Test to verify if you can change port-priority in RSTP on a port", async() => {
 
-        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchgroup, Device.port1, Device.name)
+        await portConfigurationFlow.navigatoToSwitchPortConfigurationOfSwitchGroup(Device.switchGroup, Device.port1, Device.name)
         await cloud.portObj.clickNetwork()
         await cloud.networkPortObj.configureSTPPortPriority(Device.portPriority)
         await cloud.portObj.clickSaveConfig()

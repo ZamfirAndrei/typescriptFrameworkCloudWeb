@@ -45,8 +45,9 @@ export default class DevicePage {
 
     async clickDevice(deviceName: string){
 
-        await this.searchMenu.nth(1).fill(deviceName, {timeout:2000})
-        await this.searchMenu.nth(1).press("Enter", {timeout:2000})
+        // await this.searchMenu.nth(1).fill(deviceName, {timeout:2000})
+        // await this.searchMenu.nth(1).press("Enter", {timeout:2000})
+        await this.searchToolbar(deviceName)
         await this.page.waitForLoadState()
         // await this.page.waitForTimeout(3000)
         await this.page.locator('[class="cn-link ng-binding"]', {hasText: `${deviceName}`}).click({timeout:3000})
@@ -188,4 +189,5 @@ export default class DevicePage {
         await expect(await this.getDeviceNameLocator(switchName)).toHaveText(switchName,
             {timeout: 30000})
     }
+
 }   

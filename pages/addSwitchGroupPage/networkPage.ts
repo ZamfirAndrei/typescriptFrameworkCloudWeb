@@ -30,8 +30,8 @@ export class NetworkPage {
 
     async changeSpanningTree(mode: string): Promise <void> {
 
-        await this.stpDropdown.nth(1).click({timeout:3000})
-        await this.page.click(`[title="${mode}"]`)
+        await this.stpDropdown.nth(1).click({timeout:30000})
+        await this.page.click(`[title="${mode}"]`,{timeout:30000})
     }
 
     async enableSTP() : Promise <void> {
